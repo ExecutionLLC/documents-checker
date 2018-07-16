@@ -1,0 +1,143 @@
+
+Profiles:
+  
+    OrdererGenesis:
+        Orderer:
+            <<: *OrdererDefaults
+            Organizations:
+                - *OrdererOrg
+        Consortiums:
+            PrivateNetConsortium:
+                Organizations: &AllOrganizations
+                    - *Org0
+                    - *Org1
+                    - *Org2
+                    - *Org3
+                    - *Org4
+                    - *Org5
+
+    PublicChannel:
+        Consortium: PrivateNetConsortium
+        Application:
+            <<: *ApplicationDefaults
+            Organizations: *AllOrganizations
+
+    PrivateChannel0:
+        Consortium: PrivateNetConsortium
+        Application:
+            <<: *ApplicationDefaults
+            Organizations:
+                - *Org0
+                - *Org1
+
+    PrivateChannel1:
+        Consortium: PrivateNetConsortium
+        Application:
+            <<: *ApplicationDefaults
+            Organizations:
+                - *Org2
+                - *Org3
+                - *Org4
+
+
+Organizations:
+
+    - &OrdererOrg
+        Name: OrdererOrg
+        ID: OrdererOrgMSP
+        MSPDir: crypto-config/ordererOrganizations/private.net/msp
+
+    - &Org0
+        Name: Org0
+        ID: Org0MSP
+        MSPDir: crypto-config/peerOrganizations/org0.private.net/msp
+
+        AnchorPeers:
+            - Host: peer0.org0.private.net
+              Port: 7051
+
+    - &Org1
+        Name: Org1
+        ID: Org1MSP
+        MSPDir: crypto-config/peerOrganizations/org1.private.net/msp
+
+        AnchorPeers:
+            - Host: peer0.org1.private.net
+              Port: 7051
+
+    - &Org2
+        Name: Org2
+        ID: Org2MSP
+        MSPDir: crypto-config/peerOrganizations/org2.private.net/msp
+
+        AnchorPeers:
+            - Host: peer0.org2.private.net
+              Port: 7051
+
+    - &Org3
+        Name: Org3
+        ID: Org3MSP
+        MSPDir: crypto-config/peerOrganizations/org3.private.net/msp
+
+        AnchorPeers:
+            - Host: peer0.org3.private.net
+              Port: 7051
+
+    - &Org4
+        Name: Org4
+        ID: Org4MSP
+        MSPDir: crypto-config/peerOrganizations/org4.private.net/msp
+
+        AnchorPeers:
+            - Host: peer0.org2.private.net
+              Port: 7051
+
+    - &Org5
+        Name: Org5
+        ID: Org5MSP
+        MSPDir: crypto-config/peerOrganizations/org5.private.net/msp
+
+        AnchorPeers:
+            - Host: peer0.org5.private.net
+              Port: 7051
+
+
+Orderer: &OrdererDefaults
+
+    # Orderer Type: The orderer implementation to start
+    # Available types are "solo" and "kafka"
+    OrdererType: solo
+
+    Addresses:
+        - orderer.private.net:7050
+
+    # Batch Timeout: The amount of time to wait before creating a batch
+    BatchTimeout: 1s
+
+    # Batch Size: Controls the number of messages batched into a block
+    BatchSize:
+
+        # Max Message Count: The maximum number of messages to permit in a batch
+        MaxMessageCount: 100
+
+        # Absolute Max Bytes: The absolute maximum number of bytes allowed for
+        # the serialized messages in a batch.
+        AbsoluteMaxBytes: 99 MB
+
+        # Preferred Max Bytes: The preferred maximum number of bytes allowed for
+        # the serialized messages in a batch. A message larger than the preferred
+        # max bytes will result in a batch larger than preferred max bytes.
+        PreferredMaxBytes: 512 KB
+
+    Kafka:
+        # Brokers: A list of Kafka brokers to which the orderer connects
+        # NOTE: Use IP:port notation
+        Brokers:
+            - 127.0.0.1:9192
+
+    Organizations:
+
+
+Application: &ApplicationDefaults
+
+    Organizations:

@@ -1,0 +1,134 @@
+version: '2'
+
+networks:
+  privatenet:
+
+x-common:
+  orderer-loglevel: &orderer-loglevel
+    ORDERER_GENERAL_LOGLEVEL=DEBUG
+    
+  cli-logglevel: &cli-logglevel
+    CORE_LOGGING_PEER=DEBUG
+
+
+services:
+  ca.private.net:
+    container_name: ca.private.net
+    image: hyperledger/fabric-ca
+    environment:
+      - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
+      - FABRIC_CA_SERVER_CA_NAME=ca.private.net
+      - FABRIC_CA_SERVER_CA_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.org0.private.net-cert.pem
+      - FABRIC_CA_SERVER_CA_KEYFILE=/etc/hyperledger/fabric-ca-server-config/fabb91dfcb1c9858c7c9366d973d27144793c19af41b9f2dec655f10c16fe08f_sk
+    command: sh -c 'fabric-ca-server start -b admin:adminpw -d'
+    volumes:
+      - ./crypto-config/peerOrganizations/org0.private.net/ca/:/etc/hyperledger/fabric-ca-server-config
+    networks:
+      - privatenet
+    ports:
+      - 7054:7054
+
+  orderer.private.net:
+    container_name: orderer.private.net
+    image: hyperledger/fabric-orderer
+    environment:
+      - *orderer-loglevel
+      - ORDERER_GENERAL_LISTENADDRESS=0.0.0.0
+      - ORDERER_GENERAL_GENESISMETHOD=file
+      - ORDERER_GENERAL_GENESISFILE=/etc/hyperledger/configtx/genesis.block
+      - ORDERER_GENERAL_LOCALMSPDIR=/etc/hyperledger/msp/orderer/msp
+      - ORDERER_GENERAL_LOCALMSPID=OrdererOrgMSP
+    working_dir: /opt/gopath/src/github.com/hyperledger/fabric/orderer
+    command: orderer
+    volumes:
+        - ./config/:/etc/hyperledger/configtx
+        - ./crypto-config/ordererOrganizations/private.net/orderers/orderer.private.net/:/etc/hyperledger/msp/orderer
+        - ./crypto-config/peerOrganizations/org0.private.net/peers/peer0.org0.private.net/:/etc/hyperledger/msp/peerOrg1
+    networks:
+      - privatenet
+    ports:
+      - 7050:7050
+
+  peer0.org0.private.net:
+    extends:
+      file: docker-compose-base.yml
+      service: base-peer
+    container_name: peer0.org0.private.net
+    environment:
+      - CORE_PEER_ID=peer0.org0
+      - CORE_PEER_LOCALMSPID=Org0MSP
+      - CORE_PEER_ADDRESS=peer0.org0.private.net:7051
+    volumes:
+        - ./crypto-config/peerOrganizations/org0.private.net/peers/peer0.org0.private.net/msp:/etc/hyperledger/msp/peer
+        - ./crypto-config/peerOrganizations/org0.private.net/users:/etc/hyperledger/msp/users
+    ports:
+      - 7051:7051
+      - 7053:7053
+
+  peer0.org1.private.net:
+    extends:
+      file: docker-compose-base.yml
+      service: base-peer
+    container_name: peer0.org1.private.net
+    environment:
+      - CORE_PEER_ID=peer0.org1
+      - CORE_PEER_LOCALMSPID=Org1MSP
+      - CORE_PEER_ADDRESS=peer0.org1.private.net:7051
+    volumes:
+        - ./crypto-config/peerOrganizations/org1.private.net/peers/peer0.org1.private.net/msp:/etc/hyperledger/msp/peer
+        - ./crypto-config/peerOrganizations/org1.private.net/users:/etc/hyperledger/msp/users
+    depends_on:
+      - orderer.private.net
+
+  peer0.org2.private.net:
+    extends:
+      file: docker-compose-base.yml
+      service: base-peer
+    container_name: peer0.org2.private.net
+    environment:
+      - CORE_PEER_ID=peer0.org2
+      - CORE_PEER_LOCALMSPID=Org2MSP
+      - CORE_PEER_ADDRESS=peer0.org2.private.net:7051
+    volumes:
+        - ./crypto-config/peerOrganizations/org2.private.net/peers/peer0.org2.private.net/msp:/etc/hyperledger/msp/peer
+        - ./crypto-config/peerOrganizations/org2.private.net/users:/etc/hyperledger/msp/users
+    depends_on:
+      - orderer.private.net
+
+  peer0.org3.private.net:
+    extends:
+      file: docker-compose-base.yml
+      service: base-peer
+    container_name: peer0.org3.private.net
+    environment:
+      - CORE_PEER_ID=peer0.org3
+      - CORE_PEER_LOCALMSPID=Org3MSP
+      - CORE_PEER_ADDRESS=peer0.org3.private.net:7051
+    volumes:
+        - ./crypto-config/peerOrganizations/org3.private.net/peers/peer0.org3.private.net/msp:/etc/hyperledger/msp/peer
+        - ./crypto-config/peerOrganizations/org3.private.net/users:/etc/hyperledger/msp/users
+    depends_on:
+      - orderer.private.net
+
+  cli.private.net:
+    container_name: cli.private.net
+    image: hyperledger/fabric-tools
+    tty: true
+    environment:
+      - *cli-logglevel
+      - GOPATH=/opt/gopath
+      - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
+      - CORE_PEER_ID=cli.private.net
+      - CORE_PEER_ADDRESS=peer0.org0.private.net:7051
+      - CORE_PEER_LOCALMSPID=Org0MSP
+      - CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org0.private.net/users/Admin@org0.private.net/msp
+      - CORE_CHAINCODE_KEEPALIVE=10
+    working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
+    command: /bin/bash
+    volumes:
+        - /var/run/:/host/var/run/
+        - ./../chaincode/:/opt/gopath/src/github.com/documents-checker
+        - ./crypto-config:/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/
+        - ./config:/opt/gopath/src/github.com/hyperledger/fabric/peer/config/
+    networks:
+        - privatenet
