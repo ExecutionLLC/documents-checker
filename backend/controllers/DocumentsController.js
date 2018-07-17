@@ -79,3 +79,5 @@ class DocumentsController extends BaseController {
         return router;
     }
 } 
+
+module.exports = DocumentsController;

@@ -27,3 +27,5 @@ class ControllersFacade {
         respones.end();
     }
 }
+
+module.exports = ControllersFacade;
