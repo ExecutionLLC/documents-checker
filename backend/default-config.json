@@ -1,13 +1,12 @@
 {
   "storePath": "./runtime/hfc-key-store",
-  "channel": "publicchannel",
-  "chaincodeId": "documentchecker",
+  "channel": "public",
+  "chaincodeId": "documents_checker_public",
   "peer": "grpc://localhost:7051",
   "orderer": "grpc://localhost:7050",
   "eventhub": "grpc://localhost:7053",
   "userName": "user1",
   "webServerPort": 3000,
-  "useExternalDataAggregator": true,
   "logLevel": "debug",
   "consoleLog": true,
   "fileLog": "./runtime/logs/app.log"
