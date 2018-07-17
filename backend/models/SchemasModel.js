@@ -1,9 +1,10 @@
 const BaseModel = require('./BaseModel');
+const getLogger = require('../utils/log');
 
 class SchemasModel extends BaseModel {
     constructor(chaincodeApi) {
         const logger = getLogger('DocumentsModel');
-        super(chaincodeApi);
+        super(chaincodeApi, logger);
     }
 
     add(schemaId, schemaIdPart, schemaDataPart, schemaPrivateKey) {
