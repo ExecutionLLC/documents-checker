@@ -5,13 +5,13 @@ class BaseService {
     }
 
     start() {
-        return Promise((resolve, reject) => {
+        return new Promise((resolve, reject) => {
             resolve();
         });
     }
 
     stop() {
-        return Promise((resolve, reject) => {
+        return new Promise((resolve, reject) => {
             resolve();
         });
     }
