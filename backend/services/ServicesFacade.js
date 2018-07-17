@@ -23,3 +23,5 @@ class ServicesFacade {
         ]);
     }
 }
+
+module.exports = ServicesFacade;

@@ -33,3 +33,5 @@ class DocumentService extends BaseService {
         );
     }
 }
+
+module.exports = DocumentService;
