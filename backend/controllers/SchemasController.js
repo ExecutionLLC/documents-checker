@@ -1,4 +1,5 @@
 const BaseController = require('./BaseController');
+const getLogger = require('../utils/log');
 const Express = require('express');
 
 class SchemasController extends BaseController {
@@ -29,12 +30,12 @@ class SchemasController extends BaseController {
         });
     }
 
-    isExists() {
-        const {schemaId} = request;
+    isExists(request, response) {
+        const {schemaId} = request.params;
 
-        this._logger.verbose('got new "isExists" request:', schemaId, request.body);
+        this._logger.verbose('got new "isExists" request:', schemaId);
 
-        this.srvices.schemasService.isExists(
+        this._services.schemasService.isExists(
             schemaId
         ).then(() => {
             this.sendOk(response);
@@ -49,7 +50,7 @@ class SchemasController extends BaseController {
         this._logger.verbose('got new "get" request:', schemaId, request.body);
 
         const {schemaPrivateKey} = request.body;
-        this.srvices.schemasService.getDataPart(
+        this._services.schemasService.getDataPart(
             schemaId,
             schemaPrivateKey
         ).then((documentDataPart) => {
