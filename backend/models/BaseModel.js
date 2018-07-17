@@ -1,6 +1,7 @@
 class BaseModel {
-    constructor(chaincodeApi) {
-	this._chaincodeApi = chaincodeApi;
+    constructor(chaincodeApi, logger) {
+        this._chaincodeApi = chaincodeApi;
+        this._logger = logger;
     }
 }
 
