@@ -1,27 +1,29 @@
 const HttpStatusCodes = require('http-status-codes');
 
 class BaseController {
-    constructor(services) {
-	this._services = services; 
+    constructor(services, logger) {
+        this._services = services;
+        this._logger = logger;
     }
 
     sendOk(response) {
-	response
-	    .status(HttpStatusCodes.OK)
-	    .end();
+        response.status(HttpStatusCodes.OK);
+        response.end();
     }
 
     sendJson(response, data) {
-	response
-	    .json(data)
-	    .end();
+        response.json(data);
+        response.end();
     }
 
-    sendError(response, error, errorHttpCode) {
-	response
-	    .status(errorHttpCode || HttpStatusCodes.INTERNAL_SERVER_ERROR)
-	    .json(error)
-	    .end();
+    sendError(response, error, errorHttpStatusCode) {
+        const statusCode = errorHttpStatusCode || HttpStatusCodes.INTERNAL_SERVER_ERROR;
+        response.status(statusCode);
+        response.json(error);
+
+        this._logger.warn('send error (%d):', statusCode, error);
+
+        response.end();
     }
 }
 
