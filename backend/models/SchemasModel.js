@@ -12,7 +12,7 @@ class SchemasModel extends BaseModel {
         const transientMap = {
             SCHEMA_ID_PART: schemaIdPart,
             SCHEMA_DATA_PART: schemaDataPart,
-            SCHEMA_PRIVATE_KEY: schemaPrivateKey,
+            SCHEMA_PRIVATE_KEY: schemaPrivateKey
         };
         const request = this._chaincodeApi.createInvokeRequest(
             'createSchema', args, transientMap
@@ -24,7 +24,7 @@ class SchemasModel extends BaseModel {
     get(schemaId, schemaPrivateKey) {
         const args = [schemaId];
         const transientMap = {
-            SCHEMA_PRIVATE_KEY: schemaPrivateKey,
+            SCHEMA_PRIVATE_KEY: schemaPrivateKey
         };
         const request = this._chaincodeApi.createQueryRequest(
             'readSchema', args, transientMap
