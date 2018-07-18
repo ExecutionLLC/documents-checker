@@ -4,7 +4,7 @@
     "description": "Documents validator",
     "main": "src/app/main.js",
     "scripts": {
-        "start": "node app/main.js",
+        "start": "node index.js",
         "init-store": "node scripts/init-store.js"
     },
     "dependencies": {
