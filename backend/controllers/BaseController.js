@@ -21,7 +21,7 @@ class BaseController {
         response.status(statusCode);
         response.json(error);
 
-        this._logger.warn('send error (%d):', statusCode, error);
+        this._logger.warn('send error (%d): %o', statusCode, error);
 
         response.end();
     }

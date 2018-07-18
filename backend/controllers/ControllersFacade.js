@@ -20,7 +20,7 @@ class ControllersFacade {
         return router;
     }
 
-    _notFoundHandler(request, respones, next) {
+    _notFoundHandler(request, respones) {
         respones.status(HttpStatusCodes.NOT_FOUND);
         respones.json({error: 'Not found'});
         this._logger.warn('%s %d %s', request.method, respones.statusCode, request.url);

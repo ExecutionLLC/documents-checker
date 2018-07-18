@@ -31,14 +31,14 @@ class DocumentsController extends BaseController {
         });
     }
 
-    isExists() {
+    isExists(request, response) {
         this._logger.verbose('got new "isExists" request (body = "%o")', request.body);
 
         const {
             schemaId,
             documentIdPart
         } = request.body;
-        this._services.documentsService.add(
+        this._services.documentsService.isExists(
             schemaId,
             documentIdPart
         ).then((result) => {
