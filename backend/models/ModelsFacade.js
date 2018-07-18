@@ -1,4 +1,4 @@
-const ChaincodeApi = require('../hyperledger-api/ChaincodeApi')
+const ChaincodeApi = require('../hyperledger-api/ChaincodeApi');
 const DocumentsModel = require('./DocumentsModel');
 const getLogger = require('../utils/log');
 const SchemasModel = require('./SchemasModel');
@@ -11,6 +11,10 @@ class ModelsFacade {
         this.documentsModel = new DocumentsModel(this._chaincodeApi);
 
         this._logger = getLogger('ModelsFacade');
+    }
+
+    init() {
+        return this._chaincodeApi.init();
     }
 }
 
