@@ -9,7 +9,7 @@ class DocumentsController extends BaseController {
     }
 
     add(request, response) {
-        this._logger.verbose('got new "add" request:', request.body);
+        this._logger.verbose('got new "add" request (body = "%o")', request.body);
 
         const {
             schemaId,
@@ -18,7 +18,7 @@ class DocumentsController extends BaseController {
             schemaPrivateKey,
             documentPrivateKey
         } = request.body;
-        this.srvices.documentsService.add(
+        this._services.documentsService.add(
             schemaId,
             documentIdPart,
             documentDataPart,
@@ -32,13 +32,13 @@ class DocumentsController extends BaseController {
     }
 
     isExists() {
-        this._logger.verbose('got new "isExists" request:', request.body);
+        this._logger.verbose('got new "isExists" request (body = "%o")', request.body);
 
         const {
             schemaId,
             documentIdPart
         } = request.body;
-        this.srvices.documentsService.add(
+        this._services.documentsService.add(
             schemaId,
             documentIdPart
         ).then((result) => {
@@ -49,7 +49,7 @@ class DocumentsController extends BaseController {
     }
 
     getDataPart(request, response) {
-        this._logger.verbose('got new "getDataPart" request:', request.body);
+        this._logger.verbose('got new "getDataPart" request (body = "%o")', request.body);
 
         const {
             schemaId,
@@ -57,7 +57,7 @@ class DocumentsController extends BaseController {
             schemaPrivateKey,
             documentPrivateKey
         } = request.body;
-        this.srvices.documentsService.getDataPart(
+        this._services.documentsService.getDataPart(
             schemaId,
             documentIdPart,
             schemaPrivateKey,
