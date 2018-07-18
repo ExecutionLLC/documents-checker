@@ -35,10 +35,8 @@ class SchemasController extends BaseController {
 
         this._logger.verbose('got new "isExists" request (schemaId = "%s")', schemaId);
 
-        this._services.schemasService.isExists(
-            schemaId
-        ).then(() => {
-            this.sendOk(response);
+        this._services.schemasService.isExists(schemaId).then((result) => {
+            this.sendJson(response, result);
         }).catch((error) => {
             this.sendError(response, error);
         });
