@@ -11,7 +11,7 @@ class SchemasController extends BaseController {
     add(request, response) {
         const {schemaId} = request;
 
-        this._logger.verbose('got new "add" request:', schemaId, request.body);
+        this._logger.verbose('got new "add" request (schemaId = "%s"; body = "%o")', schemaId, request.body);
 
         const {
             schemaIdPart,
@@ -33,7 +33,7 @@ class SchemasController extends BaseController {
     isExists(request, response) {
         const {schemaId} = request.params;
 
-        this._logger.verbose('got new "isExists" request:', schemaId);
+        this._logger.verbose('got new "isExists" request (schemaId = "%s")', schemaId);
 
         this._services.schemasService.isExists(
             schemaId
@@ -45,12 +45,12 @@ class SchemasController extends BaseController {
     }
 
     get(request, response) {
-        const {schemaId} = request;
+        const {schemaId} = request.params;
 
-        this._logger.verbose('got new "get" request:', schemaId, request.body);
+        this._logger.verbose('got new "get" request (schemaId = "%s"; body = "%o")', schemaId, request.body);
 
         const {schemaPrivateKey} = request.body;
-        this._services.schemasService.getDataPart(
+        this._services.schemasService.get(
             schemaId,
             schemaPrivateKey
         ).then((documentDataPart) => {
