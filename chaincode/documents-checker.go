@@ -266,7 +266,25 @@ func (dc *DocumentsChecker) readSchemaDataPart(APIstub shim.ChaincodeStubInterfa
 }
 
 func (dc *DocumentsChecker) isSchemaExists(APIstub shim.ChaincodeStubInterface, args []string, transientMap map[string][]byte) pb.Response {
-	return shim.Error(fmt.Sprintf("isSchemaExists is not implimented."))
+	if len(args) != 1 {
+		return shim.Error("Expected 1 parameter")
+	}
+	schemaID := args[0]
+
+	key, err := dc.getSchemaKey(APIstub, schemaID)
+	if err != nil {
+		return shim.Error(fmt.Sprintf("Cannot get schema key: %s", err))
+	}
+	cypherValue, err := APIstub.GetState(key)
+	if err != nil {
+		return shim.Error(fmt.Sprintf("Cannot get state: %s", err))
+	}
+
+	if cypherValue == nil {
+		return shim.Success([]byte("false"))
+	}
+
+	return shim.Success([]byte("true"))
 }
 
 func (dc *DocumentsChecker) deleteSchema(APIstub shim.ChaincodeStubInterface, args []string, transientMap map[string][]byte) pb.Response {
