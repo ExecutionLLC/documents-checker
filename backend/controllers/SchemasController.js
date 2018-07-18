@@ -18,7 +18,7 @@ class SchemasController extends BaseController {
             schemaDataPart,
             schemaPrivateKey
         } = request.body;
-        this.srvices.schemasService.add(
+        this._services.schemasService.add(
             schemaId,
             schemaIdPart,
             schemaDataPart,
