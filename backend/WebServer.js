@@ -3,8 +3,8 @@ const cors = require('cors');
 const Express = require('express');
 const Http = require('http');
 const HttpStatusCodes = require('http-status-codes');
-const morgan = require('morgan');
 
+const BaseController = require('./BaseController');
 const config = require('./utils/config');
 const getLogger = require('./utils/log');
 
@@ -41,7 +41,6 @@ class WebServer {
             const app = new Express();
 
             app.use(bodyParser.json());
-            app.use(morgan('combined'));
             app.use(cors());
             app.use('/', apiRouter);
             app.use(this._handleErrors.bind(this));
@@ -55,21 +54,19 @@ class WebServer {
             const serverPort = config.get('webServerPort') || 3000;
             this._httpServer.on('request', app);
             this._httpServer.listen(serverPort, () => {
-                this._logger.info('Server listening on port ' + serverPort);
+                this._logger.info('Server listening on port %d', serverPort);
             });
             resolve();
         })
     }
 
     _handleErrors(error, request, response, next) {
-        this._logger.error(error.message);
+        BaseController.sendError(response, error);
+        const errorMessage = (error && error.message) ? error.message : 'Unknown error';
+        this._logger.error('%s %d %s: %s', request.method, respones.statusCode, request.url, errorMessage);
         if (error.stack) {
             this._logger.debug(error.stack);
         }
-        response.status(HttpStatusCodes.INTERNAL_SERVER_ERROR);
-        const message = error.message || 'Unknown error';
-        response.json({errorMessage: message});
-        response.end();
     }
 }
 

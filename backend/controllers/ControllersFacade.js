@@ -2,6 +2,7 @@ const Express = require('express');
 const getLogger = require('../utils/log');
 const HttpStatusCodes = require('http-status-codes');
 
+const BaseController = require('./BaseController');
 const DocumentsController = require('./DocumentsController');
 const SchemasController = require('./SchemasController');
 
@@ -21,10 +22,12 @@ class ControllersFacade {
     }
 
     _notFoundHandler(request, respones) {
-        respones.status(HttpStatusCodes.NOT_FOUND);
-        respones.json({error: 'Not found'});
+        BaseController.sendJson(
+            respones,
+            {error: 'Not found'},
+            HttpStatusCodes.NOT_FOUND
+        );
         this._logger.warn('%s %d %s', request.method, respones.statusCode, request.url);
-        respones.end();
     }
 }
 
