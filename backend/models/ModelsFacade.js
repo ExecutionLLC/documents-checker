@@ -14,7 +14,11 @@ class ModelsFacade {
     }
 
     init() {
-        return this._chaincodeApi.init();
+        return Promise.all([
+            this.schemasModel.init(),
+            this.documentsModel.init(),
+            this._chaincodeApi.init()
+        ]);
     }
 }
 

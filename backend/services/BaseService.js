@@ -4,6 +4,13 @@ class BaseService {
         this._logger = logger;
     }
 
+    init() {
+        return new Promise((resolve, reject)  => {
+            this._logger.info('initialized');
+            resolve();
+        })
+    }
+
     start() {
         return new Promise((resolve, reject) => {
             resolve();

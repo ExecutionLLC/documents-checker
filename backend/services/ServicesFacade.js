@@ -10,6 +10,13 @@ class ServicesFacade {
         this._logger = getLogger('ServicesFacade');
     }
 
+    init() {
+        return Promise.all([
+            this.schemasService.init(),
+            this.documentsService.init()
+        ]);
+    }
+
     start() {
         return Promise.all([
             this._models.init(),

@@ -3,7 +3,7 @@ const getLogger = require('../utils/log');
 
 class SchemasModel extends BaseModel {
     constructor(chaincodeApi) {
-        const logger = getLogger('DocumentsModel');
+        const logger = getLogger('SchemasModel');
         super(chaincodeApi, logger);
     }
 

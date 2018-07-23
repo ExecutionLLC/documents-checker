@@ -10,10 +10,15 @@ const models = new ModelsFacade();
 const services = new ServicesFacade(models);
 const controllers = new ControllersFacade(services);
 
-const webServer = new WebServer(models, services, controllers);
-
-webServer.start().catch((error) => {
-    logger.error('(FATAL ERROR) cannot start web server:', error);
+Promise.all([
+    models.init(),
+    services.init(),
+    controllers.init()
+]).then(() => {
+    const webServer = new WebServer(models, services, controllers);
+    return webServer.start();
+}).catch((error) => {
+    logger.error('(FATAL ERROR) cannot start server: %s', error);
     logger.debug(error.stack);
     process.exit(1);
 });

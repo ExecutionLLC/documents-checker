@@ -13,6 +13,13 @@ class ControllersFacade {
         this._logger = getLogger('ControllersFacade');
     }
 
+    init() {
+        return Promise.all([
+            this.schemasController.init(),
+            this.documentsController.init()
+        ]);
+    }
+
     createRouter() {
         const router = new Express();
         router.use('/schemas', this.schemasController.createRouter());
