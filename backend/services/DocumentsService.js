@@ -8,7 +8,7 @@ class DocumentService extends BaseService {
     }
 
     add(schemaId, documentIdPart, documentDataPart, schemaPrivateKey, documentPrivateKey) {
-        return this.models.documentModel.add(
+        return this._models.documentsModel.add(
             schemaId,
             documentIdPart,
             documentDataPart,
@@ -18,7 +18,7 @@ class DocumentService extends BaseService {
     }
 
     getDataPart(schemaId, documentIdPart, schemaPrivateKey, documentPrivateKey) {
-        return this.models.documentModel.getDataPart(
+        return this._models.documentsModel.getDataPart(
             schemaId,
             documentIdPart,
             schemaPrivateKey,
@@ -27,7 +27,7 @@ class DocumentService extends BaseService {
     }
 
     isExists(schemaId, documentIdPart) {
-        return this.models.documentModel.isExists(
+        return this._models.documentsModel.isExists(
             schemaId,
             documentIdPart
         );
