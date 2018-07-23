@@ -9,10 +9,9 @@ class SchemasController extends BaseController {
     }
 
     add(request, response) {
-        const {schemaId} = request;
+        const requestId = this._generateIdAndWriteRequestLog(request);
 
-        this._logger.verbose('got new "add" request (schemaId = "%s"; body = "%o")', schemaId, request.body);
-
+        const {schemaId} = request.params;
         const {
             schemaIdPart,
             schemaDataPart,
@@ -24,37 +23,35 @@ class SchemasController extends BaseController {
             schemaDataPart,
             schemaPrivateKey
         ).then(() => {
-            this.sendOk(response);
+            this._sendOkAndWriteResponseLog(requestId, response);
         }).catch((error) => {
-            this.sendError(response, error);
+            this._sendErrorAndWriteResponseLogAndErrorLog(requestId, response, error);
         });
     }
 
     isExists(request, response) {
+        const requestId = this._generateIdAndWriteRequestLog(request);
+
         const {schemaId} = request.params;
-
-        this._logger.verbose('got new "isExists" request (schemaId = "%s")', schemaId);
-
         this._services.schemasService.isExists(schemaId).then((result) => {
-            this.sendJson(response, result);
+            this._sendJsonAndWriteResponseLog(requestId, response, result);
         }).catch((error) => {
-            this.sendError(response, error);
+            this._sendErrorAndWriteResponseLogAndErrorLog(requestId, response, error);
         });
     }
 
     get(request, response) {
+        const requestId = this._generateIdAndWriteRequestLog(request);
+
         const {schemaId} = request.params;
-
-        this._logger.verbose('got new "get" request (schemaId = "%s"; body = "%o")', schemaId, request.body);
-
         const {schemaPrivateKey} = request.body;
         this._services.schemasService.get(
             schemaId,
             schemaPrivateKey
         ).then((documentDataPart) => {
-            this.sendJson(response, documentDataPart);
+            this._sendJsonAndWriteResponseLog(requestId, response, documentDataPart);
         }).catch((error) => {
-            this.sendError(response, error);
+            this._sendErrorAndWriteResponseLogAndErrorLog(requestId, response, error);
         });
     }
 

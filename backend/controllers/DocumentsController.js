@@ -9,7 +9,7 @@ class DocumentsController extends BaseController {
     }
 
     add(request, response) {
-        this._logger.verbose('got new "add" request (body = "%o")', request.body);
+        const requestId = this._generateIdAndWriteRequestLog(request);
 
         const {
             schemaId,
@@ -25,14 +25,14 @@ class DocumentsController extends BaseController {
             schemaPrivateKey,
             documentPrivateKey
         ).then(() => {
-            this.sendOk(response);
+            this._sendOkAndWriteResponseLog(requestId, response);
         }).catch((error) => {
-            this.sendError(response, error);
+            this._sendErrorAndWriteResponseLogAndErrorLog(requestId, response, error);
         });
     }
 
     isExists(request, response) {
-        this._logger.verbose('got new "isExists" request (body = "%o")', request.body);
+        const requestId = this._generateIdAndWriteRequestLog(request);
 
         const {
             schemaId,
@@ -42,14 +42,14 @@ class DocumentsController extends BaseController {
             schemaId,
             documentIdPart
         ).then((result) => {
-            this.sendJson(response, result);
+            this._sendJsonAndWriteResponseLog(requestId, response, result);
         }).catch((error) => {
-            this.sendError(response, error);
+            this._sendErrorAndWriteResponseLogAndErrorLog(requestId, response, error);
         });
     }
 
     getDataPart(request, response) {
-        this._logger.verbose('got new "getDataPart" request (body = "%o")', request.body);
+        const requestId = this._generateIdAndWriteRequestLog(request);
 
         const {
             schemaId,
@@ -63,9 +63,9 @@ class DocumentsController extends BaseController {
             schemaPrivateKey,
             documentPrivateKey
         ).then((documentDataPart) => {
-            this.sendJson(response, documentDataPart);
+            this._sendJsonAndWriteResponseLog(requestId, response, documentDataPart);
         }).catch((error) => {
-            this.sendError(response, error);
+            this._sendErrorAndWriteResponseLogAndErrorLog(requestId, response, error);
         });
     }
 
