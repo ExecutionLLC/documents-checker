@@ -104,7 +104,7 @@ class ChaincodeApi extends EventEmitter {
     }
 
     _onBlockEvent(block) {
-        this._logger.debug('got new block event:', block.header);
+        this._logger.debug('got new block event: %o', block.header);
         const {number: blockNumber, data_hash: blockHash, previous_hash: prevBlockHash} = block.header;
         this.emit('BLOCK_EVENT', blockNumber, blockHash, prevBlockHash);
 
@@ -112,19 +112,19 @@ class ChaincodeApi extends EventEmitter {
     }
 
     _onTransactionEvent(transactionId, transactionStatus) {
-        this._logger.info('got new transaction event:', transactionId, transactionStatus);
+        this._logger.info('got new transaction event: %s %s', transactionId, transactionStatus);
         this.emit('TRANSACTION_EVENT', transactionId, transactionStatus);
     }
 
     _onChaincodeEvent(chaincodeEventObj) {
         const {event_name: chaincodeEventName, payload} = chaincodeEventObj;
         const chaincodeEventData = JSON.parse(payload.toString());
-        this._logger.info('got new chaincode event (%s):', chaincodeEventName, chaincodeEventData);
+        this._logger.info('got new chaincode event (%s): %o', chaincodeEventName, chaincodeEventData);
         this.emit('CHAINCODE_EVENT', chaincodeEventName, chaincodeEventData);
     }
 
     _onEventHubError(error) {
-        this._logger.error('got event hub error:', error);
+        this._logger.error('got event hub error: %o', error);
         process.exit(1);
     }
 
@@ -137,12 +137,12 @@ class ChaincodeApi extends EventEmitter {
             let numberOfValidResponses = 0;
             proposalResponses.forEach((response) => {
                 if (response instanceof Error) {
-                    this._logger.warn('found error in proposal responses:', response);
+                    this._logger.warn('found error in proposal responses: %o', response);
                 } else if (!response.response) {
                     this._logger.warn('found empty proposal response');
                 } else if (response.response.status !== HttpStatusCodes.OK) {
                     const statusCode = response.response.status;
-                    this._logger.warn('found proposal response with status code != OK (code == ' + statusCode + ')');
+                    this._logger.warn('found proposal response with status code != OK (code == %d)', statusCode);
                 } else {
                     ++numberOfValidResponses;
                 }
@@ -177,7 +177,7 @@ class ChaincodeApi extends EventEmitter {
                     if (transactionStatus === TX_STATUS_VALID) {
                         resolve(transactionId);
                     } else {
-                        const message = 'Transaction status is not "VALID" (status == ' + transactionStatus + ')';
+                        const message = `Transaction status is not "VALID" (status == ${transactionStatus})`;
                         reject(new ChaincodeApiError(message));
                     }
                 }
@@ -192,7 +192,7 @@ class ChaincodeApi extends EventEmitter {
             };
             this._eventHub.registerTxEvent(transactionId, onSuccessEvent, onErrorEvent);
             this._channel.sendTransaction(proposalResult).then(() => {
-                this._logger.info('transaction "' + transactionId + '" successfully sent');
+                this._logger.info('transaction "%s" successfully sent', transactionId);
                 if (!waitTransactionStatus) {
                     resolve(transactionId);
                 }
