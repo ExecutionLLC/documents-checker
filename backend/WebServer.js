@@ -4,7 +4,7 @@ const Express = require('express');
 const Http = require('http');
 const HttpStatusCodes = require('http-status-codes');
 
-const BaseController = require('./BaseController');
+const BaseController = require('./controllers/BaseController');
 const config = require('./utils/config');
 const getLogger = require('./utils/log');
 
@@ -63,7 +63,7 @@ class WebServer {
     _handleErrors(error, request, response, next) {
         BaseController.sendError(response, error);
         const errorMessage = (error && error.message) ? error.message : 'Unknown error';
-        this._logger.error('%s %d %s: %s', request.method, respones.statusCode, request.url, errorMessage);
+        this._logger.error('%s %d %s: %s', request.method, response.statusCode, request.url, errorMessage);
         if (error.stack) {
             this._logger.debug(error.stack);
         }
