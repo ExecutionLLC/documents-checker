@@ -4,7 +4,7 @@ const getLogger = require('../utils/log');
 class DocumentService extends BaseService {
     constructor(models) {
         const logger = getLogger('DocumentService');
-        super(models);
+        super(models, logger);
     }
 
     add(schemaId, documentIdPart, documentDataPart, schemaPrivateKey, documentPrivateKey) {
