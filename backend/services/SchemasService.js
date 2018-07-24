@@ -1,4 +1,5 @@
 const BaseService = require('./BaseService');
+const CryptoUtils = require('../utils/CryptoUtils');
 const getLogger = require('../utils/log');
 
 class SchemasService extends BaseService {
@@ -8,12 +9,15 @@ class SchemasService extends BaseService {
     }
 
     add(schemaId, schemaIdPart, schemaDataPart, schemaPrivateKey) {
-        return this._models.schemasModel.add(
-            schemaId,
-            schemaIdPart,
-            schemaDataPart,
-            schemaPrivateKey
-        );
+        return CryptoUtils.generateInitializationVector(16).then((initializationVector) => {
+            return this._models.schemasModel.add(
+                schemaId,
+                schemaIdPart,
+                schemaDataPart,
+                schemaPrivateKey,
+                initializationVector
+            );
+        });
     }
 
     get(schemaId, schemaPrivateKey) {

@@ -7,12 +7,13 @@ class SchemasModel extends BaseModel {
         super(chaincodeApi, logger);
     }
 
-    add(schemaId, schemaIdPart, schemaDataPart, schemaPrivateKey) {
+    add(schemaId, schemaIdPart, schemaDataPart, schemaPrivateKey, initializationVector) {
         const args = [schemaId];
         const transientMap = {
             SCHEMA_ID_PART: schemaIdPart,
             SCHEMA_DATA_PART: schemaDataPart,
-            SCHEMA_PRIVATE_KEY: schemaPrivateKey
+            SCHEMA_PRIVATE_KEY: schemaPrivateKey,
+            IV: initializationVector
         };
         const request = this._chaincodeApi.createInvokeRequest(
             'createSchema', args, transientMap

@@ -7,13 +7,14 @@ class DocumentsModel extends BaseModel {
         super(chaincodeApi, logger);
     }
 
-    add(schemaId, documentIdPart, documentDataPart, schemaPrivateKey, documentPrivateKey) {
+    add(schemaId, documentIdPart, documentDataPart, schemaPrivateKey, documentPrivateKey, initializationVector) {
         const args = [schemaId];
         const transientMap = {
             DOCUMENT_ID_PART: documentIdPart,
             DOCUMENT_DATA_PART: documentDataPart,
             SCHEMA_PRIVATE_KEY: schemaPrivateKey,
-            DOCUMENT_PRIVATE_KEY: documentPrivateKey
+            DOCUMENT_PRIVATE_KEY: documentPrivateKey,
+            IV: initializationVector
         };
         const request = this._chaincodeApi.createInvokeRequest(
             'createDocument', args, transientMap

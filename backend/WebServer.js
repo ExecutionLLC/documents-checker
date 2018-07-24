@@ -2,7 +2,6 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const Express = require('express');
 const Http = require('http');
-const HttpStatusCodes = require('http-status-codes');
 
 const BaseController = require('./controllers/BaseController');
 const config = require('./utils/config');
