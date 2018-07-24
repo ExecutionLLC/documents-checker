@@ -1,5 +1,5 @@
 const BaseService = require('./BaseService');
-const CryptoUtils = require('../utils/CryptoUtils');
+const CryptoUtils = require('../utils/crypto');
 const getLogger = require('../utils/log');
 
 class DocumentService extends BaseService {
