@@ -204,12 +204,35 @@ class ChaincodeApi extends EventEmitter {
         });
     }
 
+    static _normalizeTransientMap(transientMap) {
+        if (!transientMap) {
+            return transientMap;
+        }
+
+        const result = {};
+        Object.keys(transientMap).forEach((key) => {
+            const value = transientMap[key];
+            if (typeof value === 'string' || value instanceof String) {
+                result[key] = value;
+            } else if (value instanceof Buffer) {
+                result[key] = value.toString('base64');
+            } else if (value instanceof Object) {
+                const json = JSON.stringify(value);
+                result[key] = Buffer.from(json).toString('base64');
+            } else {
+                throw new Error('transient value must be string, or Object, or Buffer');
+            }
+        });
+
+        return result;
+    }
+
     createQueryRequest(functionName, args, transientMap) {
         return {
             chaincodeId: this._chaincodeId,
             fcn: functionName,
             args,
-            transientMap
+            transientMap: ChaincodeApi._normalizeTransientMap(transientMap)
         };
     }
 
@@ -240,7 +263,7 @@ class ChaincodeApi extends EventEmitter {
             fcn: functionName,
             txId,
             args,
-            transientMap
+            transientMap: ChaincodeApi._normalizeTransientMap(transientMap)
         };
     }
 
