@@ -4,8 +4,8 @@ source ./common.sh
 
 SCHEMA_ID="test_schema"
 
-SCHEMA_ID_PART='{"title":"test_id","type":"object","properties":{"id":{"type":"string"}},"requared":"id"}'
-SCHEMA_DATA_PART='{"title":"test_data","type":"object","properties":{"data":{"type":"string"}},"requared":"data"}'
+SCHEMA_ID_PART='{"title":"test_id","type":"object","properties":{"id":{"type":"string"}},"required":"id"}'
+SCHEMA_DATA_PART='{"title":"test_data","type":"object","properties":{"data":{"type":"string"}},"required":"data"}'
 DOCUMENT_ID_PART='{"id":"test document"}'
 DOCUMENT_DATA_PART='{"data":"test data"}'
 
