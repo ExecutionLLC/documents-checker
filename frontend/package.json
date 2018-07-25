@@ -5,6 +5,7 @@
   "dependencies": {
     "react": "^16.4.1",
     "react-dom": "^16.4.1",
+    "react-jsonschema-form": "^1.0.3",
     "react-scripts": "1.1.4"
   },
   "scripts": {
