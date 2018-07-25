@@ -35,6 +35,17 @@ const API = {
 
     getDocuments() {
         return request.get(`${this._getBaseUrl()}documents`);
+    },
+
+    isDocumentExists(schemaId, idPart) {
+        return request.get(
+            `${this._getBaseUrl()}documents/${schemaId}`,
+            {
+                headers: {
+                    'X-Document-Id': JSON.stringify(idPart)
+                }
+            }
+        );
     }
 };
 
