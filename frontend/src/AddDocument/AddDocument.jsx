@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Form from "react-jsonschema-form";
 import API from '../API';
 
 
@@ -53,6 +54,8 @@ class AddDocument extends Component {
                                 Data:
                                 <div>
                                     {JSON.stringify(this.state.schema.data)}
+                                    {this.state.schema.data && <Form schema={this.state.schema.data.idPart} />}
+                                    {this.state.schema.data && <Form schema={this.state.schema.data.dataPart} />}
                                 </div>
                             </div>
                         }
