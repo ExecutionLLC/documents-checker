@@ -8,7 +8,7 @@ class CryptoUtils {
                 if (error) {
                     reject(error);
                 } else {
-                    resolve(buffer.toString('base64'));
+                    resolve(buffer);
                 }
             });
         });

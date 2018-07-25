@@ -44,7 +44,8 @@ class SchemasController extends BaseController {
         const requestId = this._generateIdAndWriteRequestLog(request);
 
         const {schemaId} = request.params;
-        const {schemaPrivateKey} = request.body;
+        const schemaPrivateKey = request.get('X-Schema-Private-Key');
+
         this._services.schemasService.get(
             schemaId,
             schemaPrivateKey

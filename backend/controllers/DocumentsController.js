@@ -11,8 +11,8 @@ class DocumentsController extends BaseController {
     add(request, response) {
         const requestId = this._generateIdAndWriteRequestLog(request);
 
+        const {schemaId} = request.params;
         const {
-            schemaId,
             documentIdPart,
             documentDataPart,
             schemaPrivateKey,
@@ -34,10 +34,9 @@ class DocumentsController extends BaseController {
     isExists(request, response) {
         const requestId = this._generateIdAndWriteRequestLog(request);
 
-        const {
-            schemaId,
-            documentIdPart
-        } = request.body;
+        const {schemaId} = request.params;
+        const documentIdPart = request.get('X-Document-Id');
+
         this._services.documentsService.isExists(
             schemaId,
             documentIdPart
@@ -51,12 +50,11 @@ class DocumentsController extends BaseController {
     getDataPart(request, response) {
         const requestId = this._generateIdAndWriteRequestLog(request);
 
-        const {
-            schemaId,
-            documentIdPart,
-            schemaPrivateKey,
-            documentPrivateKey
-        } = request.body;
+        const {schemaId} = request.params;
+        const documentIdPart = request.get('X-Document-Id');
+        const schemaPrivateKey = request.get('X-Schema-Private-Key');
+        const documentPrivateKey = request.get('X-Document-Private-Key');
+
         this._services.documentsService.getDataPart(
             schemaId,
             documentIdPart,
@@ -72,9 +70,9 @@ class DocumentsController extends BaseController {
     createRouter() {
         const router = new Express();
 
-        router.post('/', this.add.bind(this));
-        router.get('/', this.isExists.bind(this));
-        router.get('/data', this.getDataPart.bind(this));
+        router.post('/:schemaId', this.add.bind(this));
+        router.get('/:schemaId', this.isExists.bind(this));
+        router.get('/:schemaId/data', this.getDataPart.bind(this));
 
         return router;
     }
