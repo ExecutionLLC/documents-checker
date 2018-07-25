@@ -17,6 +17,22 @@ const API = {
         return request.get(`${this._getBaseUrl()}schemas/${schemaId}/data`, params);
     },
 
+    addDocument(schemaId, idPart, dataPart) {
+        const params = {
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: {
+                schemaPrivateKey: '5gS/gVxbfwx/i3sKNdv0HEoELdCXj1Sw1ADcOEuLqwY=',
+                documentPrivateKey: 'Oo32Wk5kZ3/FTeG8nvx2jK/dRXiwA2huR0ogF+fMgDc=',
+                documentIdPart: idPart,
+                documentDataPart: dataPart
+            },
+            json: true
+        };
+        return request.post(`${this._getBaseUrl()/*'http://localhost:3000/'*/}documents/${schemaId}`, params);
+    },
+
     getDocuments() {
         return request.get(`${this._getBaseUrl()}documents`);
     }
