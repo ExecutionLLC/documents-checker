@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Form from "react-jsonschema-form";
 import API from '../API';
+import config from '../config';
 
 
 class AddDocument extends Component {
@@ -18,7 +19,7 @@ class AddDocument extends Component {
     }
 
     componentDidMount() {
-        API.getSchema('test_schema')
+        API.getSchema(config.SCHEMA_ID)
             .then((data) => {
                 this.setState({
                     ...this.state,
@@ -45,7 +46,7 @@ class AddDocument extends Component {
 
     onDocumentAdd() {
         API.addDocument(
-            'test_schema',
+            config.SCHEMA_ID,
             this.documentIdPart,
             this.documentDataPart
         )

@@ -1,3 +1,4 @@
 {
-  "API_BASE_URL": "http://agt.alapy.com:30000/"
+  "API_BASE_URL": "http://agt.alapy.com:30000/",
+  "SCHEMA_ID": "test_schema"
 }

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Form from 'react-jsonschema-form';
 import API from '../API';
+import config from '../config';
 
 
 class CheckDocument extends Component {
@@ -19,7 +20,7 @@ class CheckDocument extends Component {
     }
 
     componentDidMount() {
-        API.getSchema('test_schema')
+        API.getSchema(config.SCHEMA_ID)
             .then((data) => {
                 this.setState({
                     ...this.state,
@@ -49,7 +50,7 @@ class CheckDocument extends Component {
                     isLoading: true,
                 }
             });
-            API.isDocumentExists('test_schema', documentIdPart)
+            API.isDocumentExists(config.SCHEMA_ID, documentIdPart)
                 .then(isExists => {
                     this.setState({
                         check: {
