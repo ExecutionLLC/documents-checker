@@ -43,7 +43,8 @@ const API = {
             {
                 headers: {
                     'X-Document-Id': JSON.stringify(idPart)
-                }
+                },
+                json: true
             }
         );
     }

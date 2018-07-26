@@ -10,6 +10,10 @@ class CheckDocument extends Component {
             schema: {
                 data: null,
                 error: null,
+            },
+            check: {
+                isExists: null,
+                isLoading: false,
             }
         };
     }
@@ -38,8 +42,23 @@ class CheckDocument extends Component {
 
     onDocumentIdSubmit(documentIdPart) {
         if (this.state.schema.data) {
-            API.isDocumentExists('test_schema', this.state.schema.data.idPart)
-                .then(isExists => console.log('isExists', isExists));
+            this.setState({
+                check: {
+                    ...this.state.check,
+                    isExists: null,
+                    isLoading: true,
+                }
+            });
+            API.isDocumentExists('test_schema', documentIdPart)
+                .then(isExists => {
+                    this.setState({
+                        check: {
+                            ...this.state.check,
+                            isExists,
+                            isLoading: false,
+                        }
+                    });
+                });
         }
     }
 
@@ -69,6 +88,11 @@ class CheckDocument extends Component {
                                         />
                                     }
                                 </div>
+                                Is exists:
+                                {this.state.check.isLoading && <div>Loading...</div>}
+                                {this.state.check.isExists !== null && (<div>
+                                    {this.state.check.isExists ? 'Exists' : 'Does not exists'}
+                                </div>)}
                             </div>
                         }
                     </div>
