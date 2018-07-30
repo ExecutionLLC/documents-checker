@@ -1,7 +1,7 @@
 const nconf = require('nconf');
 const changeCase = require('change-case');
 
-const ENV_VARIABLES_PREFIX = 'DOCUMENT_CHECKER_';
+const ENV_VARIABLES_PREFIX = 'DOCUMENTS_CHECKER_';
 
 function transformEnvVariable(keyValueObj) {
     const {key, value} = keyValueObj;
