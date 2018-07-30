@@ -23,7 +23,7 @@ class AddDocument extends Component {
     }
 
     componentDidMount() {
-        API.getSchema(config.SCHEMA_ID)
+        API.getSchema('t'/*config.SCHEMA_ID*/)
             .then((data) => {
                 this.setState({
                     ...this.state,

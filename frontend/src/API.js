@@ -7,6 +7,79 @@ const API = {
     },
 
     getSchema(schemaId) {
+        if (schemaId === 't') {
+            return Promise.resolve({
+                idPart: {
+                    "title": "Акт",
+                    "type": "object",
+                    "required": [],
+                    "properties": {
+                        "date": {
+                            "type": "string",
+                            "title": "Дата"
+                        },
+                        "number": {
+                            "type": "string",
+                            "title": "Номер"
+                        },
+                        "producer": {
+                            "type": "string",
+                            "title": "Поставщик"
+                        },
+                        "consumer": {
+                            "type": "string",
+                            "title": "Покупатель"
+                        },
+                        "desc": {
+                            "type": "string",
+                            "title": "Краткое описание услуг"
+                        },
+                        "sumWOVAT": {
+                            "type": "integer",
+                            "title": "Сумма Акта без НДС"
+                        },
+                        "VAT": {
+                            "type": "integer",
+                            "title": "Сумма НДС"
+                        },
+                        "sumWVAT": {
+                            "type": "integer",
+                            "title": "Сумма с НДС"
+                        }
+                    },
+                },
+                dataPart: {
+                    "title": "Акт",
+                    "type": "object",
+                    "properties": {
+                        "postingDate": {
+                            "type": "string",
+                            "title": "Дата списывания"
+                        },
+                        "transactionDate": {
+                            "type": "string",
+                            "title": "Дата операции"
+                        },
+                        "transactionDescription": {
+                            "type": "string",
+                            "title": "Описание операции"
+                        },
+                        "transactionReferenceNumber": {
+                            "type": "string",
+                            "title": "Номер транзакции"
+                        },
+                        "amountTransaction": {
+                            "type": "integer",
+                            "title": "Сумма в валюте операции"
+                        },
+                        "amountAccount": {
+                            "type": "integer",
+                            "title": "Сумма в валюте счёта"
+                        },
+                    }
+                },
+            });
+        }
         const params = {
             headers: {
                 'Content-Type': 'application/json',
