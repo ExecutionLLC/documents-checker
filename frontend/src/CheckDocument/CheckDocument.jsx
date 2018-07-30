@@ -15,6 +15,7 @@ class CheckDocument extends Component {
             check: {
                 isExists: null,
                 isLoading: false,
+                error: null,
             }
         };
     }
@@ -48,6 +49,7 @@ class CheckDocument extends Component {
                     ...this.state.check,
                     isExists: null,
                     isLoading: true,
+                    error: null,
                 }
             });
             API.isDocumentExists(config.SCHEMA_ID, documentIdPart)
@@ -57,6 +59,16 @@ class CheckDocument extends Component {
                             ...this.state.check,
                             isExists,
                             isLoading: false,
+                            error: null,
+                        }
+                    });
+                })
+                .catch((error) => {
+                    this.setState({
+                        check: {
+                            ...this.state.check,
+                            isLoading: false,
+                            error,
                         }
                     });
                 });

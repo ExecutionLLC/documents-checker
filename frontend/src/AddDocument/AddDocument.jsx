@@ -11,6 +11,10 @@ class AddDocument extends Component {
             schema: {
                 data: null,
                 error: null,
+            },
+            addDocument: {
+                isLoading: false,
+                error: null,
             }
         };
         this.documentIdFormComponent = null;
@@ -45,16 +49,35 @@ class AddDocument extends Component {
     }
 
     onDocumentAdd() {
+        this.setState({
+            addDocument: {
+                ...this.state.addDocument,
+                isLoading: true,
+                error: null,
+            }
+        });
         API.addDocument(
             config.SCHEMA_ID,
             this.documentIdPart,
             this.documentDataPart
         )
-            .then((res) => {
-                console.log('res', res);
+            .then(() => {
+                this.setState({
+                    addDocument: {
+                        ...this.state.addDocument,
+                        isLoading: false,
+                        error: null,
+                    },
+                });
             })
             .catch((err) => {
-                console.log('err', err)
+                this.setState({
+                    addDocument: {
+                      ...this.state.addDocument,
+                      isLoading: false,
+                      error: err,
+                    },
+                });
             });
     }
 
@@ -108,6 +131,8 @@ class AddDocument extends Component {
                                         </Form>
                                     }
                                 </div>
+                                {this.state.addDocument.isLoading && <div>Adding document...</div>}
+                                {this.state.addDocument.error && <div>Add document error: {JSON.stringify(this.state.addDocument.error)}</div>}
                             </div>
                         }
                     </div>
