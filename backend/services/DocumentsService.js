@@ -31,10 +31,7 @@ class DocumentService extends BaseService {
     }
 
     isExists(schemaId, documentIdPart) {
-        return this._models.documentsModel.isExists(
-            schemaId,
-            documentIdPart
-        );
+        return this._models.documentsModel.isExists(schemaId, documentIdPart);
     }
 }
 
