@@ -1,4 +1,5 @@
 import request from 'request-promise';
+import { Base64 } from 'js-base64';
 import config from './config';
 
 const API = {
@@ -55,7 +56,7 @@ const API = {
             `${this._getBaseUrl()}documents/${schemaId}`,
             {
                 headers: {
-                    'X-Document-Id': JSON.stringify(idPart)
+                    'X-Document-Id': Base64.encode(JSON.stringify(idPart))
                 },
                 json: true
             }
@@ -67,7 +68,7 @@ const API = {
             `${this._getBaseUrl()}documents/${schemaId}/data`,
             {
                 headers: {
-                    'X-Document-Id': JSON.stringify(idPart),
+                    'X-Document-Id': Base64.encode(JSON.stringify(idPart)),
                     'X-Schema-Private-Key': config.SCHEMA_PRIVATE_KEY,
                     'X-Document-Private-Key': config.DOCUMENT_PRIVATE_KEY,
                 },
