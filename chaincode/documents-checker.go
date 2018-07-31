@@ -19,7 +19,9 @@ const (
 	SCHEMA_ID = "SCHEMA_ID"
 	
 	SCHEMA_ID_PART = "SCHEMA_ID_PART"
+	UI_SCHEMA_ID_PART = "UI_SCHEMA_ID_PART"
 	SCHEMA_DATA_PART = "SCHEMA_DATA_PART"
+	UI_SCHEMA_DATA_PART = "UI_SCHEMA_DATA_PART"
 	DOCUMENT_ID_PART = "DOCUMENT_ID_PART"
 	DOCUMENT_DATA_PART = "DOCUMENT_DATA_PART"
 
@@ -38,15 +40,20 @@ const (
 	DOCUMENT_DATA_TYPE = "DOCUMENT"
 )
 
+type SchemaContainerPartField struct{
+	JSONschema []byte `json:"jsonSchema"`
+	UIschema []byte `json:"uiSchema"`
+}
+
 type SchemaContainer struct{
-	IDpart []byte `json:idPart`
-	DataPart []byte `json:dataPart`
+	IDpart SchemaContainerPartField `json:"idPart"`
+	DataPart SchemaContainerPartField `json:"dataPart"`
 }
 
 type DocumentContainer struct{
-	IDpart []byte `json:idPart`
-	DataPart []byte `json:dataPart`
-	HashOfDataPart string `json:hashOfDataPart`
+	IDpart []byte `json:"idPart"`
+	DataPart []byte `json:"dataPart"`
+	HashOfDataPart string `json:"hashOfDataPart"`
 }
 
 type DocumentsChecker struct {
@@ -97,11 +104,11 @@ func (dc *DocumentsChecker) getDocumentEncrypter(privateKey []byte, initVec []by
 }
 
 func (dc *DocumentsChecker) checkSchemasInContainer(schemaContainer SchemaContainer) error {
-	schemaIDpartLoader := gojsonschema.NewBytesLoader(schemaContainer.IDpart)
+	schemaIDpartLoader := gojsonschema.NewBytesLoader(schemaContainer.IDpart.JSONschema)
 	if _, err := gojsonschema.NewSchema(schemaIDpartLoader); err != nil {
 		return errors.New(fmt.Sprintf("Cannot load schema of id part: %s", err))
 	}
-	schemaDataPartLoader := gojsonschema.NewBytesLoader(schemaContainer.DataPart)
+	schemaDataPartLoader := gojsonschema.NewBytesLoader(schemaContainer.DataPart.JSONschema)
 	if _, err := gojsonschema.NewSchema(schemaDataPartLoader); err != nil {
 		return errors.New(fmt.Sprintf("Cannot load schema of data part: %s", err))
 	}
@@ -128,7 +135,15 @@ func (dc *DocumentsChecker) createSchema(APIstub shim.ChaincodeStubInterface, ar
 	if !in {
 		return shim.Error(fmt.Sprintf("Expected schema (%s)", SCHEMA_ID_PART))
 	}
+	UIschemaIDpartAsBytes, in := transientMap[UI_SCHEMA_ID_PART]
+	if !in {
+		return shim.Error(fmt.Sprintf("Expected schema (%s)", UI_SCHEMA_ID_PART))
+	}
 	schemaDataPartAsBytes, in := transientMap[SCHEMA_DATA_PART]
+	if !in {
+		return shim.Error(fmt.Sprintf("Expected schema (%s)", SCHEMA_DATA_PART))
+	}
+	UIschemaDataPartAsBytes, in := transientMap[UI_SCHEMA_DATA_PART]
 	if !in {
 		return shim.Error(fmt.Sprintf("Expected schema (%s)", SCHEMA_DATA_PART))
 	}
@@ -142,8 +157,14 @@ func (dc *DocumentsChecker) createSchema(APIstub shim.ChaincodeStubInterface, ar
 	}
 
 	schemaContainer := SchemaContainer{
-		IDpart: schemaIDpartAsBytes,
-		DataPart: schemaDataPartAsBytes,
+		IDpart: SchemaContainerPartField{
+			JSONschema: schemaIDpartAsBytes,
+			UIschema: UIschemaIDpartAsBytes,
+		},
+		DataPart: SchemaContainerPartField{
+			JSONschema: schemaDataPartAsBytes,
+			UIschema: UIschemaDataPartAsBytes,
+		},
 	}
 	schemaContainerAsBytes, err := json.Marshal(&schemaContainer)
 	if err != nil {
@@ -218,51 +239,23 @@ func (dc *DocumentsChecker) readSchema(APIstub shim.ChaincodeStubInterface, args
 	
 	var buffer bytes.Buffer
 	buffer.WriteString("{\"idPart\":")
-	buffer.Write(schemaContainer.IDpart)
+	buffer.WriteString("{\"jsonSchema\":")
+	buffer.Write(schemaContainer.IDpart.JSONschema)
+	buffer.WriteString(",")
+	buffer.WriteString("\"uiSchema\":")
+	buffer.Write(schemaContainer.IDpart.UIschema)
+	buffer.WriteString("}")
 	buffer.WriteString(",")
 	buffer.WriteString("\"dataPart\":")
-	buffer.Write(schemaContainer.DataPart)
+	buffer.WriteString("{\"jsonSchema\":")
+	buffer.Write(schemaContainer.DataPart.JSONschema)
+	buffer.WriteString(",")
+	buffer.WriteString("\"uiSchema\":")
+	buffer.Write(schemaContainer.DataPart.UIschema)
 	buffer.WriteString("}")
-	
+	buffer.WriteString("}")
+
 	return shim.Success(buffer.Bytes())
-}
-
-func (dc *DocumentsChecker) readSchemaIDpart(APIstub shim.ChaincodeStubInterface, args []string, transientMap map[string][]byte) pb.Response {
-	if len(args) != 1 {
-		return shim.Error("Expected 1 parameter")
-	}
-	schemaID := args[0]
-	
-	privateKey, in := transientMap[SCHEMA_PRIVATE_KEY]
-	if !in {
-		return shim.Error(fmt.Sprintf("Expected private key %s", SCHEMA_PRIVATE_KEY))
-	}
-
-	schemaContainer, err := dc.readSchemaContainer(APIstub, schemaID, privateKey)
-	if err != nil {
-		return shim.Error(err.Error())
-	}
-	
-	return shim.Success(schemaContainer.IDpart)
-}
-
-func (dc *DocumentsChecker) readSchemaDataPart(APIstub shim.ChaincodeStubInterface, args []string, transientMap map[string][]byte) pb.Response {
-	if len(args) != 1 {
-		return shim.Error("Expected 1 parameter")
-	}
-	schemaID := args[0]
-	
-	privateKey, in := transientMap[SCHEMA_PRIVATE_KEY]
-	if !in {
-		return shim.Error(fmt.Sprintf("Expected private key %s", SCHEMA_PRIVATE_KEY))
-	}
-
-	schemaContainer, err := dc.readSchemaContainer(APIstub, schemaID, privateKey)
-	if err != nil {
-		return shim.Error(err.Error())
-	}
-	
-	return shim.Success(schemaContainer.DataPart)
 }
 
 func (dc *DocumentsChecker) isSchemaExists(APIstub shim.ChaincodeStubInterface, args []string, transientMap map[string][]byte) pb.Response {
@@ -363,11 +356,11 @@ func (dc *DocumentsChecker) createDocument(APIstub shim.ChaincodeStubInterface, 
 	if err != nil {
 		return shim.Error(fmt.Sprintf("Cannot pack document: %s", err))
 	}
-	err = dc.checkDataBySchema(schemaContainer.IDpart, documentContainer.IDpart)
+	err = dc.checkDataBySchema(schemaContainer.IDpart.JSONschema, documentContainer.IDpart)
 	if err != nil {
 		return shim.Error(err.Error())
 	}
-	err = dc.checkDataBySchema(schemaContainer.DataPart, documentContainer.DataPart)
+	err = dc.checkDataBySchema(schemaContainer.DataPart.JSONschema, documentContainer.DataPart)
 	if err != nil {
 		return shim.Error(err.Error())
 	}

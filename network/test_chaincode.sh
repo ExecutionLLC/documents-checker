@@ -5,12 +5,16 @@ source ./common.sh
 SCHEMA_ID="test_schema"
 
 SCHEMA_ID_PART='{"title":"test_id","type":"object","properties":{"id":{"type":"string"}},"required":["id"]}'
+UI_SCHEMA_ID_PART='{}'
 SCHEMA_DATA_PART='{"title":"test_data","type":"object","properties":{"data":{"type":"string"}},"required":["data"]}'
+UI_SCHEMA_DATA_PART='{}'
 DOCUMENT_ID_PART='{"id":"test document"}'
 DOCUMENT_DATA_PART='{"data":"test data"}'
 
 SCHEMA_ID_PART_B64=$(echo "$SCHEMA_ID_PART" | base64 -w 0)
+UI_SCHEMA_ID_PART_B64=$(echo "$UI_SCHEMA_ID_PART" | base64 -w 0)
 SCHEMA_DATA_PART_B64=$(echo "$SCHEMA_DATA_PART" | base64 -w 0)
+UI_SCHEMA_DATA_PART_B64=$(echo "$UI_SCHEMA_DATA_PART" | base64 -w 0)
 DOCUMENT_ID_PART_B64=$(echo "$DOCUMENT_ID_PART" | base64 -w 0)
 DOCUMENT_DATA_PART_B64=$(echo "$DOCUMENT_DATA_PART" | base64 -w 0)
 
@@ -19,7 +23,7 @@ PRIVATE_KEY_1="Oo32Wk5kZ3/FTeG8nvx2jK/dRXiwA2huR0ogF+fMgDc="
 IV="toXjStqIapFvDV0Zk7Ls+g=="
 
 invokeCommonArgs0="{\"Args\":[\"createSchema\",\"$SCHEMA_ID\"]}"
-invokeTransientArgs0="{\"SCHEMA_ID_PART\":\"$SCHEMA_ID_PART_B64\",\"SCHEMA_DATA_PART\":\"$SCHEMA_DATA_PART_B64\",\"SCHEMA_PRIVATE_KEY\":\"$PRIVATE_KEY_0\",\"IV\":\"$IV\"}"
+invokeTransientArgs0="{\"SCHEMA_ID_PART\":\"$SCHEMA_ID_PART_B64\",\"UI_SCHEMA_ID_PART\":\"$UI_SCHEMA_ID_PART_B64\",\"SCHEMA_DATA_PART\":\"$SCHEMA_DATA_PART_B64\",\"UI_SCHEMA_DATA_PART\":\"$UI_SCHEMA_DATA_PART_B64\",\"SCHEMA_PRIVATE_KEY\":\"$PRIVATE_KEY_0\",\"IV\":\"$IV\"}"
 chaincodeInvoke "$PUBLIC_CHANNEL_NAME" "documents_checker_public" "$invokeCommonArgs0" "$invokeTransientArgs0"
 
 sleep 3

@@ -2,6 +2,7 @@ const BaseController = require('./BaseController');
 const getLogger = require('../utils/log');
 const ErrorUtils = require('../utils/error');
 const Express = require('express');
+const ServerError = require('../utils/errors/ServerError');
 
 class SchemasController extends BaseController {
     constructor(services) {
@@ -13,7 +14,15 @@ class SchemasController extends BaseController {
         return new Promise((resolve, reject) => {
             ErrorUtils.throwErrorIfValueIsEmpty(schemaId, 'schemaId');
             ErrorUtils.throwErrorIfValueIsEmpty(schemaIdPart, 'schemaIdPart');
+            if (!schemaIdPart['jsonSchema'] || !schemaIdPart['uiSchema']) {
+                const error = new ServerError('schemaIdPart must contain "jsonSchema" and "uiSchema" fields');
+                return reject(error);
+            }
             ErrorUtils.throwErrorIfValueIsEmpty(schemaDataPart, 'schemaDataPart');
+            if (!schemaDataPart['jsonSchema'] || !schemaDataPart['uiSchema']) {
+                const error = new ServerError('schemaDataPart must contain "jsonSchema" and "uiSchema" fields');
+                return reject(error);
+            }
             ErrorUtils.throwErrorIfValueIsEmpty(schemaPrivateKey, 'schemaPrivateKey');
 
             return resolve();
