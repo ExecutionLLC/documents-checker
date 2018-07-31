@@ -10,7 +10,7 @@ const API = {
         const params = {
             headers: {
                 'Content-Type': 'application/json',
-                'X-Schema-Private-Key': '5gS/gVxbfwx/i3sKNdv0HEoELdCXj1Sw1ADcOEuLqwY='
+                'X-Schema-Private-Key': config.SCHEMA_PRIVATE_KEY
             },
             json: true
         };
@@ -36,8 +36,8 @@ const API = {
                 'Content-Type': 'application/json'
             },
             body: {
-                schemaPrivateKey: '5gS/gVxbfwx/i3sKNdv0HEoELdCXj1Sw1ADcOEuLqwY=',
-                documentPrivateKey: 'Oo32Wk5kZ3/FTeG8nvx2jK/dRXiwA2huR0ogF+fMgDc=',
+                schemaPrivateKey: config.SCHEMA_PRIVATE_KEY,
+                documentPrivateKey: config.DOCUMENT_PRIVATE_KEY,
                 documentIdPart: idPart,
                 documentDataPart: dataPart
             },
@@ -68,8 +68,8 @@ const API = {
             {
                 headers: {
                     'X-Document-Id': JSON.stringify(idPart),
-                    'X-Schema-Private-Key': '5gS/gVxbfwx/i3sKNdv0HEoELdCXj1Sw1ADcOEuLqwY=',
-                    'X-Document-Private-Key': 'Oo32Wk5kZ3/FTeG8nvx2jK/dRXiwA2huR0ogF+fMgDc=',
+                    'X-Schema-Private-Key': config.SCHEMA_PRIVATE_KEY,
+                    'X-Document-Private-Key': config.DOCUMENT_PRIVATE_KEY,
                 },
                 json: true
             }
