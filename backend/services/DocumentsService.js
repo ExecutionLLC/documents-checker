@@ -9,7 +9,13 @@ class DocumentService extends BaseService {
     }
 
     add(schemaId, documentIdPart, documentDataPart, schemaPrivateKey, documentPrivateKey) {
-        return CryptoUtils.generateInitializationVector(16).then((initializationVector) => {
+        return this._models.documentsModel.isExists(schemaId, documentIdPart).then((isExists) => {
+            if (isExists) {
+                throw new Error('Document already exists');
+            }
+
+            return CryptoUtils.generateInitializationVector(16);
+        }).then((initializationVector) => {
             return this._models.documentsModel.add(
                 schemaId,
                 documentIdPart,
@@ -22,12 +28,18 @@ class DocumentService extends BaseService {
     }
 
     getDataPart(schemaId, documentIdPart, schemaPrivateKey, documentPrivateKey) {
-        return this._models.documentsModel.getDataPart(
-            schemaId,
-            documentIdPart,
-            schemaPrivateKey,
-            documentPrivateKey
-        );
+        return this._models.documentsModel.isExists(schemaId, documentIdPart).then((isExists) => {
+            if (!isExists) {
+                throw new Error('Document not found');
+            }
+
+            return this._models.documentsModel.getDataPart(
+                schemaId,
+                documentIdPart,
+                schemaPrivateKey,
+                documentPrivateKey
+            );
+        });
     }
 
     isExists(schemaId, documentIdPart) {
