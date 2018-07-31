@@ -1,0 +1,11 @@
+{
+  "date": {
+    "ui:widget": "alt-date",
+    "ui:options": {
+      "yearsRange": [
+        1980,
+        2030
+      ]
+    }
+  }
+}
