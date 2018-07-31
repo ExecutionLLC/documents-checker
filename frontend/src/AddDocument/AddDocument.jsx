@@ -115,8 +115,8 @@ class AddDocument extends Component {
                                     {JSON.stringify(this.state.schema.data)}
                                     {this.state.schema.data &&
                                         <Form
-                                            schema={this.state.schema.data.idPart.JSONSchema}
-                                            uiSchema={this.state.schema.data.idPart.UISchema}
+                                            schema={this.state.schema.data.idPart.jsonSchema}
+                                            uiSchema={this.state.schema.data.idPart.uiSchema}
                                             onSubmit={({formData}) => this.onDocumentIdSubmit(formData)}
                                             onError={(errors) => console.log("Errors1: ",  errors)}
                                             ref={ref => this.onDocumentIdFormComponent(ref)}
@@ -126,8 +126,8 @@ class AddDocument extends Component {
                                     }
                                     {this.state.schema.data &&
                                         <Form
-                                            schema={this.state.schema.data.dataPart.JSONSchema}
-                                            uiSchema={this.state.schema.data.dataPart.UISchema}
+                                            schema={this.state.schema.data.dataPart.jsonSchema}
+                                            uiSchema={this.state.schema.data.dataPart.uiSchema}
                                             onSubmit={({formData}) => this.onDocumentDataSubmit(formData)}
                                         >
                                         </Form>

@@ -115,8 +115,8 @@ class CheckDocument extends Component {
                                     {JSON.stringify(this.state.schema.data)}
                                     {this.state.schema.data &&
                                         <Form
-                                            schema={this.state.schema.data.idPart.JSONSchema}
-                                            uiSchema={this.state.schema.data.idPart.UISchema}
+                                            schema={this.state.schema.data.idPart.jsonSchema}
+                                            uiSchema={this.state.schema.data.idPart.uiSchema}
                                             onSubmit={({formData}) => this.onDocumentIdSubmit(formData)}
                                             onError={(errors) => console.log("Errors: ",  errors)}
                                         />

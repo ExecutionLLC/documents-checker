@@ -18,11 +18,11 @@ const API = {
             .then((data) => {
                 if (data &&
                     data.idPart &&
-                    data.idPart.JSONSchema &&
-                    data.idPart.UISchema &&
+                    data.idPart.jsonSchema &&
+                    data.idPart.uiSchema &&
                     data.dataPart &&
-                    data.dataPart.JSONSchema &&
-                    data.dataPart.UISchema)
+                    data.dataPart.jsonSchema &&
+                    data.dataPart.uiSchema)
                 {
                     return data;
                 }
