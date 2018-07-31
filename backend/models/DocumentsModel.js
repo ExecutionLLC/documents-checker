@@ -40,7 +40,7 @@ class DocumentsModel extends BaseModel {
     isExists(schemaId, documentIdPart) {
         const args = [schemaId];
         const transientMap = {
-            DOCUMENT_ID_PART: documentIdPart,
+            DOCUMENT_ID_PART: documentIdPart
         };
         const request = this._chaincodeApi.createQueryRequest(
             'isDocumentExists', args, transientMap
