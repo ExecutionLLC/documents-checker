@@ -30,7 +30,7 @@ const API = {
             },
             json: true
         };
-        return request.post(`${this._getBaseUrl()/*'http://localhost:3000/'*/}documents/${schemaId}`, params);
+        return request.post(`${this._getBaseUrl()}documents/${schemaId}`, params);
     },
 
     getDocuments() {
