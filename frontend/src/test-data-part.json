@@ -7,29 +7,29 @@
     "Operation": {
       "type": "object",
       "properties": {
-        "postingDate": {
+        "positionNumber": {
           "type": "string",
-          "title": "Дата списывания"
+          "title": "Номер позиции"
         },
-        "transactionDate": {
+        "description": {
           "type": "string",
-          "title": "Дата операции"
+          "title": "Описание услуги"
         },
-        "transactionDescription": {
-          "type": "string",
-          "title": "Описание операции"
+        "quantity": {
+          "type": "integer",
+          "title": "Количество"
         },
-        "transactionReferenceNumber": {
-          "type": "string",
-          "title": "Номер транзакции"
-        },
-        "amountTransaction": {
+        "cost": {
           "$ref": "#/definitions/Sum",
-          "title": "Сумма в валюте операции"
+          "title": "Цена"
         },
-        "amountAccount": {
+        "valueWOVAT": {
           "$ref": "#/definitions/Sum",
-          "title": "Сумма в валюте счёта"
+          "title": "Стоимость без НДС"
+        },
+        "valueVAT": {
+          "$ref": "#/definitions/Sum",
+          "title": "Стоимость с НДС"
         }
       }
     }

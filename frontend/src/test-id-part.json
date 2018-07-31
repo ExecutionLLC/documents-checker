@@ -41,7 +41,7 @@
       "$ref": "#/definitions/Sum",
       "title": "Сумма НДС"
     },
-    "sumWVAT": {
+    "sumVAT": {
       "$ref": "#/definitions/Sum",
       "title": "Сумма с НДС"
     }
