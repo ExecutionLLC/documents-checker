@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Form from "react-jsonschema-form";
 import API from '../API';
 import config from '../config';
+import datapartUISchema from '../test-data-part-ui';
 
 
 class AddDocument extends Component {
@@ -126,6 +127,7 @@ class AddDocument extends Component {
                                     {this.state.schema.data &&
                                         <Form
                                             schema={this.state.schema.data.dataPart}
+                                            uiSchema={datapartUISchema}
                                             onSubmit={({formData}) => this.onDocumentDataSubmit(formData)}
                                         >
                                         </Form>
