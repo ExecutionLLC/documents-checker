@@ -2,6 +2,8 @@ import request from 'request-promise';
 import config from './config';
 import testIdPart from './test-id-part';
 import testDataPart from './test-data-part';
+import testIdUIPart from './test-id-part-ui';
+import testDataUIPart from './test-data-part-ui';
 
 const API = {
     _getBaseUrl() {
@@ -11,8 +13,14 @@ const API = {
     getSchema(schemaId) {
         if (schemaId === 't') {
             return Promise.resolve({
-                idPart: testIdPart,
-                dataPart: testDataPart,
+                idPart: {
+                    JSONSchema: testIdPart,
+                    UISchema: testIdUIPart,
+                },
+                dataPart: {
+                    JSONSchema: testDataPart,
+                    UISchema: testDataUIPart,
+                },
             });
         }
         const params = {

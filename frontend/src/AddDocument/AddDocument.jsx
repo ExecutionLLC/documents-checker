@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import Form from "react-jsonschema-form";
 import API from '../API';
 import config from '../config';
-import dataPartUISchema from '../test-data-part-ui';
-import idPartUISchema from '../test-id-part-ui';
 
 
 class AddDocument extends Component {
@@ -117,8 +115,8 @@ class AddDocument extends Component {
                                     {JSON.stringify(this.state.schema.data)}
                                     {this.state.schema.data &&
                                         <Form
-                                            schema={{...this.state.schema.data.idPart}}
-                                            uiSchema={idPartUISchema}
+                                            schema={this.state.schema.data.idPart.JSONSchema}
+                                            uiSchema={this.state.schema.data.idPart.UISchema}
                                             onSubmit={({formData}) => this.onDocumentIdSubmit(formData)}
                                             onError={(errors) => console.log("Errors1: ",  errors)}
                                             ref={ref => this.onDocumentIdFormComponent(ref)}
@@ -128,8 +126,8 @@ class AddDocument extends Component {
                                     }
                                     {this.state.schema.data &&
                                         <Form
-                                            schema={this.state.schema.data.dataPart}
-                                            uiSchema={dataPartUISchema}
+                                            schema={this.state.schema.data.dataPart.JSONSchema}
+                                            uiSchema={this.state.schema.data.dataPart.UISchema}
                                             onSubmit={({formData}) => this.onDocumentDataSubmit(formData)}
                                         >
                                         </Form>
