@@ -2,7 +2,9 @@
   "definitions": {
     "TIN": {
       "type": "string",
-      "default": "00000000"
+      "minLength": 10,
+      "maxLength": 12,
+      "pattern": "\\d+"
     },
     "Sum": {
       "type": "number",
