@@ -1,6 +1,8 @@
 const BaseService = require('./BaseService');
 const CryptoUtils = require('../utils/crypto');
 const getLogger = require('../utils/log');
+const NotFoundError = require('../utils/errors/NotFoundError');
+const ServerError = require('../utils/errors/ServerError');
 
 class SchemasService extends BaseService {
     constructor(models) {
@@ -11,7 +13,7 @@ class SchemasService extends BaseService {
     add(schemaId, schemaIdPart, schemaDataPart, schemaPrivateKey) {
         return this._models.schemasModel.isExists(schemaId).then((isExists) => {
             if (isExists) {
-                throw new Error('Schema already exists');
+                throw new ServerError('Schema already exists');
             }
 
             return CryptoUtils.generateInitializationVector(16);
@@ -29,7 +31,7 @@ class SchemasService extends BaseService {
     get(schemaId, schemaPrivateKey) {
         return this._models.schemasModel.isExists(schemaId).then((isExists) => {
             if (!isExists) {
-                throw new Error('Schema not found');
+                throw new NotFoundError('Schema not found');
             }
 
             return this._models.schemasModel.get(

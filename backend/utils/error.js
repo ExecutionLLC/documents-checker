@@ -1,7 +1,9 @@
+const ServerError = require('./errors/ServerError');
+
 class ErrorUtils {
     static throwErrorIfValueIsEmpty(value, valueName) {
         if (!value) {
-            throw new Error(`${valueName} must be filled`);
+            throw new ServerError(`${valueName} must be filled`);
         }
     }
 }

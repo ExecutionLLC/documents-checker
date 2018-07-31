@@ -1,4 +1,5 @@
 const HttpStatusCodes = require('http-status-codes');
+const ServerError = require('../utils/errors/ServerError');
 
 const DEFAULT_REQUEST_LOG_LEVEL = 'verbose';
 const DEFAULT_RESPONSE_LOG_LEVEL = 'verbose';
@@ -101,7 +102,8 @@ class BaseController {
         BaseController.sendJsonAndWriteResponseLog(this._logger, requestId, response, data, statusCode, logLevel);
     }
 
-    static sendErrorAndWriteResponseLogAndErrorLog(logger, requestId, response, error, errorHttpStatusCode) {
+    static sendErrorAndWriteResponseLogAndErrorLog(logger, requestId, response, error) {
+        const errorHttpStatusCode = error instanceof ServerError ? error.httpStatusCode : HttpStatusCodes.INTERNAL_SERVER_ERROR;
         BaseController.sendError(response, error, errorHttpStatusCode);
         BaseController.writeResponseLogAndErrorLog(logger, requestId, response, error);
     }
