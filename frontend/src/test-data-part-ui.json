@@ -1,0 +1,13 @@
+{
+  "operations": {
+    "items": {
+      "classNames": "col-xs-12",
+      "positionNumber": { "classNames": "col-xs-2" },
+      "description": { "classNames": "col-xs-2" },
+      "quantity": { "classNames": "col-xs-2" },
+      "cost": { "classNames": "col-xs-2" },
+      "valueWOVAT": { "classNames": "col-xs-2" },
+      "valueVAT": { "classNames": "col-xs-2" }
+    }
+  }
+}
