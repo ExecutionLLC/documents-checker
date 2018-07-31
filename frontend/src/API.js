@@ -14,7 +14,20 @@ const API = {
             },
             json: true
         };
-        return request.get(`${this._getBaseUrl()}schemas/${schemaId}/data`, params);
+        return request.get(`${this._getBaseUrl()}schemas/${schemaId}/data`, params)
+            .then((data) => {
+                if (data &&
+                    data.idPart &&
+                    data.idPart.JSONSchema &&
+                    data.idPart.UISchema &&
+                    data.dataPart &&
+                    data.dataPart.JSONSchema &&
+                    data.dataPart.UISchema)
+                {
+                    return data;
+                }
+                throw new Error('Malformed schemas');
+            });
     },
 
     addDocument(schemaId, idPart, dataPart) {

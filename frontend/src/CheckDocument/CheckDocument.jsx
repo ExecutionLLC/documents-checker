@@ -106,7 +106,7 @@ class CheckDocument extends Component {
                             <div>
                                 Error:
                                 <div>
-                                    {JSON.stringify(this.state.schema.error)}
+                                    {`${this.state.schema.error}`}
                                 </div>
                             </div> :
                             <div>
