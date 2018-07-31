@@ -25,11 +25,11 @@
     },
     "producer": {
       "$ref": "#/definitions/TIN",
-      "title": "Поставщик"
+      "title": "Поставщик (ИНН)"
     },
     "consumer": {
       "$ref": "#/definitions/TIN",
-      "title": "Покупатель"
+      "title": "Покупатель (ИНН)"
     },
     "desc": {
       "type": "string",
