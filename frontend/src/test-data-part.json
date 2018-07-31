@@ -1,5 +1,9 @@
 {
   "definitions": {
+    "Sum": {
+      "type": "number",
+      "default": 0
+    },
     "Operation": {
       "type": "object",
       "properties": {
@@ -20,11 +24,11 @@
           "title": "Номер транзакции"
         },
         "amountTransaction": {
-          "type": "integer",
+          "$ref": "#/definitions/Sum",
           "title": "Сумма в валюте операции"
         },
         "amountAccount": {
-          "type": "integer",
+          "$ref": "#/definitions/Sum",
           "title": "Сумма в валюте счёта"
         }
       }
