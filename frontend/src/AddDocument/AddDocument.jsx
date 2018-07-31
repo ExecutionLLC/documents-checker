@@ -117,7 +117,7 @@ class AddDocument extends Component {
                                     {JSON.stringify(this.state.schema.data)}
                                     {this.state.schema.data &&
                                         <Form
-                                            schema={{...this.state.schema.data.idPart, required: ['id']}}
+                                            schema={{...this.state.schema.data.idPart}}
                                             uiSchema={idPartUISchema}
                                             onSubmit={({formData}) => this.onDocumentIdSubmit(formData)}
                                             onError={(errors) => console.log("Errors1: ",  errors)}
