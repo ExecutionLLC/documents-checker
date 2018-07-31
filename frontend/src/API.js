@@ -1,6 +1,5 @@
 import request from 'request-promise';
 import config from './config';
-import demoDataTestSchema1 from './demo-data/test-schema1';
 
 const API = {
     _getBaseUrl() {
@@ -8,9 +7,6 @@ const API = {
     },
 
     getSchema(schemaId) {
-        if (schemaId === 'test_schema1') {
-            return Promise.resolve(demoDataTestSchema1);
-        }
         const params = {
             headers: {
                 'Content-Type': 'application/json',
