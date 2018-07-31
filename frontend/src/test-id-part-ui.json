@@ -1,5 +1,6 @@
 {
   "date": {
+    "classNames": "col-xs-12",
     "ui:widget": "alt-date",
     "ui:options": {
       "yearsRange": [
@@ -7,5 +8,26 @@
         2030
       ]
     }
+  },
+  "number": {
+    "classNames": "col-xs-12"
+  },
+  "producer": {
+    "classNames": "col-xs-6"
+  },
+  "consumer": {
+    "classNames": "col-xs-6"
+  },
+  "desc": {
+    "classNames": "col-xs-12"
+  },
+  "sumWOVAT": {
+    "classNames": "col-xs-4"
+  },
+  "VAT": {
+    "classNames": "col-xs-4"
+  },
+  "sumVAT": {
+    "classNames": "col-xs-4"
   }
 }
