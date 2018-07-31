@@ -1,0 +1,151 @@
+{
+  "idPart": {
+    "JSONSchema": {
+      "definitions": {
+        "TIN": {
+          "type": "string",
+          "minLength": 10,
+          "maxLength": 12,
+          "pattern": "\\d+"
+        },
+        "Sum": {
+          "type": "number",
+          "default": 0
+        }
+      },
+      "title": "Акт",
+      "type": "object",
+      "required": [],
+      "properties": {
+        "date": {
+          "type": "string",
+          "title": "Дата"
+        },
+        "number": {
+          "type": "string",
+          "title": "Номер"
+        },
+        "producer": {
+          "$ref": "#/definitions/TIN",
+          "title": "Поставщик (ИНН)"
+        },
+        "consumer": {
+          "$ref": "#/definitions/TIN",
+          "title": "Покупатель (ИНН)"
+        },
+        "desc": {
+          "type": "string",
+          "title": "Краткое описание услуг"
+        },
+        "sumWOVAT": {
+          "$ref": "#/definitions/Sum",
+          "title": "Сумма Акта без НДС"
+        },
+        "VAT": {
+          "$ref": "#/definitions/Sum",
+          "title": "Сумма НДС"
+        },
+        "sumVAT": {
+          "$ref": "#/definitions/Sum",
+          "title": "Сумма с НДС"
+        }
+      }
+    },
+    "UISchema": {
+      "date": {
+        "classNames": "col-xs-12",
+        "ui:widget": "alt-date",
+        "ui:options": {
+          "yearsRange": [
+            1980,
+            2030
+          ]
+        }
+      },
+      "number": {
+        "classNames": "col-xs-12"
+      },
+      "producer": {
+        "classNames": "col-xs-6"
+      },
+      "consumer": {
+        "classNames": "col-xs-6"
+      },
+      "desc": {
+        "classNames": "col-xs-12"
+      },
+      "sumWOVAT": {
+        "classNames": "col-xs-4"
+      },
+      "VAT": {
+        "classNames": "col-xs-4"
+      },
+      "sumVAT": {
+        "classNames": "col-xs-4"
+      }
+    }
+  },
+  "dataPart": {
+    "JSONSchema": {
+      "definitions": {
+        "Sum": {
+          "type": "number",
+          "default": 0
+        },
+        "Operation": {
+          "type": "object",
+          "properties": {
+            "positionNumber": {
+              "type": "string",
+              "title": "Номер позиции"
+            },
+            "description": {
+              "type": "string",
+              "title": "Описание услуги"
+            },
+            "quantity": {
+              "type": "integer",
+              "title": "Количество"
+            },
+            "cost": {
+              "$ref": "#/definitions/Sum",
+              "title": "Цена"
+            },
+            "valueWOVAT": {
+              "$ref": "#/definitions/Sum",
+              "title": "Стоимость без НДС"
+            },
+            "valueVAT": {
+              "$ref": "#/definitions/Sum",
+              "title": "Стоимость с НДС"
+            }
+          }
+        }
+      },
+      "title": "Акт",
+      "type": "object",
+      "properties": {
+        "operations": {
+          "type": "array",
+          "title": "Операции",
+          "items": {
+            "$ref": "#/definitions/Operation"
+          }
+        }
+      }
+    },
+    "UISchema": {
+      "operations": {
+        "items": {
+          "classNames": "col-xs-12",
+          "positionNumber": { "classNames": "col-xs-2" },
+          "description": { "classNames": "col-xs-2" },
+          "quantity": { "classNames": "col-xs-2" },
+          "cost": { "classNames": "col-xs-2" },
+          "valueWOVAT": { "classNames": "col-xs-2" },
+          "valueVAT": { "classNames": "col-xs-2" }
+        }
+      }
+    }
+  }
+}
