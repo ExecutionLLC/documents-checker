@@ -48,7 +48,7 @@ class AddDocument extends Component {
         this.documentIdFormComponent = ref;
     }
 
-    onDocumentAdd() {
+    onDocumentAdd(idPart, dataPart) {
         this.setState({
             addDocument: {
                 ...this.state.addDocument,
@@ -58,8 +58,8 @@ class AddDocument extends Component {
         });
         API.addDocument(
             config.SCHEMA_ID,
-            this.documentIdPart,
-            this.documentDataPart
+            idPart,
+            dataPart
         )
             .then(() => {
                 this.setState({
@@ -83,7 +83,7 @@ class AddDocument extends Component {
 
     onDocumentIdSubmit(documentIdPart) {
         this.documentIdPart = documentIdPart;
-        this.onDocumentAdd();
+        this.onDocumentAdd(this.documentIdPart, this.documentDataPart);
     }
 
     onDocumentDataSubmit(documentDataPart) {
@@ -117,6 +117,7 @@ class AddDocument extends Component {
                                         <Form
                                             schema={this.state.schema.data.idPart.jsonSchema}
                                             uiSchema={this.state.schema.data.idPart.uiSchema}
+
                                             onSubmit={({formData}) => this.onDocumentIdSubmit(formData)}
                                             onError={(errors) => console.log("Errors1: ",  errors)}
                                             ref={ref => this.onDocumentIdFormComponent(ref)}
