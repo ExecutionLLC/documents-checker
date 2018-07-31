@@ -1,6 +1,5 @@
 import request from 'request-promise';
 import config from './config';
-import demoDataTestSchema1 from './demo-data/test-schema1';
 
 const API = {
     _getBaseUrl() {
@@ -8,17 +7,27 @@ const API = {
     },
 
     getSchema(schemaId) {
-        if (schemaId === 'test_schema1') {
-            return Promise.resolve(demoDataTestSchema1);
-        }
         const params = {
             headers: {
                 'Content-Type': 'application/json',
-                'X-Schema-Private-Key': '5gS/gVxbfwx/i3sKNdv0HEoELdCXj1Sw1ADcOEuLqwY='
+                'X-Schema-Private-Key': config.SCHEMA_PRIVATE_KEY
             },
             json: true
         };
-        return request.get(`${this._getBaseUrl()}schemas/${schemaId}/data`, params);
+        return request.get(`${this._getBaseUrl()}schemas/${schemaId}/data`, params)
+            .then((data) => {
+                if (data &&
+                    data.idPart &&
+                    data.idPart.jsonSchema &&
+                    data.idPart.uiSchema &&
+                    data.dataPart &&
+                    data.dataPart.jsonSchema &&
+                    data.dataPart.uiSchema)
+                {
+                    return data;
+                }
+                throw new Error('Malformed schemas');
+            });
     },
 
     addDocument(schemaId, idPart, dataPart) {
@@ -27,14 +36,14 @@ const API = {
                 'Content-Type': 'application/json'
             },
             body: {
-                schemaPrivateKey: '5gS/gVxbfwx/i3sKNdv0HEoELdCXj1Sw1ADcOEuLqwY=',
-                documentPrivateKey: 'Oo32Wk5kZ3/FTeG8nvx2jK/dRXiwA2huR0ogF+fMgDc=',
+                schemaPrivateKey: config.SCHEMA_PRIVATE_KEY,
+                documentPrivateKey: config.DOCUMENT_PRIVATE_KEY,
                 documentIdPart: idPart,
                 documentDataPart: dataPart
             },
             json: true
         };
-        return request.post(`${this._getBaseUrl()/*'http://localhost:3000/'*/}documents/${schemaId}`, params);
+        return request.post(`${this._getBaseUrl()}documents/${schemaId}`, params);
     },
 
     getDocuments() {
@@ -59,8 +68,8 @@ const API = {
             {
                 headers: {
                     'X-Document-Id': JSON.stringify(idPart),
-                    'X-Schema-Private-Key': '5gS/gVxbfwx/i3sKNdv0HEoELdCXj1Sw1ADcOEuLqwY=',
-                    'X-Document-Private-Key': 'Oo32Wk5kZ3/FTeG8nvx2jK/dRXiwA2huR0ogF+fMgDc=',
+                    'X-Schema-Private-Key': config.SCHEMA_PRIVATE_KEY,
+                    'X-Document-Private-Key': config.DOCUMENT_PRIVATE_KEY,
                 },
                 json: true
             }
