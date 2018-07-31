@@ -1,8 +1,68 @@
 import React, { Component } from 'react';
 import Form from "react-jsonschema-form";
+import fields from "react-jsonschema-form-extras";
 import API from '../API';
 import config from '../config';
 
+
+class GeoPosition extends Component {
+    constructor(props) {
+        super(props);
+        this.state = { ...props.formData };
+    }
+
+    onChange(name) {
+        return event => {
+            this.setState({ [name]: parseFloat(event.target.value) });
+            setImmediate(() => this.props.onChange(this.state));
+        };
+    }
+
+    render() {
+        const { lat, lon } = this.state;
+        console.log('ccc', this.props.children);
+        return (
+            <div className="geo">
+                <h3>Hey, I'm a custom component</h3>
+
+{/*
+                <SchemaField
+                    schema={this.props.schema}
+                >
+                </SchemaField>
+*/}
+
+                <p>
+                    I'm registered as <code>geo</code> and referenced in
+                    <code>uiSchema</code> as the <code>ui:field</code> to use for this
+                    schema.
+                </p>
+                <div className="row">
+                    <div className="col-sm-6">
+                        <label>Latitude</label>
+                        <input
+                            className="form-control"
+                            type="number"
+                            value={lat}
+                            step="0.00001"
+                            onChange={this.onChange("lat")}
+                        />
+                    </div>
+                    <div className="col-sm-6">
+                        <label>Longitude</label>
+                        <input
+                            className="form-control"
+                            type="number"
+                            value={lon}
+                            step="0.00001"
+                            onChange={this.onChange("lon")}
+                        />
+                    </div>
+                </div>
+            </div>
+        );
+    }
+}
 
 class AddDocument extends Component {
     constructor(props) {
@@ -126,6 +186,27 @@ class AddDocument extends Component {
                                     {this.state.schema.data &&
                                         <Form
                                             schema={this.state.schema.data.dataPart}
+                                            uiSchema={{
+                                                "operations": {
+                                                    /*"ui:field": "table",*/
+                                                    items: {
+                                                        classNames: 'col-xs-12',
+                                                        positionNumber: { classNames: 'col-xs-2' },
+                                                        description: { classNames: 'col-xs-2' },
+                                                        quantity: { classNames: 'col-xs-2' },
+                                                        cost: { classNames: 'col-xs-2' },
+                                                        valueWOVAT: { classNames: 'col-xs-2' },
+                                                        valueVAT: { classNames: 'col-xs-2' },
+                                                    },
+                                                },
+                                                "listOfStrings": {
+                                                    "items": {
+                                                        "ui:field": "geo",
+                                                        "ui:emptyValue": ""
+                                                    }
+                                                }
+                                            }}
+                                            fields={{ ...fields, geo: GeoPosition }}
                                             onSubmit={({formData}) => this.onDocumentDataSubmit(formData)}
                                         >
                                         </Form>

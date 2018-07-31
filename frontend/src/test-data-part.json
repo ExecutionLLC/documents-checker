@@ -6,6 +6,12 @@
     },
     "Operation": {
       "type": "object",
+      "definitions": {
+        "Sum": {
+          "type": "number",
+          "default": 0
+        }
+      },
       "properties": {
         "positionNumber": {
           "type": "string",
@@ -42,6 +48,14 @@
       "title": "Операции",
       "items": {
         "$ref": "#/definitions/Operation"
+      }
+    },
+    "listOfStrings": {
+      "type": "array",
+      "title": "A list of strings",
+      "items": {
+        "type": "string",
+        "default": "bazinga"
       }
     }
   }
