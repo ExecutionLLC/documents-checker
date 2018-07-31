@@ -17,6 +17,9 @@ class CheckDocument extends Component {
                 data: null,
                 isLoading: false,
                 error: null,
+            },
+            formsData: {
+                idPart: null,
             }
         };
     }
@@ -52,6 +55,9 @@ class CheckDocument extends Component {
                     data: null,
                     isLoading: true,
                     error: null,
+                },
+                formsData: {
+                    idPart: documentIdPart,
                 }
             });
             API.isDocumentExists(config.SCHEMA_ID, documentIdPart)
@@ -117,6 +123,7 @@ class CheckDocument extends Component {
                                         <Form
                                             schema={this.state.schema.data.idPart.jsonSchema}
                                             uiSchema={this.state.schema.data.idPart.uiSchema}
+                                            formData={this.state.formsData.idPart}
                                             onSubmit={({formData}) => this.onDocumentIdSubmit(formData)}
                                             onError={(errors) => console.log("Errors: ",  errors)}
                                         />

@@ -15,6 +15,10 @@ class AddDocument extends Component {
             addDocument: {
                 isLoading: false,
                 error: null,
+            },
+            formsData: {
+                idPart: null,
+                dataPart: null,
             }
         };
         this.documentIdFormComponent = null;
@@ -54,6 +58,10 @@ class AddDocument extends Component {
                 ...this.state.addDocument,
                 isLoading: true,
                 error: null,
+            },
+            formsData: {
+                idPart,
+                dataPart
             }
         });
         API.addDocument(
@@ -117,7 +125,7 @@ class AddDocument extends Component {
                                         <Form
                                             schema={this.state.schema.data.idPart.jsonSchema}
                                             uiSchema={this.state.schema.data.idPart.uiSchema}
-
+                                            formData={this.state.formsData.idPart}
                                             onSubmit={({formData}) => this.onDocumentIdSubmit(formData)}
                                             onError={(errors) => console.log("Errors1: ",  errors)}
                                             ref={ref => this.onDocumentIdFormComponent(ref)}
@@ -129,6 +137,7 @@ class AddDocument extends Component {
                                         <Form
                                             schema={this.state.schema.data.dataPart.jsonSchema}
                                             uiSchema={this.state.schema.data.dataPart.uiSchema}
+                                            formData={this.state.formsData.dataPart}
                                             onSubmit={({formData}) => this.onDocumentDataSubmit(formData)}
                                         >
                                         </Form>
