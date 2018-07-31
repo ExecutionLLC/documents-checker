@@ -1,0 +1,49 @@
+{
+  "definitions": {
+    "TIN": {
+      "type": "string",
+      "default": "00000000"
+    },
+    "Sum": {
+      "type": "number",
+      "default": 0
+    }
+  },
+  "title": "Акт",
+  "type": "object",
+  "required": [],
+  "properties": {
+    "date": {
+      "type": "string",
+      "title": "Дата"
+    },
+    "number": {
+      "type": "string",
+      "title": "Номер"
+    },
+    "producer": {
+      "$ref": "#/definitions/TIN",
+      "title": "Поставщик"
+    },
+    "consumer": {
+      "$ref": "#/definitions/TIN",
+      "title": "Покупатель"
+    },
+    "desc": {
+      "type": "string",
+      "title": "Краткое описание услуг"
+    },
+    "sumWOVAT": {
+      "$ref": "#/definitions/Sum",
+      "title": "Сумма Акта без НДС"
+    },
+    "VAT": {
+      "$ref": "#/definitions/Sum",
+      "title": "Сумма НДС"
+    },
+    "sumWVAT": {
+      "$ref": "#/definitions/Sum",
+      "title": "Сумма с НДС"
+    }
+  }
+}

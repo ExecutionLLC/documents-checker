@@ -1,0 +1,44 @@
+{
+  "definitions": {
+    "Operation": {
+      "type": "object",
+      "properties": {
+        "postingDate": {
+          "type": "string",
+          "title": "Дата списывания"
+        },
+        "transactionDate": {
+          "type": "string",
+          "title": "Дата операции"
+        },
+        "transactionDescription": {
+          "type": "string",
+          "title": "Описание операции"
+        },
+        "transactionReferenceNumber": {
+          "type": "string",
+          "title": "Номер транзакции"
+        },
+        "amountTransaction": {
+          "type": "integer",
+          "title": "Сумма в валюте операции"
+        },
+        "amountAccount": {
+          "type": "integer",
+          "title": "Сумма в валюте счёта"
+        }
+      }
+    }
+  },
+  "title": "Акт",
+  "type": "object",
+  "properties": {
+    "operations": {
+      "type": "array",
+      "title": "Операции",
+      "items": {
+        "$ref": "#/definitions/Operation"
+      }
+    }
+  }
+}
