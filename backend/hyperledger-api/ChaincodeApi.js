@@ -2,8 +2,10 @@ const EventEmitter = require('events');
 const FabricClient = require('fabric-client');
 const HttpStatusCodes = require('http-status-codes');
 
+const ChaincodeApiError = require('../utils/errors/ChaincodeApiError');
 const config = require('../utils/config');
 const getLogger = require('../utils/log');
+const TransactionTimeoutError = require('../utils/errors/TransactionTimeoutError');
 
 const DEFAULT_TRANSACTION_TIMEOUT_MS = 30*1000;
 
@@ -11,20 +13,6 @@ const ENDORSER_TRANSACTION_CODE = 3;
 const METADATA_VALIDATION_CODES_INDEX = 2;
 const TX_STATUS_VALID = 'VALID';
 const TX_STATUS_VALID_CODE = 0;
-
-class ChaincodeApiError extends Error {
-    constructor(message) {
-        super(message || 'Unknown chaincode api error');
-        this.name = 'ChaincodeApiError';
-    }
-}
-
-class TransactionTimeoutError extends ChaincodeApiError {
-    constructor(message) {
-        super(message || 'Timeout expired');
-        this.name = 'TransactionTimeoutError';
-    }
-}
 
 class ChaincodeApi extends EventEmitter {
     constructor() {

@@ -55,6 +55,20 @@ const API = {
                 json: true
             }
         );
+    },
+
+    getDocument(schemaId, idPart) {
+        return request.get(
+            `${this._getBaseUrl()}documents/${schemaId}/data`,
+            {
+                headers: {
+                    'X-Document-Id': JSON.stringify(idPart),
+                    'X-Schema-Private-Key': '5gS/gVxbfwx/i3sKNdv0HEoELdCXj1Sw1ADcOEuLqwY=',
+                    'X-Document-Private-Key': 'Oo32Wk5kZ3/FTeG8nvx2jK/dRXiwA2huR0ogF+fMgDc=',
+                },
+                json: true
+            }
+        );
     }
 };
 

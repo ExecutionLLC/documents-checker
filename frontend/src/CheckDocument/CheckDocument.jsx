@@ -14,6 +14,7 @@ class CheckDocument extends Component {
             },
             check: {
                 isExists: null,
+                data: null,
                 isLoading: false,
                 error: null,
             }
@@ -48,6 +49,7 @@ class CheckDocument extends Component {
                 check: {
                     ...this.state.check,
                     isExists: null,
+                    data: null,
                     isLoading: true,
                     error: null,
                 }
@@ -58,6 +60,24 @@ class CheckDocument extends Component {
                         check: {
                             ...this.state.check,
                             isExists,
+                            data: null,
+                            isLoading: !isExists,
+                            error: null,
+                        }
+                    });
+                    return isExists;
+                })
+                .then((isExist) => {
+                    if (!isExist) {
+                        return;
+                    }
+                    return API.getDocument(config.SCHEMA_ID, documentIdPart);
+                })
+                .then((data) => {
+                    this.setState({
+                        check: {
+                            ...this.state.check,
+                            data,
                             isLoading: false,
                             error: null,
                         }
@@ -105,6 +125,9 @@ class CheckDocument extends Component {
                                 {this.state.check.isLoading && <div>Loading...</div>}
                                 {this.state.check.isExists !== null && (<div>
                                     {this.state.check.isExists ? 'Exists' : 'Does not exists'}
+                                </div>)}
+                                {this.state.check.data !== null && (<div>
+                                    {JSON.stringify(this.state.check.data)}
                                 </div>)}
                             </div>
                         }
