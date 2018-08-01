@@ -44,7 +44,6 @@ const API = {
             },
             json: true
         };
-//        return new Promise((resolve, reject) => { setTimeout(() => reject('qwe'), 1000)});
         return request.post(`${this._getBaseUrl()}documents/${schemaId}`, params);
     },
 
