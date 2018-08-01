@@ -153,7 +153,7 @@ class AddDocument extends Component {
         );
     }
 
-    rendeerAddDocumentStatus() {
+    renderAddDocumentStatus() {
         return (
             <div>
                 {this.state.addDocument.isLoading && (
@@ -180,7 +180,7 @@ class AddDocument extends Component {
                     this.renderDocumentForms()
                 }
                 {
-                    this.rendeerAddDocumentStatus()
+                    this.renderAddDocumentStatus()
                 }
             </div>
         );
