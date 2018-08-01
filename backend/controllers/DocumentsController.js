@@ -3,6 +3,8 @@ const ErrorUtils = require('../utils/error');
 const Express = require('express');
 const getLogger = require('../utils/log');
 
+const { Base64 } = require('js-base64');
+
 class DocumentsController extends BaseController {
     constructor(services) {
         const logger = getLogger('DocumentsController');
@@ -66,7 +68,8 @@ class DocumentsController extends BaseController {
         const requestId = this._generateIdAndWriteRequestLog(request);
 
         const {schemaId} = request.params;
-        const documentIdPartAsString = request.get('X-Document-Id');
+        const documentIdPartAsBase64 = request.get('X-Document-Id');
+        const documentIdPartAsString = Base64.decode(documentIdPartAsBase64);
 
         this._verifyIsExistsParams(schemaId, documentIdPartAsString).then(() => {
             return this._services.documentsService.isExists(schemaId, JSON.parse(documentIdPartAsString));
@@ -92,7 +95,8 @@ class DocumentsController extends BaseController {
         const requestId = this._generateIdAndWriteRequestLog(request);
 
         const {schemaId} = request.params;
-        const documentIdPartAsString = request.get('X-Document-Id');
+        const documentIdPartAsBase64 = request.get('X-Document-Id');
+        const documentIdPartAsString = Base64.decode(documentIdPartAsBase64);
         const schemaPrivateKey = request.get('X-Schema-Private-Key');
         const documentPrivateKey = request.get('X-Document-Private-Key');
 
