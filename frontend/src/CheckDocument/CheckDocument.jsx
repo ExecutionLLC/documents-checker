@@ -49,58 +49,59 @@ class CheckDocument extends Component {
     }
 
     onDocumentIdSubmit(documentIdPart) {
-        if (this.state.schema.data) {
-            this.setState({
-                check: {
-                    ...this.state.check,
-                    isExists: null,
-                    data: null,
-                    isLoading: true,
-                    error: null,
-                },
-                formsData: {
-                    idPart: documentIdPart,
-                }
-            });
-            API.isDocumentExists(config.SCHEMA_ID, documentIdPart)
-                .then(isExists => {
-                    this.setState({
-                        check: {
-                            ...this.state.check,
-                            isExists,
-                            data: null,
-                            isLoading: !isExists,
-                            error: null,
-                        }
-                    });
-                    return isExists;
-                })
-                .then((isExist) => {
-                    if (!isExist) {
-                        return;
-                    }
-                    return API.getDocument(config.SCHEMA_ID, documentIdPart);
-                })
-                .then((data) => {
-                    this.setState({
-                        check: {
-                            ...this.state.check,
-                            data,
-                            isLoading: false,
-                            error: null,
-                        }
-                    });
-                })
-                .catch((error) => {
-                    this.setState({
-                        check: {
-                            ...this.state.check,
-                            isLoading: false,
-                            error,
-                        }
-                    });
-                });
+        if (!this.state.schema.data) {
+            return;
         }
+        this.setState({
+            check: {
+                ...this.state.check,
+                isExists: null,
+                data: null,
+                isLoading: true,
+                error: null,
+            },
+            formsData: {
+                idPart: documentIdPart,
+            }
+        });
+        API.isDocumentExists(config.SCHEMA_ID, documentIdPart)
+            .then(isExists => {
+                this.setState({
+                    check: {
+                        ...this.state.check,
+                        isExists,
+                        data: null,
+                        isLoading: !isExists,
+                        error: null,
+                    }
+                });
+                return isExists;
+            })
+            .then((isExist) => {
+                if (!isExist) {
+                    return;
+                }
+                return API.getDocument(config.SCHEMA_ID, documentIdPart);
+            })
+            .then((data) => {
+                this.setState({
+                    check: {
+                        ...this.state.check,
+                        data,
+                        isLoading: false,
+                        error: null,
+                    }
+                });
+            })
+            .catch((error) => {
+                this.setState({
+                    check: {
+                        ...this.state.check,
+                        isLoading: false,
+                        error,
+                    }
+                });
+            });
     }
 
     renderSchemaError() {
