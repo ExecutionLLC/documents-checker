@@ -171,7 +171,7 @@ class AddDocument extends Component {
 
     render() {
         return (
-            <div>
+            <div className="container">
                 <PageHeader>
                     Add document
                 </PageHeader>

@@ -179,7 +179,7 @@ class CheckDocument extends Component {
 
     render() {
         return (
-            <div>
+            <div className="container">
                 <PageHeader>
                     Check document
                 </PageHeader>

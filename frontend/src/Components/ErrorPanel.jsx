@@ -10,7 +10,7 @@ function ErrorPanel(props) {
                     {props.title}
                 </Panel.Title>
             </Panel.Heading>
-            <Panel.Body>
+            <Panel.Body style={{wordBreak: 'break-word'}}>
                 {props.content}
             </Panel.Body>
         </Panel>
