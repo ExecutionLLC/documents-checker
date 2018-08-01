@@ -104,14 +104,25 @@ class AddDocument extends Component {
         }
     }
 
-    renderSchemaError() {
+    renderError(title, content) {
         return (
             <Panel bsStyle="danger">
                 <Panel.Heading>
-                    <Panel.Title componentClass="h3">Schema loading error</Panel.Title>
+                    <Panel.Title componentClass="h3">
+                        {title}
+                    </Panel.Title>
                 </Panel.Heading>
-                <Panel.Body>{`${this.state.schema.error}`}</Panel.Body>
+                <Panel.Body>
+                    {content}
+                </Panel.Body>
             </Panel>
+        );
+    }
+
+    renderSchemaError() {
+        return this.renderError(
+            'Schema loading error',
+            `${this.state.schema.error}`
         );
     }
 
@@ -161,12 +172,10 @@ class AddDocument extends Component {
                     <ProgressBar active now={100} />
                 )}
                 {this.state.addDocument.error && (
-                    <Panel bsStyle="danger">
-                        <Panel.Heading>
-                            <Panel.Title componentClass="h3">Add document error</Panel.Title>
-                        </Panel.Heading>
-                        <Panel.Body>{`${JSON.stringify(this.state.addDocument.error)}`}</Panel.Body>
-                    </Panel>
+                    this.renderError(
+                        'Add document error',
+                        JSON.stringify(this.state.addDocument.error)
+                    )
                 )}
             </div>
         );
