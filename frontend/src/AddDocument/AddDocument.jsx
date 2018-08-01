@@ -165,7 +165,11 @@ class AddDocument extends Component {
                 {this.state.addDocument.error && (
                     <ErrorPanel
                         title="Add document error"
-                        content={JSON.stringify(this.state.addDocument.error)}
+                        content={
+                            this.state.addDocument.error.statusCode === 409 ?
+                                'Document already exists' :
+                                JSON.stringify(this.state.addDocument.error)
+                        }
                     />
                 )}
                 {this.state.addDocument.success && (
