@@ -116,6 +116,8 @@ class AddDocument extends Component {
     }
 
     render() {
+        const schemaData = this.state.schema.data;
+        const formsData = this.state.formsData;
         return (
             <div>
                 <PageHeader>
@@ -125,11 +127,11 @@ class AddDocument extends Component {
                     this.renderSchemaError() :
                     <div>
                         <div>
-                            {this.state.schema.data &&
+                            {schemaData &&
                             <Form
-                                schema={this.state.schema.data.idPart.jsonSchema}
-                                uiSchema={this.state.schema.data.idPart.uiSchema}
-                                formData={this.state.formsData.idPart}
+                                schema={schemaData.idPart.jsonSchema}
+                                uiSchema={schemaData.idPart.uiSchema}
+                                formData={formsData.idPart}
                                 onSubmit={({formData}) => this.onDocumentIdSubmit(formData)}
                                 ref={ref => this.onDocumentIdFormComponent(ref)}
                             >
@@ -138,9 +140,9 @@ class AddDocument extends Component {
                             }
                             {this.state.schema.data &&
                             <Form
-                                schema={this.state.schema.data.dataPart.jsonSchema}
-                                uiSchema={this.state.schema.data.dataPart.uiSchema}
-                                formData={this.state.formsData.dataPart}
+                                schema={schemaData.dataPart.jsonSchema}
+                                uiSchema={schemaData.dataPart.uiSchema}
+                                formData={formsData.dataPart}
                                 onSubmit={({formData}) => this.onDocumentDataSubmit(formData)}
                             >
                             </Form>
