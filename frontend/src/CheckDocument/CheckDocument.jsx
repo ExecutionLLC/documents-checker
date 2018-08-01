@@ -79,7 +79,7 @@ class CheckDocument extends Component {
             })
             .then((isExist) => {
                 if (!isExist) {
-                    return;
+                    return null;
                 }
                 return API.getDocument(config.SCHEMA_ID, documentIdPart);
             })
