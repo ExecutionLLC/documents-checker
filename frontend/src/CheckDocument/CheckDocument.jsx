@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Form from 'react-jsonschema-form';
-import { PageHeader } from 'react-bootstrap';
+import { PageHeader, ProgressBar } from 'react-bootstrap';
 import ErrorPanel from '../Components/ErrorPanel';
 import API from '../API';
 import config from '../config';
@@ -133,7 +133,9 @@ class CheckDocument extends Component {
     renderCheckStatus() {
         return (
             <div>
-                {this.state.check.isLoading && <div>Loading...</div>}
+                {this.state.check.isLoading && (
+                    <ProgressBar active now={100} />
+                )}
                 {this.state.check.isExists !== null && (
                     <div>
                         {this.state.check.isExists ? 'Exists' : 'Does not exists'}
