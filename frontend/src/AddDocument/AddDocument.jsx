@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Form from "react-jsonschema-form";
+import httpStatus from 'http-status';
 import { PageHeader, Panel, ProgressBar } from 'react-bootstrap';
 import ErrorPanel from '../Components/ErrorPanel';
 import API from '../API';
@@ -166,7 +167,7 @@ class AddDocument extends Component {
                     <ErrorPanel
                         title="Add document error"
                         content={
-                            this.state.addDocument.error.statusCode === 409 ?
+                            this.state.addDocument.error.statusCode === httpStatus.CONFLICT ?
                                 'Document already exists' :
                                 JSON.stringify(this.state.addDocument.error)
                         }

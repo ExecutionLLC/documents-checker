@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "http-status": "^1.2.0",
     "js-base64": "^2.4.8",
     "react": "^16.4.1",
     "react-bootstrap": "^0.32.1",
