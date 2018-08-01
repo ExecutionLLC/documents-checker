@@ -131,7 +131,6 @@ class AddDocument extends Component {
                                 uiSchema={this.state.schema.data.idPart.uiSchema}
                                 formData={this.state.formsData.idPart}
                                 onSubmit={({formData}) => this.onDocumentIdSubmit(formData)}
-                                onError={(errors) => console.log("Errors1: ",  errors)}
                                 ref={ref => this.onDocumentIdFormComponent(ref)}
                             >
                                 <button type="submit" style={{display: 'none'}} />
