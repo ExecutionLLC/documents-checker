@@ -2,7 +2,7 @@ const BaseService = require('./BaseService');
 const CryptoUtils = require('../utils/crypto');
 const getLogger = require('../utils/log');
 const NotFoundError = require('../utils/errors/NotFoundError');
-const ConflictError = require('../utils/errors/ServerError');
+const ConflictError = require('../utils/errors/ConflictError');
 
 class SchemasService extends BaseService {
     constructor(models) {
