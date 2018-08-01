@@ -115,9 +115,55 @@ class AddDocument extends Component {
         );
     }
 
-    render() {
+    renderIdForm() {
         const schemaData = this.state.schema.data;
         const formsData = this.state.formsData;
+        return (
+            <Form
+                schema={schemaData.idPart.jsonSchema}
+                uiSchema={schemaData.idPart.uiSchema}
+                formData={formsData.idPart}
+                onSubmit={({formData}) => this.onDocumentIdSubmit(formData)}
+                ref={ref => this.onDocumentIdFormComponent(ref)}
+            >
+                <button type="submit" style={{display: 'none'}} />
+            </Form>
+        );
+    }
+
+    renderDataForm() {
+        const schemaData = this.state.schema.data;
+        const formsData = this.state.formsData;
+        return (
+            <Form
+                schema={schemaData.dataPart.jsonSchema}
+                uiSchema={schemaData.dataPart.uiSchema}
+                formData={formsData.dataPart}
+                onSubmit={({formData}) => this.onDocumentDataSubmit(formData)}
+            />
+        );
+    }
+
+    renderDocumentForms() {
+        const schemaData = this.state.schema.data;
+        return (
+            <div>
+                {schemaData && this.renderIdForm()}
+                {schemaData && this.renderDataForm()}
+            </div>
+        );
+    }
+
+    rendeerAddDocumentStatus() {
+        return (
+            <div>
+                {this.state.addDocument.isLoading && <div>Adding document...</div>}
+                {this.state.addDocument.error && <div>Add document error: {JSON.stringify(this.state.addDocument.error)}</div>}
+            </div>
+        );
+    }
+
+    render() {
         return (
             <div>
                 <PageHeader>
@@ -125,32 +171,10 @@ class AddDocument extends Component {
                 </PageHeader>
                 {this.state.schema.error ?
                     this.renderSchemaError() :
-                    <div>
-                        <div>
-                            {schemaData &&
-                            <Form
-                                schema={schemaData.idPart.jsonSchema}
-                                uiSchema={schemaData.idPart.uiSchema}
-                                formData={formsData.idPart}
-                                onSubmit={({formData}) => this.onDocumentIdSubmit(formData)}
-                                ref={ref => this.onDocumentIdFormComponent(ref)}
-                            >
-                                <button type="submit" style={{display: 'none'}} />
-                            </Form>
-                            }
-                            {this.state.schema.data &&
-                            <Form
-                                schema={schemaData.dataPart.jsonSchema}
-                                uiSchema={schemaData.dataPart.uiSchema}
-                                formData={formsData.dataPart}
-                                onSubmit={({formData}) => this.onDocumentDataSubmit(formData)}
-                            >
-                            </Form>
-                            }
-                        </div>
-                        {this.state.addDocument.isLoading && <div>Adding document...</div>}
-                        {this.state.addDocument.error && <div>Add document error: {JSON.stringify(this.state.addDocument.error)}</div>}
-                    </div>
+                    this.renderDocumentForms()
+                }
+                {
+                    this.rendeerAddDocumentStatus()
                 }
             </div>
         );
