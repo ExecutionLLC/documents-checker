@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Form from "react-jsonschema-form";
-import { PageHeader, Panel, ProgressBar } from 'react-bootstrap';
+import { PageHeader, ProgressBar } from 'react-bootstrap';
+import ErrorPanel from '../Components/ErrorPanel';
 import API from '../API';
 import config from '../config';
 
@@ -104,25 +105,12 @@ class AddDocument extends Component {
         }
     }
 
-    renderError(title, content) {
-        return (
-            <Panel bsStyle="danger">
-                <Panel.Heading>
-                    <Panel.Title componentClass="h3">
-                        {title}
-                    </Panel.Title>
-                </Panel.Heading>
-                <Panel.Body>
-                    {content}
-                </Panel.Body>
-            </Panel>
-        );
-    }
-
     renderSchemaError() {
-        return this.renderError(
-            'Schema loading error',
-            `${this.state.schema.error}`
+        return (
+            <ErrorPanel
+                title="Schema loading error"
+                content={`${this.state.schema.error}`}
+            />
         );
     }
 
@@ -172,10 +160,10 @@ class AddDocument extends Component {
                     <ProgressBar active now={100} />
                 )}
                 {this.state.addDocument.error && (
-                    this.renderError(
-                        'Add document error',
-                        JSON.stringify(this.state.addDocument.error)
-                    )
+                    <ErrorPanel
+                        title="Add document error"
+                        content={JSON.stringify(this.state.addDocument.error)}
+                    />
                 )}
             </div>
         );

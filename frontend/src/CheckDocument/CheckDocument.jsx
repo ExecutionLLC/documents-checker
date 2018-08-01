@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Form from 'react-jsonschema-form';
 import { PageHeader } from 'react-bootstrap';
+import ErrorPanel from '../Components/ErrorPanel';
 import API from '../API';
 import config from '../config';
 
@@ -102,47 +103,50 @@ class CheckDocument extends Component {
         }
     }
 
+    renderSchemaError() {
+        return (
+            <ErrorPanel
+                title="Schema loading error"
+                content={`${this.state.schema.error}`}
+            />
+        );
+    }
+
+    renderDocumentForm() {
+        return (
+            <div>
+                {this.state.schema.data && (
+                    <Form
+                        schema={this.state.schema.data.idPart.jsonSchema}
+                        uiSchema={this.state.schema.data.idPart.uiSchema}
+                        formData={this.state.formsData.idPart}
+                        onSubmit={({formData}) => this.onDocumentIdSubmit(formData)}
+                        onError={(errors) => console.log("Errors: ",  errors)}
+                    />
+                )}
+            </div>
+        );
+    }
+
     render() {
         return (
             <div>
                 <PageHeader>
                     Check document
                 </PageHeader>
+                {this.state.schema.error ?
+                    this.renderSchemaError() :
+                    this.renderDocumentForm()
+                }
                 <div>
-                    Schema:
-                    <div>
-                        {this.state.schema.error ?
-                            <div>
-                                Error:
-                                <div>
-                                    {`${this.state.schema.error}`}
-                                </div>
-                            </div> :
-                            <div>
-                                Data:
-                                <div>
-                                    {JSON.stringify(this.state.schema.data)}
-                                    {this.state.schema.data &&
-                                        <Form
-                                            schema={this.state.schema.data.idPart.jsonSchema}
-                                            uiSchema={this.state.schema.data.idPart.uiSchema}
-                                            formData={this.state.formsData.idPart}
-                                            onSubmit={({formData}) => this.onDocumentIdSubmit(formData)}
-                                            onError={(errors) => console.log("Errors: ",  errors)}
-                                        />
-                                    }
-                                </div>
-                                Is exists:
-                                {this.state.check.isLoading && <div>Loading...</div>}
-                                {this.state.check.isExists !== null && (<div>
-                                    {this.state.check.isExists ? 'Exists' : 'Does not exists'}
-                                </div>)}
-                                {this.state.check.data !== null && (<div>
-                                    {JSON.stringify(this.state.check.data)}
-                                </div>)}
-                            </div>
-                        }
-                    </div>
+                    Is exists:
+                    {this.state.check.isLoading && <div>Loading...</div>}
+                    {this.state.check.isExists !== null && (<div>
+                        {this.state.check.isExists ? 'Exists' : 'Does not exists'}
+                    </div>)}
+                    {this.state.check.data !== null && (<div>
+                        {JSON.stringify(this.state.check.data)}
+                    </div>)}
                 </div>
             </div>
         );
