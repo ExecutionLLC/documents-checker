@@ -113,12 +113,13 @@ class CheckDocument extends Component {
     }
 
     renderDocumentForm() {
+        const schemaData = this.state.schema.data;
         return (
             <div>
-                {this.state.schema.data && (
+                {schemaData && (
                     <Form
-                        schema={this.state.schema.data.idPart.jsonSchema}
-                        uiSchema={this.state.schema.data.idPart.uiSchema}
+                        schema={schemaData.idPart.jsonSchema}
+                        uiSchema={schemaData.idPart.uiSchema}
                         formData={this.state.formsData.idPart}
                         onSubmit={({formData}) => this.onDocumentIdSubmit(formData)}
                         onError={(errors) => console.log("Errors: ",  errors)}
