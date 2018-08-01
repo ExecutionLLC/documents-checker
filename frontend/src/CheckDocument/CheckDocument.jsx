@@ -130,33 +130,41 @@ class CheckDocument extends Component {
         );
     }
 
-    renderDocumentPanel(isWarning, content, isMonospace) {
+    renderDocumentDoesNotExist() {
         return (
-            <Panel bsStyle={isWarning ? 'warning' : 'info'}>
+            <Panel bsStyle="warning">
                 <Panel.Heading>
                     <Panel.Title componentClass="h3">
                         Document
                     </Panel.Title>
                 </Panel.Heading>
                 <Panel.Body>
-                    {isMonospace ? (
-                        <code style={{whiteSpace: 'pre-wrap'}}>
-                            {content}
-                        </code>
-                    ) : (
-                        content
-                    )}
+                    Does not exists
                 </Panel.Body>
             </Panel>
         );
     }
 
-    renderDocumentDoesNotExist() {
-        return this.renderDocumentPanel(true, 'Does not exist');
-    }
-
-    renderDocument(text) {
-        return this.renderDocumentPanel(false, text, true);
+    renderDocument(data) {
+        const schemaData = this.state.schema.data;
+        return (
+            <Panel bsStyle="info">
+                <Panel.Heading>
+                    <Panel.Title componentClass="h3">
+                        Document
+                    </Panel.Title>
+                </Panel.Heading>
+                <Panel.Body>
+                    <Form
+                        schema={schemaData.dataPart.jsonSchema}
+                        uiSchema={{...schemaData.dataPart.uiSchema, 'ui:readonly': true}}
+                        formData={this.state.check.data.dataPart}
+                    >
+                        <button type="submit" style={{display: 'none'}} />
+                    </Form>
+                </Panel.Body>
+            </Panel>
+        );
     }
 
     renderCheckStatus() {
@@ -170,7 +178,7 @@ class CheckDocument extends Component {
                     this.renderDocumentDoesNotExist()
                 )}
                 {this.state.check.data !== null && (
-                    this.renderDocument(JSON.stringify(this.state.check.data, null, 4))
+                    this.renderDocument(this.state.check.data)
                 )}
             </div>
         );
