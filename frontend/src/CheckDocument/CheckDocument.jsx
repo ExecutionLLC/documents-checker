@@ -130,6 +130,24 @@ class CheckDocument extends Component {
         );
     }
 
+    renderCheckStatus() {
+        return (
+            <div>
+                {this.state.check.isLoading && <div>Loading...</div>}
+                {this.state.check.isExists !== null && (
+                    <div>
+                        {this.state.check.isExists ? 'Exists' : 'Does not exists'}
+                    </div>
+                )}
+                {this.state.check.data !== null && (
+                    <div>
+                        {JSON.stringify(this.state.check.data)}
+                    </div>
+                )}
+            </div>
+        );
+    }
+
     render() {
         return (
             <div>
@@ -140,16 +158,9 @@ class CheckDocument extends Component {
                     this.renderSchemaError() :
                     this.renderDocumentForm()
                 }
-                <div>
-                    Is exists:
-                    {this.state.check.isLoading && <div>Loading...</div>}
-                    {this.state.check.isExists !== null && (<div>
-                        {this.state.check.isExists ? 'Exists' : 'Does not exists'}
-                    </div>)}
-                    {this.state.check.data !== null && (<div>
-                        {JSON.stringify(this.state.check.data)}
-                    </div>)}
-                </div>
+                {
+                    this.renderCheckStatus()
+                }
             </div>
         );
     }
