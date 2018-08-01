@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Form from "react-jsonschema-form";
+import { PageHeader, Panel } from 'react-bootstrap';
 import API from '../API';
 import config from '../config';
 
@@ -106,49 +107,46 @@ class AddDocument extends Component {
     render() {
         return (
             <div>
-                Add document
-                <div>
-                    Schema:
+                <PageHeader>
+                    Add document
+                </PageHeader>
+                {this.state.schema.error ?
+                    <Panel bsStyle="danger">
+                        <Panel.Heading>
+                            <Panel.Title componentClass="h3">Schema loading error</Panel.Title>
+                        </Panel.Heading>
+                        <Panel.Body>{`${this.state.schema.error}`}</Panel.Body>
+                    </Panel> :
                     <div>
-                        {this.state.schema.error ?
-                            <div>
-                                Error:
-                                <div>
-                                    {`${this.state.schema.error}`}
-                                </div>
-                            </div> :
-                            <div>
-                                Data:
-                                <div>
-                                    {JSON.stringify(this.state.schema.data)}
-                                    {this.state.schema.data &&
-                                        <Form
-                                            schema={this.state.schema.data.idPart.jsonSchema}
-                                            uiSchema={this.state.schema.data.idPart.uiSchema}
-                                            formData={this.state.formsData.idPart}
-                                            onSubmit={({formData}) => this.onDocumentIdSubmit(formData)}
-                                            onError={(errors) => console.log("Errors1: ",  errors)}
-                                            ref={ref => this.onDocumentIdFormComponent(ref)}
-                                        >
-                                            <button type="submit" style={{display: 'none'}} />
-                                        </Form>
-                                    }
-                                    {this.state.schema.data &&
-                                        <Form
-                                            schema={this.state.schema.data.dataPart.jsonSchema}
-                                            uiSchema={this.state.schema.data.dataPart.uiSchema}
-                                            formData={this.state.formsData.dataPart}
-                                            onSubmit={({formData}) => this.onDocumentDataSubmit(formData)}
-                                        >
-                                        </Form>
-                                    }
-                                </div>
-                                {this.state.addDocument.isLoading && <div>Adding document...</div>}
-                                {this.state.addDocument.error && <div>Add document error: {JSON.stringify(this.state.addDocument.error)}</div>}
-                            </div>
-                        }
+                        Data:
+                        <div>
+                            {JSON.stringify(this.state.schema.data)}
+                            {this.state.schema.data &&
+                            <Form
+                                schema={this.state.schema.data.idPart.jsonSchema}
+                                uiSchema={this.state.schema.data.idPart.uiSchema}
+                                formData={this.state.formsData.idPart}
+                                onSubmit={({formData}) => this.onDocumentIdSubmit(formData)}
+                                onError={(errors) => console.log("Errors1: ",  errors)}
+                                ref={ref => this.onDocumentIdFormComponent(ref)}
+                            >
+                                <button type="submit" style={{display: 'none'}} />
+                            </Form>
+                            }
+                            {this.state.schema.data &&
+                            <Form
+                                schema={this.state.schema.data.dataPart.jsonSchema}
+                                uiSchema={this.state.schema.data.dataPart.uiSchema}
+                                formData={this.state.formsData.dataPart}
+                                onSubmit={({formData}) => this.onDocumentDataSubmit(formData)}
+                            >
+                            </Form>
+                            }
+                        </div>
+                        {this.state.addDocument.isLoading && <div>Adding document...</div>}
+                        {this.state.addDocument.error && <div>Add document error: {JSON.stringify(this.state.addDocument.error)}</div>}
                     </div>
-                </div>
+                }
             </div>
         );
     }

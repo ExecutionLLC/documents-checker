@@ -5,6 +5,7 @@
   "dependencies": {
     "js-base64": "^2.4.8",
     "react": "^16.4.1",
+    "react-bootstrap": "^0.32.1",
     "react-dom": "^16.4.1",
     "react-jsonschema-form": "^1.0.3",
     "react-router-dom": "^4.3.1",
