@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Form from 'react-jsonschema-form';
-import { PageHeader, ProgressBar } from 'react-bootstrap';
+import { PageHeader, Panel, ProgressBar } from 'react-bootstrap';
 import ErrorPanel from '../Components/ErrorPanel';
 import API from '../API';
 import config from '../config';
@@ -130,21 +130,48 @@ class CheckDocument extends Component {
         );
     }
 
+    renderDocumentPanel(isWarning, content, isMonospace) {
+        return (
+            <Panel bsStyle={isWarning ? 'warning' : 'info'}>
+                <Panel.Heading>
+                    <Panel.Title componentClass="h3">
+                        Document
+                    </Panel.Title>
+                </Panel.Heading>
+                <Panel.Body>
+                    {isMonospace ? (
+                        <code style={{whiteSpace: 'pre-wrap'}}>
+                            {content}
+                        </code>
+                    ) : (
+                        content
+                    )}
+                </Panel.Body>
+            </Panel>
+
+        );
+    }
+
+    renderDocumentDoesNotExist() {
+        return this.renderDocumentPanel(true, 'Does not exist');
+    }
+
+    renderDocument(text) {
+        return this.renderDocumentPanel(false, text, true);
+    }
+
     renderCheckStatus() {
+        console.log(111, this.state.check);
         return (
             <div>
                 {this.state.check.isLoading && (
                     <ProgressBar active now={100} />
                 )}
-                {this.state.check.isExists !== null && (
-                    <div>
-                        {this.state.check.isExists ? 'Exists' : 'Does not exists'}
-                    </div>
+                {this.state.check.isExists !== null && !this.state.check.isExists && (
+                    this.renderDocumentDoesNotExist()
                 )}
                 {this.state.check.data !== null && (
-                    <div>
-                        {JSON.stringify(this.state.check.data)}
-                    </div>
+                    this.renderDocument(JSON.stringify(this.state.check.data, null, 4))
                 )}
             </div>
         );
