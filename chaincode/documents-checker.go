@@ -1,7 +1,6 @@
 package main
 
 import (
-	"bytes"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -18,12 +17,9 @@ import (
 const (
 	SCHEMA_ID = "SCHEMA_ID"
 	
-	SCHEMA_ID_PART = "SCHEMA_ID_PART"
-	UI_SCHEMA_ID_PART = "UI_SCHEMA_ID_PART"
-	SCHEMA_DATA_PART = "SCHEMA_DATA_PART"
-	UI_SCHEMA_DATA_PART = "UI_SCHEMA_DATA_PART"
+	SCHEMA_CONTAINER = "SCHEMA_CONTAINER"
+	DOCUMENT_CONTAINER = "DOCUMENT_CONTAINER"
 	DOCUMENT_ID_PART = "DOCUMENT_ID_PART"
-	DOCUMENT_DATA_PART = "DOCUMENT_DATA_PART"
 
 	SCHEMA_PRIVATE_KEY = "SCHEMA_PRIVATE_KEY"
 	DOCUMENT_PRIVATE_KEY = "DOCUMENT_PRIVATE_KEY"
@@ -41,8 +37,8 @@ const (
 )
 
 type SchemaContainerPartField struct{
-	JSONschema []byte `json:"jsonSchema"`
-	UIschema []byte `json:"uiSchema"`
+	JSONschema map[string]interface{} `json:"jsonSchema"`
+	UIschema map[string]interface{} `json:"uiSchema"`
 }
 
 type SchemaContainer struct{
@@ -51,9 +47,8 @@ type SchemaContainer struct{
 }
 
 type DocumentContainer struct{
-	IDpart []byte `json:"idPart"`
-	DataPart []byte `json:"dataPart"`
-	HashOfDataPart string `json:"hashOfDataPart"`
+	IDpart map[string]interface{} `json:"idPart"`
+	DataPart map[string]interface{} `json:"dataPart"`
 }
 
 type DocumentsChecker struct {
@@ -104,11 +99,11 @@ func (dc *DocumentsChecker) getDocumentEncrypter(privateKey []byte, initVec []by
 }
 
 func (dc *DocumentsChecker) checkSchemasInContainer(schemaContainer SchemaContainer) error {
-	schemaIDpartLoader := gojsonschema.NewBytesLoader(schemaContainer.IDpart.JSONschema)
+	schemaIDpartLoader := gojsonschema.NewGoLoader(schemaContainer.IDpart.JSONschema)
 	if _, err := gojsonschema.NewSchema(schemaIDpartLoader); err != nil {
 		return errors.New(fmt.Sprintf("Cannot load schema of id part: %s", err))
 	}
-	schemaDataPartLoader := gojsonschema.NewBytesLoader(schemaContainer.DataPart.JSONschema)
+	schemaDataPartLoader := gojsonschema.NewGoLoader(schemaContainer.DataPart.JSONschema)
 	if _, err := gojsonschema.NewSchema(schemaDataPartLoader); err != nil {
 		return errors.New(fmt.Sprintf("Cannot load schema of data part: %s", err))
 	}
@@ -120,8 +115,11 @@ func (dc *DocumentsChecker) getSchemaKey(APIstub shim.ChaincodeStubInterface, sc
 	return APIstub.CreateCompositeKey(SCHEMA_COMPOSITE_KEY, []string{SCHEMA_DATA_TYPE, schemaID})
 }
 
-func (dc *DocumentsChecker) getDocumentKey(APIstub shim.ChaincodeStubInterface, schemaID string, documentIDpartAsBytes []byte) (string, error) {
-	hashOfIDpart := getDocumentHash(documentIDpartAsBytes)
+func (dc *DocumentsChecker) getDocumentKey(APIstub shim.ChaincodeStubInterface, schemaID string, documentIDpart map[string]interface{}) (string, error) {
+	hashOfIDpart, err := getDocumentHash(documentIDpart)
+	if err != nil {
+		return "", err
+	}
 	return APIstub.CreateCompositeKey(DOCUMENT_COMPOSITE_KEY, []string{DOCUMENT_DATA_TYPE, schemaID, hashOfIDpart})
 }
 
@@ -131,22 +129,6 @@ func (dc *DocumentsChecker) createSchema(APIstub shim.ChaincodeStubInterface, ar
 	}
 	schemaID := args[0]
 
-	schemaIDpartAsBytes, in := transientMap[SCHEMA_ID_PART]
-	if !in {
-		return shim.Error(fmt.Sprintf("Expected schema (%s)", SCHEMA_ID_PART))
-	}
-	UIschemaIDpartAsBytes, in := transientMap[UI_SCHEMA_ID_PART]
-	if !in {
-		return shim.Error(fmt.Sprintf("Expected schema (%s)", UI_SCHEMA_ID_PART))
-	}
-	schemaDataPartAsBytes, in := transientMap[SCHEMA_DATA_PART]
-	if !in {
-		return shim.Error(fmt.Sprintf("Expected schema (%s)", SCHEMA_DATA_PART))
-	}
-	UIschemaDataPartAsBytes, in := transientMap[UI_SCHEMA_DATA_PART]
-	if !in {
-		return shim.Error(fmt.Sprintf("Expected schema (%s)", SCHEMA_DATA_PART))
-	}
 	privateKey, in := transientMap[SCHEMA_PRIVATE_KEY]
 	if !in {
 		return shim.Error(fmt.Sprintf("Expected private key (%s)", SCHEMA_PRIVATE_KEY))
@@ -155,20 +137,15 @@ func (dc *DocumentsChecker) createSchema(APIstub shim.ChaincodeStubInterface, ar
 	if !in {
 		return shim.Error(fmt.Sprintf("Expected encrypter initialization vector (%s)", IV))
 	}
-
-	schemaContainer := SchemaContainer{
-		IDpart: SchemaContainerPartField{
-			JSONschema: schemaIDpartAsBytes,
-			UIschema: UIschemaIDpartAsBytes,
-		},
-		DataPart: SchemaContainerPartField{
-			JSONschema: schemaDataPartAsBytes,
-			UIschema: UIschemaDataPartAsBytes,
-		},
+	// Extract schema container
+	schemaContainerAsBytes, in := transientMap[SCHEMA_CONTAINER]
+	if !in {
+		return shim.Error(fmt.Sprintf("Expected schema (%s)", SCHEMA_CONTAINER))
 	}
-	schemaContainerAsBytes, err := json.Marshal(&schemaContainer)
+	var schemaContainer SchemaContainer
+	err := json.Unmarshal(schemaContainerAsBytes, &schemaContainer)
 	if err != nil {
-		return shim.Error(fmt.Sprintf("Cannot pack schema: %s", err))
+		return shim.Error(fmt.Sprintf("Cannot unpack schema: %s", err))
 	}
 	err = dc.checkSchemasInContainer(schemaContainer)
 	if err != nil {
@@ -199,17 +176,21 @@ func (dc *DocumentsChecker) createSchema(APIstub shim.ChaincodeStubInterface, ar
 	return shim.Success(nil)
 }
 
-func (dc *DocumentsChecker) readSchemaContainer(APIstub shim.ChaincodeStubInterface, schemaID string, privateKey []byte) (SchemaContainer, error) {
-	var schemaContainer SchemaContainer
+func (dc *DocumentsChecker) readSchemaContainerAsBytes(APIstub shim.ChaincodeStubInterface, schemaID string, privateKey []byte) ([]byte, error) {
 	encrypter, err := dc.getSchemaEncrypter(privateKey, nil)
 	if err != nil {
-		return schemaContainer, err
+		return nil, err
 	}
 	key, err := dc.getSchemaKey(APIstub, schemaID)
 	if err != nil {
-		return schemaContainer, errors.New(fmt.Sprintf("Cannot get schema key: %s", err))
+		return nil, errors.New(fmt.Sprintf("Cannot get schema key: %s", err))
 	}
-	schemaContainerAsBytes, err := getStateAndDecrypt(APIstub, encrypter, key)
+	return getStateAndDecrypt(APIstub, encrypter, key)
+}
+
+func (dc *DocumentsChecker) readSchemaContainer(APIstub shim.ChaincodeStubInterface, schemaID string, privateKey []byte) (SchemaContainer, error) {
+	var schemaContainer SchemaContainer
+	schemaContainerAsBytes, err := dc.readSchemaContainerAsBytes(APIstub, schemaID, privateKey)
 	if err != nil {
 		return schemaContainer, err
 	}
@@ -232,30 +213,12 @@ func (dc *DocumentsChecker) readSchema(APIstub shim.ChaincodeStubInterface, args
 		return shim.Error(fmt.Sprintf("Expected private key %s", SCHEMA_PRIVATE_KEY))
 	}
 
-	schemaContainer, err := dc.readSchemaContainer(APIstub, schemaID, privateKey)
+	schemaContainerAsBytes, err := dc.readSchemaContainerAsBytes(APIstub, schemaID, privateKey)
 	if err != nil {
 		return shim.Error(err.Error())
 	}
 	
-	var buffer bytes.Buffer
-	buffer.WriteString("{\"idPart\":")
-	buffer.WriteString("{\"jsonSchema\":")
-	buffer.Write(schemaContainer.IDpart.JSONschema)
-	buffer.WriteString(",")
-	buffer.WriteString("\"uiSchema\":")
-	buffer.Write(schemaContainer.IDpart.UIschema)
-	buffer.WriteString("}")
-	buffer.WriteString(",")
-	buffer.WriteString("\"dataPart\":")
-	buffer.WriteString("{\"jsonSchema\":")
-	buffer.Write(schemaContainer.DataPart.JSONschema)
-	buffer.WriteString(",")
-	buffer.WriteString("\"uiSchema\":")
-	buffer.Write(schemaContainer.DataPart.UIschema)
-	buffer.WriteString("}")
-	buffer.WriteString("}")
-
-	return shim.Success(buffer.Bytes())
+	return shim.Success(schemaContainerAsBytes)
 }
 
 func (dc *DocumentsChecker) isSchemaExists(APIstub shim.ChaincodeStubInterface, args []string, transientMap map[string][]byte) pb.Response {
@@ -284,13 +247,13 @@ func (dc *DocumentsChecker) deleteSchema(APIstub shim.ChaincodeStubInterface, ar
 	return shim.Error(fmt.Sprintf("deleteSchema is not implimented."))
 }
 
-func (dc *DocumentsChecker) checkDataBySchema(schemaAsBytes []byte, dataAsBytes []byte) error {
-	schemaLoader := gojsonschema.NewBytesLoader(schemaAsBytes)
+func (dc *DocumentsChecker) checkDataBySchema(schemaAsMap map[string]interface{}, dataAsMap map[string]interface{}) error {
+	schemaLoader := gojsonschema.NewGoLoader(schemaAsMap)
 	schema, err := gojsonschema.NewSchema(schemaLoader)
 	if err != nil {
 		return errors.New(fmt.Sprintf("Cannot load schema: %s", err))
 	}
-	dataLoader := gojsonschema.NewBytesLoader(dataAsBytes)
+	dataLoader := gojsonschema.NewGoLoader(dataAsMap)
 	validationResult, err := schema.Validate(dataLoader)
 	if err != nil {
 		return errors.New(fmt.Sprintf("Cannot check document: %s", err))
@@ -308,14 +271,6 @@ func (dc *DocumentsChecker) createDocument(APIstub shim.ChaincodeStubInterface, 
 	}
 	schemaID := args[0]
 	
-	documentIDpartAsBytes, in := transientMap[DOCUMENT_ID_PART]
-	if !in {
-		return shim.Error(fmt.Sprintf("Expected document (%s)", DOCUMENT_ID_PART))
-	}
-	documentDataPartAsBytes, in := transientMap[DOCUMENT_DATA_PART]
-	if !in {
-		return shim.Error(fmt.Sprintf("Expected document (%s)", DOCUMENT_DATA_PART))
-	}
 	schemaPrivateKey, in := transientMap[SCHEMA_PRIVATE_KEY]
 	if !in {
 		return shim.Error(fmt.Sprintf("Expected schema private key (%s)", SCHEMA_PRIVATE_KEY))
@@ -328,8 +283,17 @@ func (dc *DocumentsChecker) createDocument(APIstub shim.ChaincodeStubInterface, 
 	if !in {
 		return shim.Error(fmt.Sprintf("Expected initialization vector (%s)", IV))
 	}
+	documentContainerAsBytes, in := transientMap[DOCUMENT_CONTAINER]
+	if !in {
+		return shim.Error(fmt.Sprintf("Expected document (%s)", DOCUMENT_CONTAINER))
+	}
+	var documentContainer DocumentContainer
+	err := json.Unmarshal(documentContainerAsBytes, &documentContainer)
+	if err != nil {
+		return shim.Error(fmt.Sprintf("Cannot unpack document: %s", err))
+	}
 
-	documentKey, err := dc.getDocumentKey(APIstub, schemaID, documentIDpartAsBytes)
+	documentKey, err := dc.getDocumentKey(APIstub, schemaID, documentContainer.IDpart)
 	if err != nil {
 		return shim.Error(fmt.Sprintf("Cannot get document key: %s", err))
 	}
@@ -345,16 +309,6 @@ func (dc *DocumentsChecker) createDocument(APIstub shim.ChaincodeStubInterface, 
 	schemaContainer, err := dc.readSchemaContainer(APIstub, schemaID, schemaPrivateKey)
 	if err != nil {
 		return shim.Error(err.Error())
-	}
-	hashOfDataPart := getDocumentHash(documentIDpartAsBytes)
-	documentContainer := DocumentContainer{
-		IDpart: documentIDpartAsBytes,
-		DataPart: documentDataPartAsBytes,
-		HashOfDataPart: hashOfDataPart,
-	}
-	documentContainerAsBytes, err := json.Marshal(&documentContainer)
-	if err != nil {
-		return shim.Error(fmt.Sprintf("Cannot pack document: %s", err))
 	}
 	err = dc.checkDataBySchema(schemaContainer.IDpart.JSONschema, documentContainer.IDpart)
 	if err != nil {
@@ -382,16 +336,21 @@ func (dc *DocumentsChecker) readDocument(APIstub shim.ChaincodeStubInterface, ar
 	}
 	schemaID := args[0]
 
-	documentIDpartAsBytes, in := transientMap[DOCUMENT_ID_PART]
-	if !in {
-		return shim.Error(fmt.Sprintf("Expected document (%s)", DOCUMENT_ID_PART))
-	}
 	privateKey, in := transientMap[DOCUMENT_PRIVATE_KEY]
 	if !in {
 		return shim.Error(fmt.Sprintf("Expected private key (%s)", DOCUMENT_PRIVATE_KEY))
 	}
-
-	key, err := dc.getDocumentKey(APIstub, schemaID, documentIDpartAsBytes)
+	documentIDpartAsBytes, in := transientMap[DOCUMENT_ID_PART]
+	if !in {
+		return shim.Error(fmt.Sprintf("Expected ID part of document (%s)", DOCUMENT_ID_PART))
+	}
+	var documentIDpart map[string]interface{}
+	err := json.Unmarshal(documentIDpartAsBytes, &documentIDpart)
+	if err != nil {
+		return shim.Error(fmt.Sprintf("Cannot unpack ID part of document: %s", err))
+	}
+	
+	key, err := dc.getDocumentKey(APIstub, schemaID, documentIDpart)
 	if err != nil {
 		return shim.Error(fmt.Sprintf("Cannot get document key: %s", err))
 	}
@@ -403,21 +362,8 @@ func (dc *DocumentsChecker) readDocument(APIstub shim.ChaincodeStubInterface, ar
         if err != nil {
 		return shim.Error(fmt.Sprintf("Cannot get state: %s", err))
 	}
-	var documentContainer DocumentContainer
-	err = json.Unmarshal(documentContainerAsBytes, &documentContainer)
-	if err != nil {
-		return shim.Error(fmt.Sprintf("Cannot unpack document: %s", err))
-	}
 
-	var buffer bytes.Buffer
-	buffer.WriteString("{\"idPart\":")
-	buffer.Write(documentContainer.IDpart)
-	buffer.WriteString(",")
-	buffer.WriteString("\"dataPart\":")
-	buffer.Write(documentContainer.DataPart)
-	buffer.WriteString("}")
-	
-	return shim.Success(buffer.Bytes())
+	return shim.Success(documentContainerAsBytes)
 }
 
 func (dc *DocumentsChecker) isDocumentExists(APIstub shim.ChaincodeStubInterface, args []string, transientMap map[string][]byte) pb.Response {
@@ -428,9 +374,15 @@ func (dc *DocumentsChecker) isDocumentExists(APIstub shim.ChaincodeStubInterface
 	
 	documentIDpartAsBytes, in := transientMap[DOCUMENT_ID_PART]
 	if !in {
-		return shim.Error(fmt.Sprintf("Expected document (%s)", DOCUMENT_ID_PART))
+		return shim.Error(fmt.Sprintf("Expected ID part of document (%s)", DOCUMENT_ID_PART))
 	}
-	key, err := dc.getDocumentKey(APIstub, schemaID, documentIDpartAsBytes)
+	var documentIDpart map[string]interface{}
+	err := json.Unmarshal(documentIDpartAsBytes, &documentIDpart)
+	if err != nil {
+		return shim.Error(fmt.Sprintf("Cannot unpack ID part of document: %s", err))
+	}
+
+	key, err := dc.getDocumentKey(APIstub, schemaID, documentIDpart)
 	if err != nil {
 		return shim.Error(fmt.Sprintf("Cannot get document key: %s", err))
 	}

@@ -5,13 +5,19 @@ import (
 	"encoding/base64"
 	"errors"
 	
+	"github.com/cnf/structhash"
 	"github.com/hyperledger/fabric/core/chaincode/shim"
 	"github.com/hyperledger/fabric/core/chaincode/shim/ext/entities"
 )
 
-func getDocumentHash(document []byte) string {
-	hash := sha512.Sum512(document)
-	return base64.StdEncoding.EncodeToString(hash[:])
+func getDocumentHash(document map[string]interface{}) (string, error) {
+	hash, err := structhash.Hash(document, 1)
+	if err != nil {
+		return "", err
+	}
+	
+	hashSHA512 := sha512.Sum512(structhash.Dump(hash, 1))
+	return base64.StdEncoding.EncodeToString(hashSHA512[:]), nil
 }
 
 func getStateAndDecrypt(APIstub shim.ChaincodeStubInterface, encrypter entities.Encrypter, key string) ([]byte, error) {

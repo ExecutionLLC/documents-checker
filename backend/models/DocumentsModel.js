@@ -10,8 +10,10 @@ class DocumentsModel extends BaseModel {
     add(schemaId, documentIdPart, documentDataPart, schemaPrivateKey, documentPrivateKey, initializationVector) {
         const args = [schemaId];
         const transientMap = {
-            DOCUMENT_ID_PART: documentIdPart,
-            DOCUMENT_DATA_PART: documentDataPart,
+            DOCUMENT_CONTAINER: {
+                idPart: documentIdPart,
+                dataPart: documentDataPart
+            },
             SCHEMA_PRIVATE_KEY: schemaPrivateKey,
             DOCUMENT_PRIVATE_KEY: documentPrivateKey,
             IV: initializationVector

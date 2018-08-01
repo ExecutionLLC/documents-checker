@@ -10,10 +10,10 @@ class SchemasModel extends BaseModel {
     add(schemaId, schemaIdPart, schemaDataPart, schemaPrivateKey, initializationVector) {
         const args = [schemaId];
         const transientMap = {
-            SCHEMA_ID_PART: schemaIdPart['jsonSchema'],
-            UI_SCHEMA_ID_PART: schemaIdPart['uiSchema'],
-            SCHEMA_DATA_PART: schemaDataPart['jsonSchema'],
-            UI_SCHEMA_DATA_PART: schemaDataPart['uiSchema'],
+            SCHEMA_CONTAINER: {
+                idPart: schemaIdPart,
+                dataPart: schemaDataPart
+            },
             SCHEMA_PRIVATE_KEY: schemaPrivateKey,
             IV: initializationVector
         };
