@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Form from "react-jsonschema-form";
-import { PageHeader, Panel } from 'react-bootstrap';
+import { PageHeader, Panel, ProgressBar } from 'react-bootstrap';
 import API from '../API';
 import config from '../config';
 
@@ -157,8 +157,17 @@ class AddDocument extends Component {
     rendeerAddDocumentStatus() {
         return (
             <div>
-                {this.state.addDocument.isLoading && <div>Adding document...</div>}
-                {this.state.addDocument.error && <div>Add document error: {JSON.stringify(this.state.addDocument.error)}</div>}
+                {this.state.addDocument.isLoading && (
+                    <ProgressBar active now={100} />
+                )}
+                {this.state.addDocument.error && (
+                    <Panel bsStyle="danger">
+                        <Panel.Heading>
+                            <Panel.Title componentClass="h3">Add document error</Panel.Title>
+                        </Panel.Heading>
+                        <Panel.Body>{`${JSON.stringify(this.state.addDocument.error)}`}</Panel.Body>
+                    </Panel>
+                )}
             </div>
         );
     }
