@@ -148,7 +148,6 @@ class CheckDocument extends Component {
                     )}
                 </Panel.Body>
             </Panel>
-
         );
     }
 
