@@ -104,6 +104,17 @@ class AddDocument extends Component {
         }
     }
 
+    renderSchemaError() {
+        return (
+            <Panel bsStyle="danger">
+                <Panel.Heading>
+                    <Panel.Title componentClass="h3">Schema loading error</Panel.Title>
+                </Panel.Heading>
+                <Panel.Body>{`${this.state.schema.error}`}</Panel.Body>
+            </Panel>
+        );
+    }
+
     render() {
         return (
             <div>
@@ -111,12 +122,7 @@ class AddDocument extends Component {
                     Add document
                 </PageHeader>
                 {this.state.schema.error ?
-                    <Panel bsStyle="danger">
-                        <Panel.Heading>
-                            <Panel.Title componentClass="h3">Schema loading error</Panel.Title>
-                        </Panel.Heading>
-                        <Panel.Body>{`${this.state.schema.error}`}</Panel.Body>
-                    </Panel> :
+                    this.renderSchemaError() :
                     <div>
                         Data:
                         <div>
