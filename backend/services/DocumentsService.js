@@ -2,7 +2,7 @@ const BaseService = require('./BaseService');
 const CryptoUtils = require('../utils/crypto');
 const getLogger = require('../utils/log');
 const NotFoundError = require('../utils/errors/NotFoundError');
-const ServerError = require('../utils/errors/ServerError');
+const ConflictError = require('../utils/errors/ServerError');
 
 class DocumentService extends BaseService {
     constructor(models) {
@@ -13,7 +13,7 @@ class DocumentService extends BaseService {
     add(schemaId, documentIdPart, documentDataPart, schemaPrivateKey, documentPrivateKey) {
         return this._models.documentsModel.isExists(schemaId, documentIdPart).then((isExists) => {
             if (isExists) {
-                throw new ServerError('Document already exists');
+                throw new ConflictError('Document already exists');
             }
 
             return CryptoUtils.generateInitializationVector(16);
