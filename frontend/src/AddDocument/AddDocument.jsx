@@ -124,9 +124,7 @@ class AddDocument extends Component {
                 {this.state.schema.error ?
                     this.renderSchemaError() :
                     <div>
-                        Data:
                         <div>
-                            {JSON.stringify(this.state.schema.data)}
                             {this.state.schema.data &&
                             <Form
                                 schema={this.state.schema.data.idPart.jsonSchema}
