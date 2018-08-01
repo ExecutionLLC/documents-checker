@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Form from 'react-jsonschema-form';
+import { PageHeader } from 'react-bootstrap';
 import API from '../API';
 import config from '../config';
 
@@ -104,7 +105,9 @@ class CheckDocument extends Component {
     render() {
         return (
             <div>
-                Check document
+                <PageHeader>
+                    Check document
+                </PageHeader>
                 <div>
                     Schema:
                     <div>
