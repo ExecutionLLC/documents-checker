@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Form from "react-jsonschema-form";
-import { PageHeader, ProgressBar } from 'react-bootstrap';
+import { PageHeader, Panel, ProgressBar } from 'react-bootstrap';
 import ErrorPanel from '../Components/ErrorPanel';
 import API from '../API';
 import config from '../config';
@@ -17,6 +17,7 @@ class AddDocument extends Component {
             addDocument: {
                 isLoading: false,
                 error: null,
+                success: false,
             },
             formsData: {
                 idPart: null,
@@ -60,6 +61,7 @@ class AddDocument extends Component {
                 ...this.state.addDocument,
                 isLoading: true,
                 error: null,
+                success: false,
             },
             formsData: {
                 idPart,
@@ -77,6 +79,7 @@ class AddDocument extends Component {
                         ...this.state.addDocument,
                         isLoading: false,
                         error: null,
+                        success: true,
                     },
                 });
             })
@@ -164,6 +167,18 @@ class AddDocument extends Component {
                         title="Add document error"
                         content={JSON.stringify(this.state.addDocument.error)}
                     />
+                )}
+                {this.state.addDocument.success && (
+                    <Panel bsStyle="success">
+                        <Panel.Heading>
+                            <Panel.Title componentClass="h3">
+                                Document adding
+                            </Panel.Title>
+                        </Panel.Heading>
+                        <Panel.Body>
+                            Ducument successfully added
+                        </Panel.Body>
+                    </Panel>
                 )}
             </div>
         );
