@@ -138,12 +138,12 @@
       "operations": {
         "items": {
           "classNames": "col-xs-12",
-          "positionNumber": { "classNames": "col-xs-2" },
-          "description": { "classNames": "col-xs-2" },
-          "quantity": { "classNames": "col-xs-2" },
-          "cost": { "classNames": "col-xs-2" },
-          "valueWOVAT": { "classNames": "col-xs-2" },
-          "valueVAT": { "classNames": "col-xs-2" }
+          "positionNumber": { "classNames": "col-xs-3" },
+          "description": { "classNames": "col-xs-9" },
+          "quantity": { "classNames": "col-xs-3" },
+          "cost": { "classNames": "col-xs-3" },
+          "valueWOVAT": { "classNames": "col-xs-3" },
+          "valueVAT": { "classNames": "col-xs-3" }
         }
       }
     }
