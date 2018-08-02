@@ -10,13 +10,13 @@ function Navigation(props) {
             title: 'Add document'
         },
         {
+            url: '/confirmation',
+            title: 'Document confirmation'
+        },
+        {
             url: '/checkdoc',
             title: 'Check document'
         },
-        {
-            url: '/confirmation',
-            title: 'Document confirmation'
-        }
     ];
 
     return (
