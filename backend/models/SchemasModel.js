@@ -7,13 +7,10 @@ class SchemasModel extends BaseModel {
         super(chaincodeApi, logger);
     }
 
-    add(schemaId, schemaIdPart, schemaDataPart, schemaPrivateKey, initializationVector) {
+    add(schemaId, schemaContainer, schemaPrivateKey, initializationVector) {
         const args = [schemaId];
         const transientMap = {
-            SCHEMA_CONTAINER: {
-                idPart: schemaIdPart,
-                dataPart: schemaDataPart
-            },
+            SCHEMA_CONTAINER: schemaContainer,
             SCHEMA_PRIVATE_KEY: schemaPrivateKey,
             IV: initializationVector
         };
