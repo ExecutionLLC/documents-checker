@@ -3,6 +3,7 @@ import { PageHeader, Panel, ProgressBar } from 'react-bootstrap';
 import ErrorPanel from '../Components/ErrorPanel';
 import Navigation from '../Components/Navigation';
 import Form from '../Components/FormStateSafe';
+import FileJSON from '../Components/FileJSON';
 import API from '../API';
 import config from '../config';
 
@@ -114,17 +115,33 @@ class CheckDocument extends Component {
         );
     }
 
+    onJSON(obj) {
+        if (!obj || !obj.idPart) {
+            return;
+        }
+        this.setState({
+            formsData: {
+                idPart: obj.idPart,
+            }
+        });
+    }
+
     renderDocumentForm() {
         const schemaData = this.state.schema.data;
         return (
             <div>
                 {schemaData && (
-                    <Form
-                        schema={schemaData.idPart.jsonSchema}
-                        uiSchema={schemaData.idPart.uiSchema}
-                        formData={this.state.formsData.idPart}
-                        onSubmit={({formData}) => this.onDocumentIdSubmit(formData)}
-                    />
+                    <div>
+                        <FileJSON
+                            onJSON={(obj) => this.onJSON(obj)}
+                        />
+                        <Form
+                            schema={schemaData.idPart.jsonSchema}
+                            uiSchema={schemaData.idPart.uiSchema}
+                            formData={this.state.formsData.idPart}
+                            onSubmit={({formData}) => this.onDocumentIdSubmit(formData)}
+                        />
+                    </div>
                 )}
             </div>
         );
