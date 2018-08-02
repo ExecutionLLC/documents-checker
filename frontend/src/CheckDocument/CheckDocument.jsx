@@ -124,7 +124,6 @@ class CheckDocument extends Component {
                         uiSchema={schemaData.idPart.uiSchema}
                         formData={this.state.formsData.idPart}
                         onSubmit={({formData}) => this.onDocumentIdSubmit(formData)}
-                        onError={(errors) => console.log("Errors: ",  errors)}
                     />
                 )}
             </div>
@@ -169,7 +168,6 @@ class CheckDocument extends Component {
     }
 
     renderCheckStatus() {
-        console.log(111, this.state.check);
         return (
             <div>
                 {this.state.check.isLoading && (
