@@ -101,6 +101,38 @@ class DocumentConfirmation extends Component {
         );
     }
 
+    onConfirmationSubmit(formData) {
+        console.log('onConfirmationSubmit', formData);
+    }
+
+    renderConfirmationInput() {
+        const schemaData = this.state.schema.data;
+        return (
+            <div>
+                <Form
+                    schema={schemaData.dynamicPart.jsonSchema}
+                    uiSchema={schemaData.dynamicPart.uiSchema}
+                    onSubmit={({formData}) => this.onConfirmationSubmit(formData)}
+                />
+            </div>
+        );
+    }
+
+    renderConfirmationInfo() {
+        const schemaData = this.state.schema.data;
+        return (
+            <div>
+                <Form
+                    schema={schemaData.dynamicPart.jsonSchema}
+                    uiSchema={{...schemaData.dynamicPart.uiSchema, 'ui:readonly': true}}
+                    formData={this.state.check.data.dynamicData}
+                >
+                    <button type="submit" style={{display: 'none'}} />
+                </Form>
+            </div>
+        );
+    }
+
     renderDocumentForm() {
         const schemaData = this.state.schema.data;
         return (
@@ -111,7 +143,6 @@ class DocumentConfirmation extends Component {
                         uiSchema={schemaData.idPart.uiSchema}
                         formData={this.state.formsData.idPart}
                         onSubmit={({formData}) => this.onDocumentIdSubmit(formData)}
-                        onError={(errors) => console.log("Errors: ",  errors)}
                     />
                 )}
             </div>
@@ -133,25 +164,19 @@ class DocumentConfirmation extends Component {
         );
     }
 
-    renderDocument() {
-        const schemaData = this.state.schema.data;
+    renderDocumentConfirmation() {
         return (
             <Panel bsStyle="info">
                 <Panel.Heading>
                     <Panel.Title componentClass="h3">
-                        Document
+                        Document confirmation
                     </Panel.Title>
                 </Panel.Heading>
                 <Panel.Body>
-                    <Form
-                        schema={schemaData.dynamicPart.jsonSchema}
-                        uiSchema={{...schemaData.dynamicPart.uiSchema}}
-                        formData={this.state.check.data.dynamicPart}
-                    >
-                        <button type="submit" className="btn btn-info">
-                            Confirm document
-                        </button>
-                    </Form>
+                    {this.state.check.data.dynamicData ?
+                        this.renderConfirmationInfo() :
+                        this.renderConfirmationInput()
+                    }
                 </Panel.Body>
             </Panel>
         );
@@ -166,8 +191,8 @@ class DocumentConfirmation extends Component {
                 {this.state.check.isExists !== null && !this.state.check.isExists && (
                     this.renderDocumentDoesNotExist()
                 )}
-                {this.state.check.data !== null && (
-                    this.renderDocument()
+                {this.state.check.data && (
+                    this.renderDocumentConfirmation()
                 )}
             </div>
         );
