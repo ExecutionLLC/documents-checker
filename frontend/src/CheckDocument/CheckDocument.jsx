@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import Form from 'react-jsonschema-form';
 import { PageHeader, Panel, ProgressBar } from 'react-bootstrap';
 import ErrorPanel from '../Components/ErrorPanel';
 import Navigation from '../Components/Navigation';
+import Form from '../Components/FormStateSafe';
 import API from '../API';
 import config from '../config';
 
