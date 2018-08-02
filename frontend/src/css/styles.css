@@ -1,0 +1,11 @@
+.btn-now {
+    text-indent: -9999px;
+    line-height: 0;
+}
+
+.btn-now::after {
+    content: "Today";
+    text-indent: 0;
+    display: block;
+    line-height: initial;
+}

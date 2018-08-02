@@ -6,6 +6,7 @@ import Navigation from '../Components/Navigation';
 import Form from '../Components/FormStateSafe';
 import API from '../API';
 import config from '../config';
+import '../css/styles.css';
 
 
 class DocumentConfirmation extends Component {
