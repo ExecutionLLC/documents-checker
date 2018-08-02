@@ -22,6 +22,11 @@ class DocumentConfirmation extends Component {
                 isLoading: false,
                 error: null,
             },
+            confirm: {
+                isLoading: false,
+                error: null,
+                success: false,
+            },
             formsData: {
                 idPart: null,
                 dynamicPart: null,
@@ -109,13 +114,36 @@ class DocumentConfirmation extends Component {
             formsData: {
                 ...this.state.formsData,
                 dynamicPart: formData,
+            },
+            confirm: {
+                isLoading: true,
+                success: false,
+                error: null,
             }
         });
         API.updateDynamicPart(
             config.SCHEMA_ID,
             this.state.formsData.idPart,
             formData
-        );
+        )
+            .then(() => {
+                this.setState({
+                    confirm: {
+                        isLoading: false,
+                        success: true,
+                        error: null,
+                    }
+                });
+            })
+            .catch((err) => {
+                this.setState({
+                    confirm: {
+                        isLoading: false,
+                        success: false,
+                        error: err,
+                    }
+                });
+            });
     }
 
     renderConfirmationInput() {
@@ -216,6 +244,40 @@ class DocumentConfirmation extends Component {
         );
     }
 
+    renderUpdating() {
+        const { confirm } = this.state;
+        if (confirm.isLoading) {
+            return (
+                <ProgressBar active now={100} />
+            );
+        }
+        return (
+            <div>
+                {confirm.isLoading && (
+                    <ProgressBar active now={100}/>
+                )}
+                {confirm.error && (
+                    <ErrorPanel
+                        title="Confirmation error"
+                        content={`${confirm.error}`}
+                    />
+                )}
+                {confirm.success && (
+                    <Panel bsStyle="success">
+                        <Panel.Heading>
+                            <Panel.Title componentClass="h3">
+                                Document confirming
+                            </Panel.Title>
+                        </Panel.Heading>
+                        <Panel.Body>
+                            Ducument successfully confirmed
+                        </Panel.Body>
+                    </Panel>
+                )}
+            </div>
+        );
+    }
+
     render() {
         return (
             <div className="container">
@@ -231,6 +293,9 @@ class DocumentConfirmation extends Component {
                 }
                 {
                     this.renderCheckStatus()
+                }
+                {
+                    this.renderUpdating()
                 }
             </div>
         );
