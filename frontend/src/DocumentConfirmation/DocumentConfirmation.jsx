@@ -246,11 +246,6 @@ class DocumentConfirmation extends Component {
 
     renderUpdating() {
         const { confirm } = this.state;
-        if (confirm.isLoading) {
-            return (
-                <ProgressBar active now={100} />
-            );
-        }
         return (
             <div>
                 {confirm.isLoading && (
