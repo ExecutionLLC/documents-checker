@@ -126,9 +126,11 @@ class CheckDocument extends Component {
                         formData={this.state.formsData.idPart}
                         onSubmit={({formData}) => this.onDocumentIdSubmit(formData)}
                     >
-                        <button type="submit" className="btn btn-info">
-                            Check
-                        </button>
+                        <p>
+                            <button type="submit" className="btn btn-info">
+                                Check
+                            </button>
+                        </p>
                     </Form>
                 )}
             </div>
