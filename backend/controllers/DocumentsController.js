@@ -119,12 +119,57 @@ class DocumentsController extends BaseController {
         });
     }
 
+    _verifyUpdateDynamicPartParams(schemaId, documentIdPart, documentDynamicPart, schemaPrivateKey, documentPrivateKey) {
+        return new Promise((resolve, reject) => {
+            ErrorUtils.throwErrorIfValueIsEmpty(schemaId, 'schemaId');
+            ErrorUtils.throwErrorIfValueIsEmpty(documentIdPart, 'documentIdPart');
+            ErrorUtils.throwErrorIfValueIsEmpty(documentDynamicPart, 'documentDynamicPart');
+            ErrorUtils.throwErrorIfValueIsEmpty(schemaPrivateKey, 'schemaPrivateKey');
+            ErrorUtils.throwErrorIfValueIsEmpty(documentPrivateKey, 'documentPrivateKey');
+
+            return resolve();
+        });
+    }
+
+    updateDynamicPart(request, response) {
+        const requestId = this._generateIdAndWriteRequestLog(request);
+
+        const {schemaId} = request.params;
+        const {
+            documentIdPart,
+            documentDynamicPart,
+            schemaPrivateKey,
+            documentPrivateKey
+        } = request.body;
+
+        this._verifyUpdateDynamicPartParams(
+            schemaId,
+            documentIdPart,
+            documentDynamicPart,
+            schemaPrivateKey,
+            documentPrivateKey
+        ).then(() => {
+            return this._services.documentsService.updateDynamicPart(
+                schemaId,
+                documentIdPart,
+                documentDynamicPart,
+                schemaPrivateKey,
+                documentPrivateKey
+            );
+        }).then(() => {
+            this._sendOkAndWriteResponseLog(requestId, response);
+        }).catch((error) => {
+            this._sendErrorAndWriteResponseLogAndErrorLog(requestId, response, error);
+        });
+    }
+
     createRouter() {
         const router = new Express();
 
         router.post('/:schemaId', this.add.bind(this));
         router.get('/:schemaId', this.isExists.bind(this));
         router.get('/:schemaId/data', this.getDataPart.bind(this));
+        router.put('/:schemaId/data/dynamicPart', this.updateDynamicPart.bind(this));
 
         return router;
     }
