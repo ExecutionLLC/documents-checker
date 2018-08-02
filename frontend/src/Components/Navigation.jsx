@@ -11,7 +11,7 @@ function Navigation(props) {
         },
         {
             url: '/confirmation',
-            title: 'Document confirmation'
+            title: 'Confirm document'
         },
         {
             url: '/checkdoc',

@@ -281,7 +281,7 @@ class DocumentConfirmation extends Component {
                     page={this.props.match.url}
                 />
                 <PageHeader>
-                    Document confirmation
+                    Confirm document
                 </PageHeader>
                 {this.state.schema.error ?
                     this.renderSchemaError() :
