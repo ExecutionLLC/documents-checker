@@ -1,0 +1,32 @@
+{
+  "idPart": {
+    "date": "2018-08-02",
+    "number": "1",
+    "producer": "1111111111",
+    "consumer": "2222222222",
+    "desc": "Услуга 1",
+    "sumWOVAT": 100,
+    "VAT": 20,
+    "sumVAT": 120
+  },
+  "dataPart": {
+    "operations": [
+      {
+        "positionNumber": "1",
+        "description": "Описание 1",
+        "quantity": 1,
+        "cost": 1,
+        "valueWOVAT": 1,
+        "valueVAT": 1.2
+      },
+      {
+        "positionNumber": "2",
+        "description": "Описание 2",
+        "quantity": 2,
+        "cost": 1,
+        "valueWOVAT": 2,
+        "valueVAT": 2.4
+      }
+    ]
+  }
+}
