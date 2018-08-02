@@ -139,7 +139,7 @@ class DocumentConfirmation extends Component {
                 <Form
                     schema={schemaData.dynamicPart.jsonSchema}
                     uiSchema={{...schemaData.dynamicPart.uiSchema, 'ui:readonly': true}}
-                    formData={this.state.check.data.dynamicData}
+                    formData={this.state.check.data.dynamicPart}
                 >
                     <button type="submit" style={{display: 'none'}} />
                 </Form>
@@ -187,7 +187,7 @@ class DocumentConfirmation extends Component {
                     </Panel.Title>
                 </Panel.Heading>
                 <Panel.Body>
-                    {this.state.check.data.dynamicData ?
+                    {this.state.check.data.dynamicPart ?
                         this.renderConfirmationInfo() :
                         this.renderConfirmationInput()
                     }
