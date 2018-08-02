@@ -16,7 +16,7 @@ if (argv.length !== 6) {
     const schemaPrivateKey = argv[4];
     const pathToSchema = argv[5];
 
-    const schema = JSON.parse(fs.readFileSync(pathToSchema, 'utf8'));
+    const schemaContainer = JSON.parse(fs.readFileSync(pathToSchema, 'utf8'));
     request({
         method: 'POST',
         uri: serverUrl + '/schemas/' + schemaId,
@@ -25,8 +25,7 @@ if (argv.length !== 6) {
         },
         json: {
             schemaId,
-            schemaIdPart: schema['idPart'],
-            schemaDataPart: schema['dataPart'],
+            schemaContainer,
             schemaPrivateKey
         }
     }).then((response) => {

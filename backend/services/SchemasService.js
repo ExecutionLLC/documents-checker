@@ -10,7 +10,7 @@ class SchemasService extends BaseService {
         super(models, logger);
     }
 
-    add(schemaId, schemaIdPart, schemaDataPart, schemaPrivateKey) {
+    add(schemaId, schemaContainer, schemaPrivateKey) {
         return this._models.schemasModel.isExists(schemaId).then((isExists) => {
             if (isExists) {
                 throw new ConflictError('Schema already exists');
@@ -20,8 +20,7 @@ class SchemasService extends BaseService {
         }).then((initializationVector) => {
             return this._models.schemasModel.add(
                 schemaId,
-                schemaIdPart,
-                schemaDataPart,
+                schemaContainer,
                 schemaPrivateKey,
                 initializationVector
             );

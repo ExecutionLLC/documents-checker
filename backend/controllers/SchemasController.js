@@ -10,19 +10,10 @@ class SchemasController extends BaseController {
         super(services, logger);
     }
 
-    _verifyAddParams(schemaId, schemaIdPart, schemaDataPart, schemaPrivateKey) {
+    _verifyAddParams(schemaId, schemaContainer, schemaPrivateKey) {
         return new Promise((resolve, reject) => {
             ErrorUtils.throwErrorIfValueIsEmpty(schemaId, 'schemaId');
-            ErrorUtils.throwErrorIfValueIsEmpty(schemaIdPart, 'schemaIdPart');
-            if (!schemaIdPart['jsonSchema'] || !schemaIdPart['uiSchema']) {
-                const error = new ServerError('schemaIdPart must contain "jsonSchema" and "uiSchema" fields');
-                return reject(error);
-            }
-            ErrorUtils.throwErrorIfValueIsEmpty(schemaDataPart, 'schemaDataPart');
-            if (!schemaDataPart['jsonSchema'] || !schemaDataPart['uiSchema']) {
-                const error = new ServerError('schemaDataPart must contain "jsonSchema" and "uiSchema" fields');
-                return reject(error);
-            }
+            ErrorUtils.throwErrorIfValueIsEmpty(schemaContainer, 'schemaContainer');
             ErrorUtils.throwErrorIfValueIsEmpty(schemaPrivateKey, 'schemaPrivateKey');
 
             return resolve();
@@ -34,21 +25,18 @@ class SchemasController extends BaseController {
 
         const {schemaId} = request.params;
         const {
-            schemaIdPart,
-            schemaDataPart,
+            schemaContainer,
             schemaPrivateKey
         } = request.body;
 
         this._verifyAddParams(
             schemaId,
-            schemaIdPart,
-            schemaDataPart,
+            schemaContainer,
             schemaPrivateKey
         ).then(() => {
             return this._services.schemasService.add(
                 schemaId,
-                schemaIdPart,
-                schemaDataPart,
+                schemaContainer,
                 schemaPrivateKey
             );
         }).then(() => {
