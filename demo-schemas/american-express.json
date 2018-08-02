@@ -15,7 +15,10 @@
       },
       "title": "Акт",
       "type": "object",
-      "required": [],
+      "required": [
+        "date",
+        "number"
+      ],
       "properties": {
         "date": {
           "type": "string",
@@ -94,6 +97,9 @@
         },
         "Operation": {
           "type": "object",
+          "required": [
+            "positionNumber"
+          ],
           "properties": {
             "positionNumber": {
               "type": "string",
