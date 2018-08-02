@@ -145,6 +145,44 @@ class CheckDocument extends Component {
         );
     }
 
+    renderConfirmationInfo() {
+        const schemaData = this.state.schema.data;
+        return (
+            <div>
+                <Form
+                    schema={schemaData.dynamicPart.jsonSchema}
+                    uiSchema={{...schemaData.dynamicPart.uiSchema, 'ui:readonly': true}}
+                    formData={this.state.check.data.dynamicPart}
+                >
+                    <button type="submit" style={{display: 'none'}} />
+                </Form>
+            </div>
+        );
+    }
+
+    renderNoConfirmation() {
+        return 'Document does not confirmed';
+    }
+
+    renderDocumentConfirmation() {
+        const isConfirmed = !!this.state.check.data.dynamicPart;
+        return (
+            <Panel bsStyle={isConfirmed ? 'success' : 'danger'}>
+                <Panel.Heading>
+                    <Panel.Title componentClass="h3">
+                        Document confirmation
+                    </Panel.Title>
+                </Panel.Heading>
+                <Panel.Body>
+                    {this.state.check.data.dynamicPart ?
+                        this.renderConfirmationInfo() :
+                        this.renderNoConfirmation()
+                    }
+                </Panel.Body>
+            </Panel>
+        );
+    }
+
     renderDocument() {
         const schemaData = this.state.schema.data;
         return (
@@ -155,6 +193,7 @@ class CheckDocument extends Component {
                     </Panel.Title>
                 </Panel.Heading>
                 <Panel.Body>
+                    {this.renderDocumentConfirmation()}
                     <Form
                         schema={schemaData.dataPart.jsonSchema}
                         uiSchema={{...schemaData.dataPart.uiSchema, 'ui:readonly': true}}
