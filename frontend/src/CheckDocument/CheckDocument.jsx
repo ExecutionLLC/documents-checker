@@ -188,7 +188,9 @@ class CheckDocument extends Component {
     render() {
         return (
             <div className="container">
-                <Navigation/>
+                <Navigation
+                    page={this.props.match.url}
+                />
                 <PageHeader>
                     Check document
                 </PageHeader>

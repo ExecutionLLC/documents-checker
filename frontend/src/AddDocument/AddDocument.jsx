@@ -193,7 +193,9 @@ class AddDocument extends Component {
     render() {
         return (
             <div className="container">
-                <Navigation/>
+                <Navigation
+                    page={this.props.match.url}
+                />
                 <PageHeader>
                     Add document
                 </PageHeader>
