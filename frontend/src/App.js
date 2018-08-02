@@ -13,6 +13,7 @@ class App extends Component {
                 <Route path="/adddoc" component={AddDocument} />
                 <Route path="/checkdoc" component={CheckDocument} />
                 <Route path="/confirmation" component={DocumentConfirmation} />
+                <Route component={AddDocument} />
             </Switch>
         </Router>
     );
