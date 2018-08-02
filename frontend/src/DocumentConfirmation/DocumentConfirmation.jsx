@@ -111,6 +111,11 @@ class DocumentConfirmation extends Component {
                 dynamicPart: formData,
             }
         });
+        API.updateDynamicPart(
+            config.SCHEMA_ID,
+            this.state.formsData.idPart,
+            formData
+        );
     }
 
     renderConfirmationInput() {

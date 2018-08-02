@@ -98,6 +98,24 @@ const API = {
                 json: true
             }
         );
+    },
+
+    updateDynamicPart(schemaId, idPart, dynamicPart) {
+        return request.put(
+            `${this._getBaseUrl()}documents/${schemaId}/data/dynamicPart`,
+            {
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: {
+                    schemaPrivateKey: config.SCHEMA_PRIVATE_KEY,
+                    documentPrivateKey: config.DOCUMENT_PRIVATE_KEY,
+                    documentIdPart: idPart,
+                    documentDynamicPart: dynamicPart
+                },
+                json: true
+            }
+        );
     }
 };
 
