@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import httpStatus from 'http-status';
-import { PageHeader, Panel, ProgressBar, FormGroup, ControlLabel, FormControl, Label } from 'react-bootstrap';
+import { PageHeader, Panel, ProgressBar } from 'react-bootstrap';
 import ErrorPanel from '../Components/ErrorPanel';
 import Navigation from '../Components/Navigation';
 import Form from '../Components/FormStateSafe';
+import FileJSON from '../Components/FileJSON';
 import API from '../API';
 import config from '../config';
 
@@ -148,45 +149,25 @@ class AddDocument extends Component {
         );
     }
 
-    onFile(file) {
-        const reader = new FileReader();
-        reader.onload = () => {
-            const contents = reader.result;
-            let obj = null;
-            try {
-                obj = JSON.parse(contents);
-            } catch(e) {}
-            if (obj && obj.idPart && obj.dataPart) {
-                this.setState({
-                    formsData: {
-                        idPart: obj.idPart,
-                        dataPart: obj.dataPart,
-                    }
-                });
+    onJSON(obj) {
+        if (!obj || !obj.idPart || !obj.dataPart) {
+            return;
+        }
+        this.setState({
+            formsData: {
+                idPart: obj.idPart,
+                dataPart: obj.dataPart,
             }
-        };
-        reader.readAsText(file);
+        });
     }
 
     renderDocumentForms() {
         const schemaData = this.state.schema.data;
         return (
             <div>
-                <FormGroup>
-                    <ControlLabel
-                        htmlFor="fileUpload"
-                        style={{ cursor: "pointer" }}
-                    >
-                        <h3><Label bsStyle="success">Add file</Label></h3>
-                        <FormControl
-                            id="fileUpload"
-                            type="file"
-                            accept=".json"
-                            onChange={(evt) => this.onFile(evt.target.files[0])}
-                            style={{ display: "none" }}
-                        />
-                    </ControlLabel>
-                </FormGroup>
+                <FileJSON
+                    onJSON={(obj) => this.onJSON(obj)}
+                />
                 {schemaData && this.renderIdForm()}
                 {schemaData && this.renderDataForm()}
             </div>
