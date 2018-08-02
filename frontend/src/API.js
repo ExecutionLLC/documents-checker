@@ -25,29 +25,6 @@ const API = {
                     data.dataPart.jsonSchema &&
                     data.dataPart.uiSchema)
                 {
-                    data.dynamicPart = {
-                        "jsonSchema": {
-                            "title": "Подтверждение",
-                            "type": "object",
-                            "properties": {
-                                "date": {
-                                    "type": "string",
-                                    "title": "Дата"
-                                },
-                            }
-                        },
-                        "uiSchema": {
-                            "date": {
-                                "ui:widget": "alt-date",
-                                "ui:options": {
-                                    "yearsRange": [
-                                        1980,
-                                        2030
-                                    ]
-                                }
-                            },
-                        }
-                    };
                     return data;
                 }
                 throw new Error('Malformed schemas');
