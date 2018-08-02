@@ -24,6 +24,7 @@ function Navigation(props) {
             <Nav>
                 {tabs.map(tab => (
                     <NavItem
+                        key={tab.url}
                         href={tab.url}
                         active={tab.url === props.page}
                     >
