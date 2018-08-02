@@ -20,6 +20,7 @@ const (
 	SCHEMA_CONTAINER = "SCHEMA_CONTAINER"
 	DOCUMENT_CONTAINER = "DOCUMENT_CONTAINER"
 	DOCUMENT_ID_PART = "DOCUMENT_ID_PART"
+	DOCUMENT_DYNAMIC_PART = "DOCUMENT_DYNAMIC_PART"
 
 	SCHEMA_PRIVATE_KEY = "SCHEMA_PRIVATE_KEY"
 	DOCUMENT_PRIVATE_KEY = "DOCUMENT_PRIVATE_KEY"
@@ -44,11 +45,13 @@ type SchemaContainerPartField struct{
 type SchemaContainer struct{
 	IDpart SchemaContainerPartField `json:"idPart"`
 	DataPart SchemaContainerPartField `json:"dataPart"`
+	DynamicPart SchemaContainerPartField `json:"dynamicPart"`
 }
 
 type DocumentContainer struct{
 	IDpart map[string]interface{} `json:"idPart"`
 	DataPart map[string]interface{} `json:"dataPart"`
+	DynamicPart map[string]interface{} `json:"dynamicPart"`
 }
 
 type DocumentsChecker struct {
@@ -83,6 +86,8 @@ func (dc *DocumentsChecker) Invoke(APIstub shim.ChaincodeStubInterface) pb.Respo
 		return dc.readDocument(APIstub, functionArgs, transientMap)
 	case "isDocumentExists":
 		return dc.isDocumentExists(APIstub, functionArgs, transientMap)
+	case "updateDocumentDynamicPart":
+		return dc.updateDocumentDynamicPart(APIstub, functionArgs, transientMap)
 	case "deleteDocument":
 		return dc.deleteDocument(APIstub, functionArgs, transientMap)
 	}
@@ -121,6 +126,15 @@ func (dc *DocumentsChecker) getDocumentKey(APIstub shim.ChaincodeStubInterface, 
 		return "", err
 	}
 	return APIstub.CreateCompositeKey(DOCUMENT_COMPOSITE_KEY, []string{DOCUMENT_DATA_TYPE, schemaID, hashOfIDpart})
+}
+
+func (dc *DocumentsChecker) getDocumentKeyByRawData(APIstub shim.ChaincodeStubInterface, schemaID string, documentIDpartAsBytes []byte) (string, error) {
+	var documentIDpart map[string]interface{}
+	err := json.Unmarshal(documentIDpartAsBytes, &documentIDpart)
+	if err != nil {
+		return nil, errors.New(fmt.Sprintf("Cannot unpack ID part of document: %s", err))
+	}
+	return dc.getDocumentKey(APIstub, schemaID, documentIDpart)
 }
 
 func (dc *DocumentsChecker) createSchema(APIstub shim.ChaincodeStubInterface, args []string, transientMap map[string][]byte) pb.Response {
@@ -336,7 +350,7 @@ func (dc *DocumentsChecker) readDocument(APIstub shim.ChaincodeStubInterface, ar
 	}
 	schemaID := args[0]
 
-	privateKey, in := transientMap[DOCUMENT_PRIVATE_KEY]
+	documentPrivateKey, in := transientMap[DOCUMENT_PRIVATE_KEY]
 	if !in {
 		return shim.Error(fmt.Sprintf("Expected private key (%s)", DOCUMENT_PRIVATE_KEY))
 	}
@@ -344,17 +358,12 @@ func (dc *DocumentsChecker) readDocument(APIstub shim.ChaincodeStubInterface, ar
 	if !in {
 		return shim.Error(fmt.Sprintf("Expected ID part of document (%s)", DOCUMENT_ID_PART))
 	}
-	var documentIDpart map[string]interface{}
-	err := json.Unmarshal(documentIDpartAsBytes, &documentIDpart)
-	if err != nil {
-		return shim.Error(fmt.Sprintf("Cannot unpack ID part of document: %s", err))
-	}
-	
-	key, err := dc.getDocumentKey(APIstub, schemaID, documentIDpart)
+
+	key, err := dc.getDocumentKeyByRawData(APIstub, schemaID, documentIDpartAsBytes)
 	if err != nil {
 		return shim.Error(fmt.Sprintf("Cannot get document key: %s", err))
 	}
-	encrypter, err := dc.getDocumentEncrypter(privateKey, nil)
+	encrypter, err := dc.getDocumentEncrypter(documentPrivateKey, nil)
 	if err != nil {
 		return shim.Error(err.Error())
 	}
@@ -376,13 +385,8 @@ func (dc *DocumentsChecker) isDocumentExists(APIstub shim.ChaincodeStubInterface
 	if !in {
 		return shim.Error(fmt.Sprintf("Expected ID part of document (%s)", DOCUMENT_ID_PART))
 	}
-	var documentIDpart map[string]interface{}
-	err := json.Unmarshal(documentIDpartAsBytes, &documentIDpart)
-	if err != nil {
-		return shim.Error(fmt.Sprintf("Cannot unpack ID part of document: %s", err))
-	}
 
-	key, err := dc.getDocumentKey(APIstub, schemaID, documentIDpart)
+	key, err := dc.getDocumentKeyByRawData(APIstub, schemaID, documentIDpartAsBytes)
 	if err != nil {
 		return shim.Error(fmt.Sprintf("Cannot get document key: %s", err))
 	}
@@ -396,6 +400,77 @@ func (dc *DocumentsChecker) isDocumentExists(APIstub shim.ChaincodeStubInterface
 	}
 
 	return shim.Success([]byte("true"))
+}
+
+func (dc *DocumentsChecker) updateDocumentDynamicPart(APIstub shim.ChaincodeStubInterface, args []string, transientMap map[string][]byte) pb.Response {
+	if len(args) != 1 {
+		return shim.Error("Expected 1 parameter")
+	}
+	schemaID := args[0]
+
+	schemaPrivateKey, in := transientMap[SCHEMA_PRIVATE_KEY]
+	if !in {
+		return shim.Error(fmt.Sprintf("Expected schema private key (%s)", SCHEMA_PRIVATE_KEY))
+	}
+	documentPrivateKey, in := transientMap[DOCUMENT_PRIVATE_KEY]
+	if !in {
+		return shim.Error(fmt.Sprintf("Expected document private key (%s)", DOCUMENT_PRIVATE_KEY))
+	}
+	initVec, in := transientMap[IV]
+	if !in {
+		return shim.Error(fmt.Sprintf("Expected initialization vector (%s)", IV))
+	}
+
+	documentIDpartAsBytes, in := transientMap[DOCUMENT_ID_PART]
+	if !in {
+		return shim.Error(fmt.Sprintf("Expected ID part of document (%s)", DOCUMENT_ID_PART))
+	}
+	documentDynamicPartAsBytes, in := transientMap[DOCUMENT_DYNAMIC_PART]
+	if !in {
+		return shim.Error(fmt.Sprintf("Expected dynamic part of document (%s)", DOCUMENT_DYNAMIC_PART))
+	}
+
+	key, err := dc.getDocumentKeyByRawData(APIstub, schemaID, documentIDpartAsBytes)
+	if err != nil {
+		return shim.Error(fmt.Sprintf("Cannot get document key: %s", err))
+	}
+	encrypter, err := dc.getDocumentEncrypter(documentPrivateKey, initVec)
+	if err != nil {
+		return shim.Error(err.Error())
+	}
+        documentContainerAsBytes, err := getStateAndDecrypt(APIstub, encrypter, key)
+        if err != nil {
+		return shim.Error(fmt.Sprintf("Cannot get state: %s", err))
+	}
+	var documentDynamicPart map[string]interface{}
+	err := json.Unmarshal(documentDynamicPartAsBytes, &documentDynamicPart)
+	if err != nil {
+		return shim.Error(fmt.Sprintf("Cannot unpack dynamic part of document: %s", err))
+	}
+	var documentContainer DocumentContainer
+	err := json.Unmarshal(documentContainerAsBytes, &documentContainer)
+	if err != nil {
+		return shim.Error(fmt.Sprintf("Cannot unpack document: %s", err))
+	}
+	documentContainer.dynamicPart = documentDynamicPart
+	schemaContainer, err := dc.readSchemaContainer(APIstub, schemaID, schemaPrivateKey)
+	if err != nil {
+		return shim.Error(err.Error())
+	}
+	err = dc.checkDataBySchema(schemaContainer.DynamicPart.JSONschema, documentContainer.dynamicPart)
+	if err != nil {
+		return shim.Error(err.Error())
+	}
+	documentContainerAsBytes, err := json.Marshal(documentContainer)
+	if err != nil {
+		return shim.Error(fmt.Sprintf("Cannot pack document: %s", err))
+	}
+	err = encryptAndPutState(APIstub, documentEncrypter, documentKey, documentContainerAsBytes)
+	if err != nil {
+		return shim.Error(fmt.Sprintf("Cannot save document container: %s", err))
+	}
+
+	return shim.Success(nil)
 }
 
 func (dc *DocumentsChecker) deleteDocument(APIstub shim.ChaincodeStubInterface, args []string, transientMap map[string][]byte) pb.Response {
