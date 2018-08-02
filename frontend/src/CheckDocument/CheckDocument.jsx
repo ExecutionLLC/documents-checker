@@ -146,7 +146,7 @@ class CheckDocument extends Component {
         );
     }
 
-    renderDocument(data) {
+    renderDocument() {
         const schemaData = this.state.schema.data;
         return (
             <Panel bsStyle="info">
@@ -179,7 +179,7 @@ class CheckDocument extends Component {
                     this.renderDocumentDoesNotExist()
                 )}
                 {this.state.check.data !== null && (
-                    this.renderDocument(this.state.check.data)
+                    this.renderDocument()
                 )}
             </div>
         );
