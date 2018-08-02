@@ -152,6 +152,9 @@
     "jsonSchema": {
       "title": "Подтверждение",
       "type": "object",
+      "required": [
+        "date"
+      ],
       "properties": {
         "date": {
           "type": "string",
