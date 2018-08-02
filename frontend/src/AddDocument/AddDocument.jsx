@@ -4,6 +4,7 @@ import { PageHeader, Panel, ProgressBar } from 'react-bootstrap';
 import ErrorPanel from '../Components/ErrorPanel';
 import Navigation from '../Components/Navigation';
 import Form from '../Components/FormStateSafe';
+import FileJSON from '../Components/FileJSON';
 import API from '../API';
 import config from '../config';
 
@@ -148,10 +149,25 @@ class AddDocument extends Component {
         );
     }
 
+    onJSON(obj) {
+        if (!obj || !obj.idPart || !obj.dataPart) {
+            return;
+        }
+        this.setState({
+            formsData: {
+                idPart: obj.idPart,
+                dataPart: obj.dataPart,
+            }
+        });
+    }
+
     renderDocumentForms() {
         const schemaData = this.state.schema.data;
         return (
             <div>
+                <FileJSON
+                    onJSON={(obj) => this.onJSON(obj)}
+                />
                 {schemaData && this.renderIdForm()}
                 {schemaData && this.renderDataForm()}
             </div>
