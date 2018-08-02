@@ -132,7 +132,7 @@ func (dc *DocumentsChecker) getDocumentKeyByRawData(APIstub shim.ChaincodeStubIn
 	var documentIDpart map[string]interface{}
 	err := json.Unmarshal(documentIDpartAsBytes, &documentIDpart)
 	if err != nil {
-		return nil, errors.New(fmt.Sprintf("Cannot unpack ID part of document: %s", err))
+		return "", errors.New(fmt.Sprintf("Cannot unpack ID part of document: %s", err))
 	}
 	return dc.getDocumentKey(APIstub, schemaID, documentIDpart)
 }
@@ -443,29 +443,29 @@ func (dc *DocumentsChecker) updateDocumentDynamicPart(APIstub shim.ChaincodeStub
 		return shim.Error(fmt.Sprintf("Cannot get state: %s", err))
 	}
 	var documentDynamicPart map[string]interface{}
-	err := json.Unmarshal(documentDynamicPartAsBytes, &documentDynamicPart)
+	err = json.Unmarshal(documentDynamicPartAsBytes, &documentDynamicPart)
 	if err != nil {
 		return shim.Error(fmt.Sprintf("Cannot unpack dynamic part of document: %s", err))
 	}
 	var documentContainer DocumentContainer
-	err := json.Unmarshal(documentContainerAsBytes, &documentContainer)
+	err = json.Unmarshal(documentContainerAsBytes, &documentContainer)
 	if err != nil {
 		return shim.Error(fmt.Sprintf("Cannot unpack document: %s", err))
 	}
-	documentContainer.dynamicPart = documentDynamicPart
+	documentContainer.DynamicPart = documentDynamicPart
 	schemaContainer, err := dc.readSchemaContainer(APIstub, schemaID, schemaPrivateKey)
 	if err != nil {
 		return shim.Error(err.Error())
 	}
-	err = dc.checkDataBySchema(schemaContainer.DynamicPart.JSONschema, documentContainer.dynamicPart)
+	err = dc.checkDataBySchema(schemaContainer.DynamicPart.JSONschema, documentContainer.DynamicPart)
 	if err != nil {
 		return shim.Error(err.Error())
 	}
-	documentContainerAsBytes, err := json.Marshal(documentContainer)
+	documentContainerAsBytes, err = json.Marshal(documentContainer)
 	if err != nil {
 		return shim.Error(fmt.Sprintf("Cannot pack document: %s", err))
 	}
-	err = encryptAndPutState(APIstub, documentEncrypter, documentKey, documentContainerAsBytes)
+	err = encryptAndPutState(APIstub, encrypter, key, documentContainerAsBytes)
 	if err != nil {
 		return shim.Error(fmt.Sprintf("Cannot save document container: %s", err))
 	}
