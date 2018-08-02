@@ -60,7 +60,7 @@ class AddDocument extends Component {
     }
 
     onDocumentAdd(idPart, dataPart) {
-        console.log(this.state.confirmNowChecked);
+        const confirmNow = this.state.confirmNowChecked;
         this.setState({
             addDocument: {
                 ...this.state.addDocument,
@@ -79,14 +79,57 @@ class AddDocument extends Component {
             dataPart
         )
             .then(() => {
+                if (!confirmNow) {
+                    this.setState({
+                        addDocument: {
+                            ...this.state.addDocument,
+                            isLoading: false,
+                            error: null,
+                            success: true,
+                        },
+                    });
+                    return;
+                }
+/*
                 this.setState({
-                    addDocument: {
-                        ...this.state.addDocument,
-                        isLoading: false,
-                        error: null,
-                        success: true,
+                    formsData: {
+                        ...this.state.formsData,
+                        dynamicPart: formData,
                     },
+                    confirm: {
+                        isLoading: true,
+                        success: false,
+                        error: null,
+                    }
                 });
+*/
+                API.updateDynamicPart(
+                    config.SCHEMA_ID,
+                    idPart,
+                    {
+                        date: `${new Date()}`
+                    }
+                )
+                    .then(() => {
+                        this.setState({
+                            addDocument: {
+                                ...this.state.addDocument,
+                                isLoading: false,
+                                error: null,
+                                success: true,
+                            },
+                        });
+                    })
+                    .catch((err) => {
+                        this.setState({
+                            addDocument: {
+                                ...this.state.addDocument,
+                                isLoading: false,
+                                error: err,
+                                success: false,
+                            },
+                        });
+                    });
             })
             .catch((err) => {
                 this.setState({
