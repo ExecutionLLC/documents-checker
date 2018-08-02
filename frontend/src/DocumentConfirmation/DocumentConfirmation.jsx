@@ -110,7 +110,6 @@ class DocumentConfirmation extends Component {
     }
 
     onConfirmationSubmit(formData) {
-        console.log('onConfirmationSubmit', formData);
         this.setState({
             formsData: {
                 ...this.state.formsData,
