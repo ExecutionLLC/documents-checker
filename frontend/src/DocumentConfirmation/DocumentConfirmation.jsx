@@ -179,11 +179,15 @@ class DocumentConfirmation extends Component {
     }
 
     renderDocumentConfirmation() {
+        const isConfirmed = !!this.state.check.data.dynamicPart;
         return (
-            <Panel bsStyle="info">
+            <Panel bsStyle={isConfirmed ? 'success' : 'info'}>
                 <Panel.Heading>
                     <Panel.Title componentClass="h3">
-                        Document confirmation
+                        {isConfirmed ?
+                            'Document confirmed' :
+                            'Confirm document'
+                        }
                     </Panel.Title>
                 </Panel.Heading>
                 <Panel.Body>
