@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import httpStatus from 'http-status';
-import { PageHeader, Panel, ProgressBar } from 'react-bootstrap';
+import { PageHeader, Panel, ProgressBar, FormGroup, Checkbox, Button } from 'react-bootstrap';
 import ErrorPanel from '../Components/ErrorPanel';
 import Navigation from '../Components/Navigation';
 import Form from '../Components/FormStateSafe';
@@ -25,7 +25,8 @@ class AddDocument extends Component {
             formsData: {
                 idPart: null,
                 dataPart: null,
-            }
+            },
+            confirmNowChecked: false,
         };
         this.documentIdFormComponent = null;
         this.documentIdPart = null;
@@ -59,6 +60,7 @@ class AddDocument extends Component {
     }
 
     onDocumentAdd(idPart, dataPart) {
+        console.log(this.state.confirmNowChecked);
         this.setState({
             addDocument: {
                 ...this.state.addDocument,
@@ -111,6 +113,12 @@ class AddDocument extends Component {
         }
     }
 
+    onConfirmNowCheck(checked) {
+        this.setState({
+            confirmNowChecked: checked
+        });
+    }
+
     renderSchemaError() {
         return (
             <ErrorPanel
@@ -145,7 +153,25 @@ class AddDocument extends Component {
                 uiSchema={schemaData.dataPart.uiSchema}
                 formData={formsData.dataPart}
                 onSubmit={({formData}) => this.onDocumentDataSubmit(formData)}
-            />
+            >
+                <p>
+                    <FormGroup>
+                        <Button
+                            type="submit"
+                            className="btn-info col-xs-1"
+                        >
+                            Submit
+                        </Button>
+                        <Checkbox
+                            className="col-xs-3"
+                            onChange={(evt) => this.onConfirmNowCheck(evt.target.checked)}
+                            checked={this.state.confirmNowChecked}
+                        >
+                            Confirm now
+                        </Checkbox>
+                    </FormGroup>
+                </p>
+            </Form>
         );
     }
 
