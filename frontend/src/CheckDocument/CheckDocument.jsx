@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Form from 'react-jsonschema-form';
 import { PageHeader, Panel, ProgressBar } from 'react-bootstrap';
 import ErrorPanel from '../Components/ErrorPanel';
+import Navigation from '../Components/Navigation';
 import API from '../API';
 import config from '../config';
 
@@ -187,6 +188,7 @@ class CheckDocument extends Component {
     render() {
         return (
             <div className="container">
+                <Navigation/>
                 <PageHeader>
                     Check document
                 </PageHeader>

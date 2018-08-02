@@ -3,6 +3,7 @@ import Form from "react-jsonschema-form";
 import httpStatus from 'http-status';
 import { PageHeader, Panel, ProgressBar } from 'react-bootstrap';
 import ErrorPanel from '../Components/ErrorPanel';
+import Navigation from '../Components/Navigation';
 import API from '../API';
 import config from '../config';
 
@@ -192,6 +193,7 @@ class AddDocument extends Component {
     render() {
         return (
             <div className="container">
+                <Navigation/>
                 <PageHeader>
                     Add document
                 </PageHeader>
