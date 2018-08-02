@@ -24,6 +24,7 @@ class DocumentConfirmation extends Component {
             },
             formsData: {
                 idPart: null,
+                dynamicPart: null,
             }
         };
     }
@@ -63,6 +64,7 @@ class DocumentConfirmation extends Component {
                 error: null,
             },
             formsData: {
+                ...this.state.formsData,
                 idPart: documentIdPart,
             }
         });
@@ -103,6 +105,12 @@ class DocumentConfirmation extends Component {
 
     onConfirmationSubmit(formData) {
         console.log('onConfirmationSubmit', formData);
+        this.setState({
+            formsData: {
+                ...this.state.formsData,
+                dynamicPart: formData,
+            }
+        });
     }
 
     renderConfirmationInput() {
@@ -113,6 +121,7 @@ class DocumentConfirmation extends Component {
                     schema={schemaData.dynamicPart.jsonSchema}
                     uiSchema={schemaData.dynamicPart.uiSchema}
                     onSubmit={({formData}) => this.onConfirmationSubmit(formData)}
+                    formData={this.state.formsData.dynamicPart}
                 />
             </div>
         );
