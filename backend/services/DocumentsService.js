@@ -47,6 +47,25 @@ class DocumentService extends BaseService {
     isExists(schemaId, documentIdPart) {
         return this._models.documentsModel.isExists(schemaId, documentIdPart);
     }
+
+    updateDynamicPart(schemaId, documentIdPart, documentDynamicPart, schemaPrivateKey, documentPrivateKey) {
+        return this._models.documentsModel.isExists(schemaId, documentIdPart).then((isExists) => {
+            if (!isExists) {
+                throw new NotFoundError('Document not found');
+            }
+
+            return CryptoUtils.generateInitializationVector(16);
+        }).then((initializationVector) => {
+            return this._models.documentsModel.updateDynamicPart(
+                schemaId,
+                documentIdPart,
+                documentDynamicPart,
+                schemaPrivateKey,
+                documentPrivateKey,
+                initializationVector
+            );
+        });
+    }
 }
 
 module.exports = DocumentService;
