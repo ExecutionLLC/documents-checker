@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import httpStatus from 'http-status';
-import { PageHeader, Panel, ProgressBar } from 'react-bootstrap';
+import { PageHeader, Panel, ProgressBar, Glyphicon } from 'react-bootstrap';
 import ErrorPanel from '../Components/ErrorPanel';
 import Navigation from '../Components/Navigation';
 import Form from '../Components/FormStateSafe';
@@ -22,7 +22,7 @@ class AddDocument extends Component {
             addDocument: {
                 isLoading: false,
                 error: null,
-                success: false,
+                transactionId: null,
             },
             formsData: {
                 idPart: null,
@@ -66,7 +66,7 @@ class AddDocument extends Component {
                 ...this.state.addDocument,
                 isLoading: true,
                 error: null,
-                success: false,
+                transactionId: null,
             },
             formsData: {
                 idPart,
@@ -78,13 +78,13 @@ class AddDocument extends Component {
             idPart,
             dataPart
         )
-            .then(() => {
+            .then((transactionId) => {
                 this.setState({
                     addDocument: {
                         ...this.state.addDocument,
                         isLoading: false,
                         error: null,
-                        success: true,
+                        transactionId,
                     },
                 });
             })
@@ -192,11 +192,11 @@ class AddDocument extends Component {
                         }
                     />
                 )}
-                {this.state.addDocument.success && (
+                {this.state.addDocument.transactionId && (
                     <Panel bsStyle="success">
                         <Panel.Heading>
                             <Panel.Title componentClass="h3">
-                                Document adding
+                                Document adding, transactionId=${this.state.addDocument.transactionId} <Glyphicon glyph="ok" />
                             </Panel.Title>
                         </Panel.Heading>
                         <Panel.Body>

@@ -44,7 +44,8 @@ const API = {
             },
             json: true
         };
-        return request.post(`${this._getBaseUrl()}documents/${schemaId}`, params);
+        return request.post(`${this._getBaseUrl()}documents/${schemaId}`, params)
+            .then(result => result.transactionId);
     },
 
     isDocumentExists(schemaId, idPart) {
@@ -88,7 +89,8 @@ const API = {
                 },
                 json: true
             }
-        );
+        )
+            .then(result => result.transactionId);
     }
 };
 

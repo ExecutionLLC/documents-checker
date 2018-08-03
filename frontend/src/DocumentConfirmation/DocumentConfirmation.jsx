@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import httpStatus from 'http-status';
-import { PageHeader, Panel, ProgressBar } from 'react-bootstrap';
+import { PageHeader, Panel, ProgressBar, Glyphicon } from 'react-bootstrap';
 import ErrorPanel from '../Components/ErrorPanel';
 import Navigation from '../Components/Navigation';
 import Form from '../Components/FormStateSafe';
@@ -29,6 +29,7 @@ class DocumentConfirmation extends Component {
                 isLoading: false,
                 error: null,
                 success: false,
+                transactionId: null,
             },
             formsData: {
                 idPart: null,
@@ -120,6 +121,7 @@ class DocumentConfirmation extends Component {
             confirm: {
                 isLoading: true,
                 success: false,
+                transactionId: null,
                 error: null,
             }
         });
@@ -128,11 +130,12 @@ class DocumentConfirmation extends Component {
             this.state.formsData.idPart,
             formData
         )
-            .then(() => {
+            .then((transactionId) => {
                 this.setState({
                     confirm: {
                         isLoading: false,
                         success: true,
+                        transactionId,
                         error: null,
                     }
                 });
@@ -142,6 +145,7 @@ class DocumentConfirmation extends Component {
                     confirm: {
                         isLoading: false,
                         success: false,
+                        transactionId: null,
                         error: err,
                     }
                 });
@@ -276,11 +280,11 @@ class DocumentConfirmation extends Component {
                         content={`${confirm.error}`}
                     />
                 )}
-                {confirm.success && (
+                {confirm.transactionId && (
                     <Panel bsStyle="success">
                         <Panel.Heading>
                             <Panel.Title componentClass="h3">
-                                Document confirming
+                                Document confirming, transactionId=${confirm.transactionId} <Glyphicon glyph="ok" />
                             </Panel.Title>
                         </Panel.Heading>
                         <Panel.Body>
