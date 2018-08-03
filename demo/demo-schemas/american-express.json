@@ -178,5 +178,6 @@
         }
       }
     }
-  }
+  },
+  "validator": "american_express"
 }

@@ -7,6 +7,7 @@ import Form from '../Components/FormStateSafe';
 import FileJSON from '../Components/FileJSON';
 import { InstructionsAddDocument } from "../Components/Instructions";
 import API from '../API';
+import validator from '../validations';
 import config from '../config';
 import '../css/styles.css';
 
@@ -20,6 +21,7 @@ class AddDocument extends Component {
                 error: null,
             },
             addDocument: {
+                validationError: null,
                 isLoading: false,
                 error: null,
                 transactionId: null,
@@ -61,9 +63,29 @@ class AddDocument extends Component {
     }
 
     onDocumentAdd(idPart, dataPart) {
+        const validationError = validator(this.state.schema.data.validator, idPart, dataPart);
+
+        if (validationError) {
+            this.setState({
+                addDocument: {
+                    ...this.state.addDocument,
+                    validationError,
+                    isLoading: false,
+                    error: null,
+                    transactionId: null,
+                },
+                formsData: {
+                    idPart,
+                    dataPart
+                }
+            });
+            return;
+        }
+
         this.setState({
             addDocument: {
                 ...this.state.addDocument,
+                validationError: null,
                 isLoading: true,
                 error: null,
                 transactionId: null,
@@ -179,6 +201,14 @@ class AddDocument extends Component {
     renderAddDocumentStatus() {
         return (
             <div>
+                {
+                    this.state.addDocument.validationError && (
+                        <ErrorPanel
+                            title="Document validation error"
+                            content={this.state.addDocument.validationError}
+                        />
+                    )
+                }
                 {this.state.addDocument.isLoading && (
                     <ProgressBar active now={100} />
                 )}
