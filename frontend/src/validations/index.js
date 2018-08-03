@@ -1,7 +1,4 @@
-import americanExpress from './americanExpress';
-
 const validators = [
-    americanExpress,
 ];
 
 function nullValidator() {
