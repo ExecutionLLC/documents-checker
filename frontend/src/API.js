@@ -47,10 +47,6 @@ const API = {
         return request.post(`${this._getBaseUrl()}documents/${schemaId}`, params);
     },
 
-    getDocuments() {
-        return request.get(`${this._getBaseUrl()}documents`);
-    },
-
     isDocumentExists(schemaId, idPart) {
         return request.get(
             `${this._getBaseUrl()}documents/${schemaId}`,
