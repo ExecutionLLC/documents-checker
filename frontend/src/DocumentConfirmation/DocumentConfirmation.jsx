@@ -5,6 +5,7 @@ import ErrorPanel from '../Components/ErrorPanel';
 import Navigation from '../Components/Navigation';
 import Form from '../Components/FormStateSafe';
 import FileJSON from '../Components/FileJSON';
+import { InstructionsConfirmDocument } from "../Components/Instructions";
 import API from '../API';
 import config from '../config';
 import '../css/styles.css';
@@ -297,6 +298,7 @@ class DocumentConfirmation extends Component {
                 <Navigation
                     page={this.props.match.url}
                 />
+                <InstructionsConfirmDocument/>
                 <PageHeader>
                     Confirm document
                 </PageHeader>

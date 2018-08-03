@@ -1,44 +1,46 @@
 import React from 'react';
 
 
-function Instructions() {
+function renderCheckValidation() {
+    return (
+        <p>
+            При сообщениях о неверно введённых данных - исправьте введённые данные.
+        </p>
+    );
+}
 
-    function renderCheckValidation() {
-        return (
-            <p>
-                При сообщениях о неверно введённых данных - исправьте введённые данные.
-            </p>
-        );
-    }
-
-    function renderFindById() {
-        return (
-            <div>
-                <p>
-                    Заполните заголовок документа, введя корректные значения во все обязательные поля ввода.
-                </p>
-                <p>
-                    Заполнить заголовок документа можно данными из файла, загрузив его нажатием кнопки "Fill by JSON file".
-                </p>
-                <p>
-                    Запросите документ нажатием кнопки "Submit".
-                </p>
-                {renderCheckValidation()}
-                <p>
-                    Если документ не найден - появляется соответствующее сообщение.
-                </p>
-            </div>
-        );
-    }
-
+function renderFindById() {
     return (
         <div>
-            <h1>
-                Использование
-            </h1>
-            <h2>
-                Добавление документа
-            </h2>
+            <p>
+                Заполните заголовок документа, введя корректные значения во все обязательные поля ввода.
+            </p>
+            <p>
+                Заполнить заголовок документа можно данными из файла, загрузив его нажатием кнопки "Fill by JSON file".
+            </p>
+            <p>
+                Запросите документ нажатием кнопки "Submit".
+            </p>
+            {renderCheckValidation()}
+            <p>
+                Если документ не найден - появляется соответствующее сообщение.
+            </p>
+        </div>
+    );
+}
+
+function renderUsing() {
+    return (
+        <h1>
+            Использование
+        </h1>
+    );
+}
+
+function InstructionsAddDocument() {
+    return (
+        <div>
+            {renderUsing()}
             <p>
                 Заполните заголовок документа, введя корректные значения во все обязательные поля ввода.
                 По введённым в заголовке документа данным в дальнейшем будет вестись поиск документа.
@@ -60,9 +62,14 @@ function Instructions() {
             <p>
                 Если документ добавлен - появляется соответствующее сообщение.
             </p>
-            <h2>
-                Подтверждение документа
-            </h2>
+        </div>
+    );
+}
+
+function InstructionsConfirmDocument() {
+    return (
+        <div>
+            {renderUsing()}
             {renderFindById()}
             <p>
                 Если у найденного документа документа есть подтверждение, то выводится информация о нём.
@@ -78,6 +85,13 @@ function Instructions() {
             <p>
                 Если документ подтверждён - появляется соответствующее сообщение.
             </p>
+        </div>
+    );
+}
+
+function InstructionsCheckDocument() {
+    return (
+        <div>
             <h2>
                 Просмотр документа
             </h2>
@@ -89,4 +103,8 @@ function Instructions() {
     );
 }
 
-export default Instructions;
+export {
+    InstructionsAddDocument,
+    InstructionsConfirmDocument,
+    InstructionsCheckDocument
+};
