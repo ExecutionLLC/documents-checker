@@ -72,6 +72,12 @@ class DocumentConfirmation extends Component {
                 isLoading: true,
                 error: null,
             },
+            confirm: {
+                isLoading: false,
+                error: null,
+                success: false,
+                transactionId: null,
+            },
             formsData: {
                 ...this.state.formsData,
                 idPart: documentIdPart,
