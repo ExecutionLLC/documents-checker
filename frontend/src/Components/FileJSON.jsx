@@ -3,7 +3,8 @@ import { FormGroup, ControlLabel, FormControl, Label } from 'react-bootstrap';
 
 
 class FileJSON extends Component {
-    onFile(file) {
+    onFile(file, input) {
+        input.value = '';
         const reader = new FileReader();
         reader.onload = () => {
             const contents = reader.result;
@@ -28,7 +29,7 @@ class FileJSON extends Component {
                         id="fileUpload"
                         type="file"
                         accept=".json"
-                        onChange={(evt) => this.onFile(evt.target.files[0])}
+                        onChange={(evt) => this.onFile(evt.target.files[0], evt.target)}
                         style={{ display: "none" }}
                     />
                 </ControlLabel>
