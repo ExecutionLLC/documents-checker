@@ -28,6 +28,13 @@ class FormStateSafe extends Component {
                         0
                     )
                 }
+                onChange={(...args) =>
+                    this.props.onChange &&
+                    setTimeout(
+                        () => this.props.onChange(...args),
+                        0
+                    )
+                }
                 ref={(comp) => {this.formComponent = comp;}}
                 liveValidate
                 showErrorList={false}

@@ -126,6 +126,14 @@ class AddDocument extends Component {
         this.onDocumentAdd(this.documentIdPart, this.documentDataPart);
     }
 
+    onDocumentIdChange(documentIdPart) {
+        this.setState({
+            formsData: {
+                idPart: documentIdPart
+            }
+        });
+    }
+
     onDocumentDataSubmit(documentDataPart) {
         this.documentDataPart = documentDataPart;
         if (this.documentIdFormComponent) {
@@ -133,6 +141,14 @@ class AddDocument extends Component {
                 new CustomEvent('submitFormId')
             );
         }
+    }
+
+    onDocumentDataChange(documentDataPart) {
+        this.setState({
+            formsData: {
+                dataPart: documentDataPart
+            }
+        });
     }
 
     onFormError() {
@@ -165,6 +181,7 @@ class AddDocument extends Component {
                 uiSchema={schemaData.idPart.uiSchema}
                 formData={formsData.idPart}
                 onSubmit={({formData}) => this.onDocumentIdSubmit(formData)}
+                onChange={({formData}) => this.onDocumentIdChange(formData)}
                 onError={() => this.onFormError()}
                 ref={ref => this.onDocumentIdFormComponent(ref)}
             >
@@ -182,6 +199,7 @@ class AddDocument extends Component {
                 uiSchema={schemaData.dataPart.uiSchema}
                 formData={formsData.dataPart}
                 onSubmit={({formData}) => this.onDocumentDataSubmit(formData)}
+                onChange={({formData}) => this.onDocumentDataChange(formData)}
                 onError={() => this.onFormError()}
             />
         );
