@@ -5,6 +5,7 @@ import ErrorPanel from '../Components/ErrorPanel';
 import Navigation from '../Components/Navigation';
 import Form from '../Components/FormStateSafe';
 import FileJSON from '../Components/FileJSON';
+import Instructions from './Instructions';
 import API from '../API';
 import config from '../config';
 import '../css/styles.css';
@@ -216,6 +217,7 @@ class AddDocument extends Component {
                 <PageHeader>
                     Add document
                 </PageHeader>
+                <Instructions/>
                 {this.state.schema.error ?
                     this.renderSchemaError() :
                     this.renderDocumentForms()
