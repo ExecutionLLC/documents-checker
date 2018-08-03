@@ -23,7 +23,7 @@ class FileJSON extends Component {
                     htmlFor="fileUpload"
                     style={{ cursor: "pointer" }}
                 >
-                    <h3><Label bsStyle="success">Fill by JSON file</Label></h3>
+                    <h3><Label bsStyle="success">Fill by file</Label></h3>
                     <FormControl
                         id="fileUpload"
                         type="file"
