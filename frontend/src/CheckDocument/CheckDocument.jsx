@@ -6,6 +6,7 @@ import Form from '../Components/FormStateSafe';
 import FileJSON from '../Components/FileJSON';
 import API from '../API';
 import config from '../config';
+import '../css/styles.css';
 
 
 class CheckDocument extends Component {
@@ -140,7 +141,13 @@ class CheckDocument extends Component {
                             uiSchema={schemaData.idPart.uiSchema}
                             formData={this.state.formsData.idPart}
                             onSubmit={({formData}) => this.onDocumentIdSubmit(formData)}
-                        />
+                        >
+                            <p>
+                                <button type="submit" className="btn btn-info">
+                                    Check
+                                </button>
+                            </p>
+                        </Form>
                     </div>
                 )}
             </div>

@@ -7,6 +7,7 @@ import Form from '../Components/FormStateSafe';
 import FileJSON from '../Components/FileJSON';
 import API from '../API';
 import config from '../config';
+import '../css/styles.css';
 
 
 class AddDocument extends Component {

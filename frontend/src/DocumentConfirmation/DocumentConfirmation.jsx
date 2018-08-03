@@ -7,6 +7,7 @@ import Form from '../Components/FormStateSafe';
 import FileJSON from '../Components/FileJSON';
 import API from '../API';
 import config from '../config';
+import '../css/styles.css';
 
 
 class DocumentConfirmation extends Component {
@@ -298,7 +299,7 @@ class DocumentConfirmation extends Component {
                     page={this.props.match.url}
                 />
                 <PageHeader>
-                    Document confirmation
+                    Confirm document
                 </PageHeader>
                 {this.state.schema.error ?
                     this.renderSchemaError() :
