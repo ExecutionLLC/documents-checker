@@ -196,7 +196,8 @@ class AddDocument extends Component {
                     <Panel bsStyle="success">
                         <Panel.Heading>
                             <Panel.Title componentClass="h3">
-                                Document adding, transactionId=${this.state.addDocument.transactionId} <Glyphicon glyph="ok" />
+                                Document adding<br />
+                                transactionId={this.state.addDocument.transactionId} <Glyphicon glyph="ok" />
                             </Panel.Title>
                         </Panel.Heading>
                         <Panel.Body>

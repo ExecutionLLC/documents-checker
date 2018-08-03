@@ -290,7 +290,8 @@ class DocumentConfirmation extends Component {
                     <Panel bsStyle="success">
                         <Panel.Heading>
                             <Panel.Title componentClass="h3">
-                                Document confirming, transactionId=${confirm.transactionId} <Glyphicon glyph="ok" />
+                                Document confirming<br/>
+                                transactionId={confirm.transactionId} <Glyphicon glyph="ok" />
                             </Panel.Title>
                         </Panel.Heading>
                         <Panel.Body>
