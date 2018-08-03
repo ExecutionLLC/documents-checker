@@ -2,6 +2,7 @@ const BaseController = require('./BaseController');
 const ErrorUtils = require('../utils/error');
 const Express = require('express');
 const getLogger = require('../utils/log');
+const HttpStatusCodes = require('http-status-codes');
 
 const { Base64 } = require('js-base64');
 
@@ -48,8 +49,8 @@ class DocumentsController extends BaseController {
                 schemaPrivateKey,
                 documentPrivateKey
             );
-        }).then(() => {
-            this._sendOkAndWriteResponseLog(requestId, response);
+        }).then((transactionId) => {
+            this._sendJsonAndWriteResponseLog(requestId, response, {transactionId}, HttpStatusCodes.CREATED);
         }).catch((error) => {
             this._sendErrorAndWriteResponseLogAndErrorLog(requestId, response, error);
         });
@@ -156,8 +157,8 @@ class DocumentsController extends BaseController {
                 schemaPrivateKey,
                 documentPrivateKey
             );
-        }).then(() => {
-            this._sendOkAndWriteResponseLog(requestId, response);
+        }).then((transactionId) => {
+            this._sendJsonAndWriteResponseLog(requestId, response, {transactionId});
         }).catch((error) => {
             this._sendErrorAndWriteResponseLogAndErrorLog(requestId, response, error);
         });

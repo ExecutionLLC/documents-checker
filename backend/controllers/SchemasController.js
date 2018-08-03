@@ -2,7 +2,7 @@ const BaseController = require('./BaseController');
 const getLogger = require('../utils/log');
 const ErrorUtils = require('../utils/error');
 const Express = require('express');
-const ServerError = require('../utils/errors/ServerError');
+const HttpStatusCodes = require('http-status-codes');
 
 class SchemasController extends BaseController {
     constructor(services) {
@@ -39,8 +39,8 @@ class SchemasController extends BaseController {
                 schemaContainer,
                 schemaPrivateKey
             );
-        }).then(() => {
-            this._sendOkAndWriteResponseLog(requestId, response);
+        }).then((transactionId) => {
+            this._sendJsonAndWriteResponseLog(requestId, response, {transactionId}, HttpStatusCodes.CREATED);
         }).catch((error) => {
             this._sendErrorAndWriteResponseLogAndErrorLog(requestId, response, error);
         });
