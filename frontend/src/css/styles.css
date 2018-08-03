@@ -13,3 +13,15 @@ body {
     display: block;
     line-height: initial;
 }
+
+.data-form.noerrors .panel.errors {
+    display: none;
+}
+
+.data-form .form-control + div > p {
+    display: none;
+}
+
+.data-form .error-detail {
+    display: none;
+}

@@ -1,5 +1,7 @@
 import React, {Component} from 'react';
 import Form from "react-jsonschema-form";
+import '../css/styles.css';
+
 
 // Default Form fails to reset validation whet onSubmit calls setState
 // Can not be stateless due to using its ref
@@ -18,6 +20,7 @@ class FormStateSafe extends Component {
     render() {
         return (
             <Form
+                className="data-form noerrors"
                 {...this.props}
                 onSubmit={(...args) =>
                     setTimeout(
@@ -26,6 +29,7 @@ class FormStateSafe extends Component {
                     )
                 }
                 ref={(comp) => {this.formComponent = comp;}}
+                liveValidate
             />
         );
     }
