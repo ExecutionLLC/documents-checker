@@ -22,10 +22,10 @@
       {
         "positionNumber": "2",
         "description": "Описание 2",
-        "quantity": 2,
+        "quantity": 99,
         "cost": 1,
-        "valueWOVAT": 2,
-        "valueVAT": 2.4
+        "valueWOVAT": 99,
+        "valueVAT": 118.8
       }
     ]
   }
