@@ -135,6 +135,18 @@ class AddDocument extends Component {
         }
     }
 
+    onFormError() {
+        this.setState({
+            addDocument: {
+                ...this.state.addDocument,
+                validationError: 'Form validation error',
+                isLoading: false,
+                error: null,
+                transactionId: null,
+            },
+        });
+    }
+
     renderSchemaError() {
         return (
             <ErrorPanel
@@ -153,6 +165,7 @@ class AddDocument extends Component {
                 uiSchema={schemaData.idPart.uiSchema}
                 formData={formsData.idPart}
                 onSubmit={({formData}) => this.onDocumentIdSubmit(formData)}
+                onError={() => this.onFormError()}
                 ref={ref => this.onDocumentIdFormComponent(ref)}
             >
                 <button type="submit" style={{display: 'none'}} />
@@ -169,6 +182,7 @@ class AddDocument extends Component {
                 uiSchema={schemaData.dataPart.uiSchema}
                 formData={formsData.dataPart}
                 onSubmit={({formData}) => this.onDocumentDataSubmit(formData)}
+                onError={() => this.onFormError()}
             />
         );
     }
