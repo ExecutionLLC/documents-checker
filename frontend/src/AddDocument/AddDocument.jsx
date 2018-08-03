@@ -129,6 +129,7 @@ class AddDocument extends Component {
     onDocumentIdChange(documentIdPart) {
         this.setState({
             formsData: {
+                ...this.state.formsData,
                 idPart: documentIdPart
             }
         });
@@ -146,6 +147,7 @@ class AddDocument extends Component {
     onDocumentDataChange(documentDataPart) {
         this.setState({
             formsData: {
+                ...this.state.formsData,
                 dataPart: documentDataPart
             }
         });
