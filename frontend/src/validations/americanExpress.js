@@ -12,7 +12,6 @@ function arraySum(arr) {
 const NOTEQUAL = '\u2260';
 
 function validator(idPart, dataPart) {
-    console.log('AE validator', idPart, dataPart);
     const expectedSumVAT = idPart.sumWOVAT + idPart.VAT;
     if (!equalNum(expectedSumVAT, idPart.sumVAT)) {
         return `Sum incorrect, ${idPart.sumWOVAT} + ${idPart.VAT} = ${expectedSumVAT} ${NOTEQUAL} ${idPart.sumVAT}`;
