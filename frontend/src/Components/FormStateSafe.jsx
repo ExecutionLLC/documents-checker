@@ -20,7 +20,7 @@ class FormStateSafe extends Component {
     render() {
         return (
             <Form
-                className="data-form noerrors"
+                className="data-form"
                 {...this.props}
                 onSubmit={(...args) =>
                     setTimeout(
@@ -30,6 +30,7 @@ class FormStateSafe extends Component {
                 }
                 ref={(comp) => {this.formComponent = comp;}}
                 liveValidate
+                showErrorList={false}
             />
         );
     }

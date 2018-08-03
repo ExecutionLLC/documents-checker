@@ -14,10 +14,7 @@ body {
     line-height: initial;
 }
 
-.data-form.noerrors .panel.errors {
-    display: none;
-}
-
+.data-form ul.list-inline + div > p,
 .data-form .form-control + div > p {
     display: none;
 }
