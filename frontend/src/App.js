@@ -6,18 +6,22 @@ import DocumentConfirmation from './DocumentConfirmation/DocumentConfirmation';
 
 
 class App extends Component {
-  render() {
-    return (
-        <Router>
-            <Switch>
-                <Route path="/adddoc" component={AddDocument} />
-                <Route path="/checkdoc" component={CheckDocument} />
-                <Route path="/confirmation" component={DocumentConfirmation} />
-                <Route component={AddDocument} />
-            </Switch>
-        </Router>
-    );
-  }
+    componentDidMount() {
+        document.title = "Система сверки документов";
+    }
+
+    render() {
+        return (
+            <Router>
+                <Switch>
+                    <Route path="/adddoc" component={AddDocument}/>
+                    <Route path="/checkdoc" component={CheckDocument}/>
+                    <Route path="/confirmation" component={DocumentConfirmation}/>
+                    <Route component={AddDocument}/>
+                </Switch>
+            </Router>
+        );
+    }
 }
 
 export default App;
