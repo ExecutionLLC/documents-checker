@@ -52,7 +52,8 @@ type DocumentContainer struct{
 	IDpart map[string]interface{} `json:"idPart"`
 	DataPart map[string]interface{} `json:"dataPart"`
 	DynamicPart map[string]interface{} `json:"dynamicPart"`
-	TransactionID string `json:"transactionId"`
+	DataPartTxID string `json:"dataPartTxId"`
+	DynamicPartTxID string `json:"dynamicPartTxId"`
 }
 
 type DocumentsChecker struct {
@@ -333,7 +334,7 @@ func (dc *DocumentsChecker) createDocument(APIstub shim.ChaincodeStubInterface, 
 	if err != nil {
 		return shim.Error(err.Error())
 	}
-	documentContainer.TransactionID = APIstub.GetTxID()
+	documentContainer.DataPartTxID = APIstub.GetTxID()
 	documentContainerAsBytes, err = json.Marshal(documentContainer)
 	if err != nil {
 		return shim.Error(fmt.Sprintf("Cannot pack document: %s", err))
@@ -467,6 +468,7 @@ func (dc *DocumentsChecker) updateDocumentDynamicPart(APIstub shim.ChaincodeStub
 	if err != nil {
 		return shim.Error(err.Error())
 	}
+	documentContainer.DynamicPartTxID = APIstub.GetTxID()
 	documentContainerAsBytes, err = json.Marshal(documentContainer)
 	if err != nil {
 		return shim.Error(fmt.Sprintf("Cannot pack document: %s", err))
