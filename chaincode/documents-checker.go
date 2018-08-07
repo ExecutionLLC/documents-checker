@@ -52,6 +52,7 @@ type DocumentContainer struct{
 	IDpart map[string]interface{} `json:"idPart"`
 	DataPart map[string]interface{} `json:"dataPart"`
 	DynamicPart map[string]interface{} `json:"dynamicPart"`
+	TransactionID string `json:"transactionId"`
 }
 
 type DocumentsChecker struct {
@@ -331,6 +332,11 @@ func (dc *DocumentsChecker) createDocument(APIstub shim.ChaincodeStubInterface, 
 	err = dc.checkDataBySchema(schemaContainer.DataPart.JSONschema, documentContainer.DataPart)
 	if err != nil {
 		return shim.Error(err.Error())
+	}
+	documentContainer.TransactionID = APIstub.GetTxID()
+	documentContainerAsBytes, err = json.Marshal(documentContainer)
+	if err != nil {
+		return shim.Error(fmt.Sprintf("Cannot pack document: %s", err))
 	}
 	documentEncrypter, err := dc.getDocumentEncrypter(documentPrivateKey, initVec)
 	if err != nil {
