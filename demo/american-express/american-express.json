@@ -30,15 +30,15 @@
         },
         "producer": {
           "$ref": "#/definitions/TIN",
-          "title": "Поставщик (ИНН)"
+          "title": "Исполнитель (ИНН)"
         },
         "consumer": {
           "$ref": "#/definitions/TIN",
-          "title": "Покупатель (ИНН)"
+          "title": "Заказчик (ИНН)"
         },
         "desc": {
           "type": "string",
-          "title": "Краткое описание услуг"
+          "title": "Основание"
         },
         "sumWOVAT": {
           "$ref": "#/definitions/Sum",
@@ -107,7 +107,7 @@
             },
             "description": {
               "type": "string",
-              "title": "Описание услуги"
+              "title": "Наименование работ, услуг"
             },
             "quantity": {
               "type": "integer",
@@ -119,11 +119,11 @@
             },
             "valueWOVAT": {
               "$ref": "#/definitions/Sum",
-              "title": "Стоимость без НДС"
+              "title": "Сумма без НДС"
             },
             "valueVAT": {
               "$ref": "#/definitions/Sum",
-              "title": "Стоимость с НДС"
+              "title": "Сумма с НДС"
             }
           }
         }
@@ -132,7 +132,7 @@
       "properties": {
         "operations": {
           "type": "array",
-          "title": "Операции",
+          "title": "Позиции",
           "items": {
             "$ref": "#/definitions/Operation"
           }
