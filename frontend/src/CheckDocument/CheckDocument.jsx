@@ -214,6 +214,13 @@ class CheckDocument extends Component {
     renderDocument() {
         const schemaData = this.state.schema.data;
         const isConfirmed = !!this.state.check.data.dynamicPart;
+        const readOnlyUiSchema = {...schemaData.dataPart.uiSchema};
+        readOnlyUiSchema['ui:readonly'] = true;
+        readOnlyUiSchema.operations["ui:options"] = {
+            addable: false,
+            removable: false,
+            orderable: false
+        };
 
         return (
             <Panel bsStyle={isConfirmed ? 'success' : 'warning'}>
@@ -229,7 +236,7 @@ class CheckDocument extends Component {
                     {isConfirmed && this.renderConfirmationInfo()}
                     <Form
                         schema={schemaData.dataPart.jsonSchema}
-                        uiSchema={{...schemaData.dataPart.uiSchema, 'ui:readonly': true}}
+                        uiSchema={readOnlyUiSchema}
                         formData={this.state.check.data.dataPart}
                     >
                         <button type="submit" style={{display: 'none'}} />
