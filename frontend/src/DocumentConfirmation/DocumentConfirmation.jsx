@@ -235,6 +235,27 @@ class DocumentConfirmation extends Component {
         );
     }
 
+    renderConfirmationInfoTitleText() {
+        return (
+            <div>
+                Document confirmed
+                <br />
+                <br />
+                Document transaction id = {this.state.check.data.dataPartTxId} <Glyphicon glyph="ok" />
+                <br />
+                Conformation transaction id = {this.state.check.data.dynamicPartTxId} <Glyphicon glyph="ok" />
+            </div>
+        );
+    }
+
+    renderConfirmationInputTitleText() {
+        return (
+            <div>
+                Confirm document
+            </div>
+        );
+    }
+
     renderDocumentConfirmation() {
         const isConfirmed = !!this.state.check.data.dynamicPart;
         return (
@@ -242,13 +263,13 @@ class DocumentConfirmation extends Component {
                 <Panel.Heading>
                     <Panel.Title componentClass="h3">
                         {isConfirmed ?
-                            'Document confirmed' :
-                            'Confirm document'
+                            this.renderConfirmationInfoTitleText() :
+                            this.renderConfirmationInputTitleText()
                         }
                     </Panel.Title>
                 </Panel.Heading>
                 <Panel.Body>
-                    {this.state.check.data.dynamicPart ?
+                    {isConfirmed ?
                         this.renderConfirmationInfo() :
                         this.renderConfirmationInput()
                     }
