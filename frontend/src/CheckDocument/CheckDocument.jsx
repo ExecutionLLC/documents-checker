@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { PageHeader, Panel, ProgressBar } from 'react-bootstrap';
+import { PageHeader, Panel, ProgressBar, Glyphicon } from 'react-bootstrap';
 import ErrorPanel from '../Components/ErrorPanel';
 import Navigation from '../Components/Navigation';
 import Form from '../Components/FormStateSafe';
@@ -189,36 +189,44 @@ class CheckDocument extends Component {
         return 'Document does not confirmed';
     }
 
-    renderDocumentConfirmation() {
-        const isConfirmed = !!this.state.check.data.dynamicPart;
+    renderConformationInfoTitleText() {
+        const schemaData = this.state.check.data;
         return (
-            <Panel bsStyle={isConfirmed ? 'success' : 'danger'}>
-                <Panel.Heading>
-                    <Panel.Title componentClass="h3">
-                        Document confirmation
-                    </Panel.Title>
-                </Panel.Heading>
-                <Panel.Body>
-                    {this.state.check.data.dynamicPart ?
-                        this.renderConfirmationInfo() :
-                        this.renderNoConfirmation()
-                    }
-                </Panel.Body>
-            </Panel>
+            <div>
+                Verification passed successfully
+                <br />
+                <br />
+                Document transaction id = {schemaData.dataPartTxId} <Glyphicon glyph="ok" />
+                <br />
+                Conformation transaction id = {schemaData.dynamicPartTxId} <Glyphicon glyph="ok" />
+            </div>
+        );
+    }
+
+    renderNoConformationTitleText () {
+        return (
+            <div>
+                Document exists but does not confirmed
+            </div>
         );
     }
 
     renderDocument() {
         const schemaData = this.state.schema.data;
+        const isConfirmed = !!this.state.check.data.dynamicPart;
+
         return (
-            <Panel bsStyle="info">
+            <Panel bsStyle={isConfirmed ? 'success' : 'warning'}>
                 <Panel.Heading>
                     <Panel.Title componentClass="h3">
-                        Document
+                        {this.state.check.data.dynamicPart ?
+                            this.renderConformationInfoTitleText() :
+                            this.renderNoConformationTitleText()
+                        }
                     </Panel.Title>
                 </Panel.Heading>
                 <Panel.Body>
-                    {this.renderDocumentConfirmation()}
+                    {isConfirmed && this.renderConfirmationInfo()}
                     <Form
                         schema={schemaData.dataPart.jsonSchema}
                         uiSchema={{...schemaData.dataPart.uiSchema, 'ui:readonly': true}}
