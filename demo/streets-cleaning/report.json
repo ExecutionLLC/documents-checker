@@ -123,7 +123,6 @@
             "jobsList": {
                 "items": {
                     "classNames": "col-xs-12",
-                    "positionNumber": { "classNames": "col-xs-3" },
                     "geozone": { "classNames": "col-xs-12" },
                     "startTime": { "classNames": "col-xs-4" },
                     "endTime": { "classNames": "col-xs-4" },
