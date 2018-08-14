@@ -1,0 +1,151 @@
+{
+    "idPart": {
+        "jsonSchema": {
+            "type": "object",
+            "required": [
+                "routingSheetNumber",
+                "carNumber",
+                "date"
+            ],
+            "properties": {
+                "routingSheetNumber": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 10,
+                    "pattern": "\\d+",
+                    "title": "Маршрутный лист №"                    
+                },                
+                "carNumber": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 999,
+                    "title": "Номер машины"                    
+                },
+                "date": {
+                    "type": "string",
+                    "title": "Дата"                    
+                }
+            },
+            "title": ""
+        },
+        "uiSchema": {
+            "routingSheetNumber": {
+                "classNames": "col-xs-12"
+            },
+            "carNumber": {
+                "classNames": "col-xs-12"
+            },
+            "date": {
+                "classNames": "col-xs-12",
+                "ui:widget": "alt-date",
+                "ui:options": {
+                    "yearsRange": [
+                        1980,
+                        2030
+                    ]
+                }
+            }
+        }
+    },
+    "dataPart": {
+        "jsonSchema": {
+            "definitions": {
+                "timedelta": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 24,
+                    "default": 0
+                },
+                
+                "jobsListItem": {
+                    "type": "object",
+                    "required": [
+                        "geozone",
+                        "workTime",
+                        "workTimeAtDaytime",
+                        "workTimeAtNight"
+                    ],
+                    "properties": {
+                        "geozone": {
+                            "type": "string",
+                            "title": "Геозона"
+                        },
+                        "workTime": {
+                            "$ref": "#/definitions/timedelta",
+                            "title": "Время работы"
+                        },
+                        "workTimeAtDaytime": {
+                            "$ref": "#/definitions/timedelta",
+                            "title": "Часов днем"
+                        },
+                        "workTimeAtNight": {
+                            "$ref": "#/definitions/timedelta",
+                            "title": "Часов ночью"
+                        }
+                    }
+                }
+            },
+            
+            "type": "object",
+            "properties": {
+                "jobsListHeader": {
+                    "type": "object",
+                    "required": [
+                        "district",
+                        "contractor",
+                        "vehicleType",
+                        "jobType"
+                    ],
+                    "properties": {
+                        "district": {
+                            "type": "string",
+                            "title": "Район"                    
+                        },                
+                        "contractor": {
+                            "type": "string",
+                            "title": "Подрядчик"                    
+                        },
+                        "vehicleType": {
+                            "type": "string",
+                            "title": "Наименовании техники"                    
+                        },
+                        "jobType": {
+                            "type": "string",
+                            "title": "Вид работ"          
+                        }
+                    },
+                    "title": ""
+                },
+                "jobsList": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/jobsListItem"
+                    },
+                    "title": "Позиции"
+                }
+            }
+        },
+        "uiSchema": {
+            "jobsList": {
+                "items": {
+                    "classNames": "col-xs-12",
+                    "positionNumber": { "classNames": "col-xs-3" },
+                    "geozone": { "classNames": "col-xs-12" },
+                    "workTime": { "classNames": "col-xs-4" },
+                    "workTimeAtDaytime": { "classNames": "col-xs-4" },
+                    "workTimeAtNight": { "classNames": "col-xs-4" }
+                },
+                "ui:options": {
+                    "orderable": false
+                }
+            }
+        }
+    },
+    "dynamicPart": {
+        "jsonSchema": {
+        },
+        "uiSchema": {
+        }
+    }
+}
+

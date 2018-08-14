@@ -1,0 +1,42 @@
+{  
+    "idPart":{  
+        "routingSheetNumber":"1",
+        "carNumber":624,
+        "date":"2018-02-23"
+    },
+    "dataPart":{  
+        "jobsListHeader":{  
+            "district":"Сарыарка"
+        },
+        "jobsList":[  
+            {  
+                "geozone":"Путепровод №2",
+                "startTime":"10:00",
+                "endTime":"11:30",
+                "totalTime":1.5,
+                "result":10.5
+            },
+            {  
+                "geozone":"Путепровод №2",
+                "startTime":"12:30",
+                "endTime":"14:00",
+                "totalTime":1.5,
+                "result":9
+            },
+            {  
+                "geozone":"Технопарк",
+                "startTime":"12:30",
+                "endTime":"14:00",
+                "totalTime":1.5,
+                "result":11
+            },
+            {  
+                "geozone":"ул.Дукенулы, ул.Ш.Айманова от ул.Дукенулы до пр.Богенбая",
+                "startTime":"2:00",
+                "endTime":"3:30",
+                "totalTime":1.5,
+                "result":4
+            }
+        ]
+    }
+}

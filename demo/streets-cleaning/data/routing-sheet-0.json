@@ -1,0 +1,41 @@
+{
+    "idPart":{  
+        "routingSheetNumber":"1",
+        "carNumber":624,
+        "date":"2018-02-23"
+    },
+    "dataPart":{  
+        "jobsListHeader":{  
+            "district":"Сарыарка",
+            "contractor":"ПТО ТОО \"Астана Тазалык\"",
+            "vehicleType":"Самосвал 14-15 т. Тазалык",
+            "jobType":"Уборка снега"
+        },
+        "jobsList":[  
+            {  
+                "geozone":"Путепровод №2",
+                "workTime":1.5,
+                "workTimeAtDaytime":1.5,
+                "workTimeAtNight":0
+            },
+            {  
+                "geozone":"Путепровод №2",
+                "workTime":1.5,
+                "workTimeAtDaytime":1.5,
+                "workTimeAtNight":0
+            },
+            {  
+                "geozone":"Технопарк",
+                "workTime":1.5,
+                "workTimeAtDaytime":0,
+                "workTimeAtNight":1.5
+            },
+            {  
+                "geozone":"ул.Дукенулы, ул.Ш.Айманова от ул.Дукенулы до пр.Богенбая",
+                "workTime":1.5,
+                "workTimeAtDaytime":0,
+                "workTimeAtNight":1.5
+            }
+        ]
+    }
+}
