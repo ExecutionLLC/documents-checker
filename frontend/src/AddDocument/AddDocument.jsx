@@ -37,7 +37,7 @@ class AddDocument extends Component {
     }
 
     componentDidMount() {
-        API.getSchema(config.SCHEMA_ID)
+      API.getSchema(this.props.schemaId)
             .then((data) => {
                 this.setState({
                     ...this.state,
@@ -96,7 +96,7 @@ class AddDocument extends Component {
             }
         });
         API.addDocument(
-            config.SCHEMA_ID,
+            this.props.schemaId,
             idPart,
             dataPart
         )
@@ -279,9 +279,8 @@ class AddDocument extends Component {
                 <Navigation
                     page={this.props.match.url}
                 />
-                <InstructionsAddDocument />
                 <PageHeader>
-                    Add document
+                  {this.props.title}
                 </PageHeader>
                 {this.state.schema.error ?
                     this.renderSchemaError() :

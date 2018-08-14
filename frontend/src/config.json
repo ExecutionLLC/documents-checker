@@ -1,6 +1,7 @@
 {
   "API_BASE_URL": "http://agt.alapy.com:30000/",
-  "SCHEMA_ID": "american_express",
+  "SCHEMA_ID": "sc_report",
+  "SCHEMA_ID_ROUTING_SHEET": "sc_routing_sheet",
   "SCHEMA_PRIVATE_KEY": "5gS/gVxbfwx/i3sKNdv0HEoELdCXj1Sw1ADcOEuLqwY=",
   "DOCUMENT_PRIVATE_KEY": "Oo32Wk5kZ3/FTeG8nvx2jK/dRXiwA2huR0ogF+fMgDc="
 }

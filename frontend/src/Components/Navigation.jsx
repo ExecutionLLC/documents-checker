@@ -6,16 +6,16 @@ function Navigation(props) {
 
     const tabs = [
         {
-            url: '/adddoc',
-            title: 'Add document'
+            url: '/routing_sheet',
+            title: 'Маршрутный лист'
         },
         {
-            url: '/confirmation',
-            title: 'Confirm document'
+            url: '/report',
+            title: 'Отчет'
         },
         {
             url: '/checkdoc',
-            title: 'Check document'
+            title: 'Сверка маршрутных листов'
         },
     ];
 
