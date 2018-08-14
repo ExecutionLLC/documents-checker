@@ -13,17 +13,17 @@
                     "minLength": 1,
                     "maxLength": 10,
                     "pattern": "\\d+",
-                    "title": "Маршрутный лист №"                    
+                    "title": "Маршрутный лист №"
                 },                
                 "carNumber": {
                     "type": "integer",
                     "minimum": 0,
                     "maximum": 999,
-                    "title": "Номер машины"                    
+                    "title": "Номер машины"
                 },
                 "date": {
                     "type": "string",
-                    "title": "Дата"                    
+                    "title": "Дата"
                 }
             },
             "title": ""
@@ -105,7 +105,7 @@
                     "properties": {
                         "district": {
                             "type": "string",
-                            "title": "Район"                    
+                            "title": "Район"
                         }
                     },
                     "title": ""

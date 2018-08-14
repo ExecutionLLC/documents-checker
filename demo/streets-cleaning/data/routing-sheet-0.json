@@ -14,27 +14,23 @@
         "jobsList":[  
             {  
                 "geozone":"Путепровод №2",
-                "workTime":1.5,
-                "workTimeAtDaytime":1.5,
-                "workTimeAtNight":0
+                "startTime":"10:00",
+                "endTime":"11:30"
             },
             {  
                 "geozone":"Путепровод №2",
-                "workTime":1.5,
-                "workTimeAtDaytime":1.5,
-                "workTimeAtNight":0
+                "startTime":"12:30",
+                "endTime":"14:00"
             },
             {  
                 "geozone":"Технопарк",
-                "workTime":1.5,
-                "workTimeAtDaytime":0,
-                "workTimeAtNight":1.5
+                "startTime":"12:30",
+                "endTime":"14:00"
             },
             {  
                 "geozone":"ул.Дукенулы, ул.Ш.Айманова от ул.Дукенулы до пр.Богенбая",
-                "workTime":1.5,
-                "workTimeAtDaytime":0,
-                "workTimeAtNight":1.5
+                "startTime":"2:00",
+                "endTime":"3:30"
             }
         ]
     }

@@ -13,17 +13,17 @@
                     "minLength": 1,
                     "maxLength": 10,
                     "pattern": "\\d+",
-                    "title": "Маршрутный лист №"                    
+                    "title": "Маршрутный лист №"
                 },                
                 "carNumber": {
                     "type": "integer",
                     "minimum": 0,
                     "maximum": 999,
-                    "title": "Номер машины"                    
+                    "title": "Номер машины"
                 },
                 "date": {
                     "type": "string",
-                    "title": "Дата"                    
+                    "title": "Дата"
                 }
             },
             "title": ""
@@ -50,11 +50,9 @@
     "dataPart": {
         "jsonSchema": {
             "definitions": {
-                "timedelta": {
-                    "type": "number",
-                    "minimum": 0,
-                    "maximum": 24,
-                    "default": 0
+                "time": {
+                    "type": "string",
+                    "pattern": "^([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$"
                 },
                 
                 "jobsListItem": {
@@ -70,17 +68,13 @@
                             "type": "string",
                             "title": "Геозона"
                         },
-                        "workTime": {
+                        "startTime": {
                             "$ref": "#/definitions/timedelta",
-                            "title": "Время работы"
+                            "title": "Время начала работы"
                         },
-                        "workTimeAtDaytime": {
+                        "endTime": {
                             "$ref": "#/definitions/timedelta",
-                            "title": "Часов днем"
-                        },
-                        "workTimeAtNight": {
-                            "$ref": "#/definitions/timedelta",
-                            "title": "Часов ночью"
+                            "title": "Время окончания работы"
                         }
                     }
                 }
@@ -99,19 +93,19 @@
                     "properties": {
                         "district": {
                             "type": "string",
-                            "title": "Район"                    
+                            "title": "Район"
                         },                
                         "contractor": {
                             "type": "string",
-                            "title": "Подрядчик"                    
+                            "title": "Подрядчик"
                         },
                         "vehicleType": {
                             "type": "string",
-                            "title": "Наименовании техники"                    
+                            "title": "Наименовании техники"
                         },
                         "jobType": {
                             "type": "string",
-                            "title": "Вид работ"          
+                            "title": "Вид работ"
                         }
                     },
                     "title": ""
