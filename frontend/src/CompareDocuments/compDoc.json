@@ -57,6 +57,11 @@
         "timedelta": {
           "type": "number"
         },
+        "approved": {
+          "type": "string",
+          "pattern": "Да"
+        },
+
         "compareJobsListItem": {
           "type": "object",
           "required": [
@@ -85,7 +90,7 @@
               "title": "Трудозатрат подтверждено, часов"
             },
             "approved": {
-              "type": "string",
+              "$ref": "#/definitions/approved",
               "title": "Соответствует маршрутному листу"
             },
             "materials": {
@@ -135,7 +140,7 @@
               "title": "Вывезено снега на полигон, тонн"
             },
             "approved": {
-              "type": "string",
+              "$ref": "#/definitions/approved",
               "title": "Соответствует маршрутному листу"
             }
           },
