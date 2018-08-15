@@ -5,10 +5,12 @@
   "dependencies": {
     "http-status": "^1.2.0",
     "js-base64": "^2.4.8",
+    "moment": "^2.22.2",
     "react": "^16.4.1",
     "react-bootstrap": "^0.32.1",
     "react-dom": "^16.4.1",
     "react-jsonschema-form": "^1.0.3",
+    "react-moment": "^0.7.9",
     "react-router-dom": "^4.3.1",
     "react-scripts": "1.1.4",
     "request-promise": "^4.2.2"
