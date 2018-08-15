@@ -4,12 +4,12 @@ import ErrorPanel from '../Components/ErrorPanel';
 import Navigation from '../Components/Navigation';
 import Form from '../Components/FormStateSafe';
 import FileJSON from '../Components/FileJSON';
-import { InstructionsCheckDocument } from "../Components/Instructions";
 import API from '../API';
 import config from '../config';
 import '../css/styles.css';
 import compDocSchema from './compDoc.json';
 import compDocData from './compDocData.json';
+import CleaningOfStreets from '../validations/cleaningOfStreets';
 
 
 class CompareDocuments extends Component {
@@ -39,27 +39,22 @@ class CompareDocuments extends Component {
     console.log(this.state.schema.data);
   }
 
-  // componentDidMount() {
-  //   API.getSchema(config.SCHEMA_ID)
-  //     .then((data) => {
-  //       this.setState({
-  //         ...this.state,
-  //         schema: {
-  //           data,
-  //           error: null,
-  //         }
-  //       });
-  //     })
-  //     .catch((error) => {
-  //       this.setState({
-  //         ...this.state,
-  //         schema: {
-  //           data: null,
-  //           error,
-  //         }
-  //       });
-  //     });
-  // }
+  compareDocuments() {
+    console.log('compareDocuments - begin...');
+    if (this.state.report.data && this.state.routingSheet.data &&
+      !this.state.report.error && !this.state.routingSheet.error) {
+
+      this.setState({
+        formsData: {
+          ...this.state.formsData,
+          dataPart: CleaningOfStreets.verify(
+            this.state.routingSheet.data.dataPart,
+            this.state.report.data.dataPart),
+        },
+      });
+    }
+    console.log('compareDocuments - end...');
+  }
 
   onDocumentIdSubmit(documentIdPart) {
     if (!this.state.schema.data) {
@@ -113,6 +108,7 @@ class CompareDocuments extends Component {
           }
         });
         console.log('REPORT: ', this.state.report.data);
+        this.compareDocuments();
       })
       .catch((error) => {
         this.setState({
@@ -141,7 +137,7 @@ class CompareDocuments extends Component {
         if (!isExist) {
           return null;
         }
-        return API.getDocument(config.SCHEMA_ID, documentIdPart);
+        return API.getDocument(config.SCHEMA_ID_ROUTING_SHEET, documentIdPart);
       })
       .then((data) => {
         this.setState({
@@ -153,6 +149,7 @@ class CompareDocuments extends Component {
           }
         });
         console.log('ROUTING SHEET: ', this.state.routingSheet.data);
+        this.compareDocuments();
       })
       .catch((error) => {
         this.setState({
@@ -187,7 +184,7 @@ class CompareDocuments extends Component {
     });
   }
 
-  renderDocumentForm() {
+  renderDocumentIdForm() {
     const schemaData = this.state.schema.data;
     return (
       <div>
@@ -229,50 +226,13 @@ class CompareDocuments extends Component {
     );
   }
 
-  renderConfirmationInfo() {
-    const schemaData = this.state.schema.data;
-    return (
-      <div>
-        <Form
-          schema={schemaData.dynamicPart.jsonSchema}
-          uiSchema={{...schemaData.dynamicPart.uiSchema, 'ui:readonly': true}}
-          formData={this.state.check.data.dynamicPart}
-        >
-          <button type="submit" style={{display: 'none'}} />
-        </Form>
-      </div>
-    );
-  }
-
-  renderNoConfirmation() {
-    return 'Document does not confirmed';
-  }
-
-  renderConformationInfoTitleText() {
-    const schemaData = this.state.check.data;
-    return (
-      <div>
-        Verification passed successfully
-        <br />
-        <br />
-        Document transaction id = {schemaData.dataPartTxId} <Glyphicon glyph="ok" />
-        <br />
-        Conformation transaction id = {schemaData.dynamicPartTxId} <Glyphicon glyph="ok" />
-      </div>
-    );
-  }
-
-  renderNoConformationTitleText () {
-    return (
-      <div>
-        Document exists but does not confirmed
-      </div>
-    );
-  }
-
-  renderDataForm() {
+  renderDocumentForm() {
+    if (!this.state.formsData.dataPart)
+      return null;
     const readOnlyUiSchema = {...this.state.schema.data.dataPart.uiSchema};
-    const data = compDocData.dataPart;
+    const data = this.state.formsData.dataPart; // compDocData.dataPart;
+    console.log('FAKE DATA', compDocData.dataPart);
+    console.log('LIVE DATA', this.state.formsData.dataPart);
     // readOnlyUiSchema['ui:readonly'] = true;
     // readOnlyUiSchema.operations["ui:options"] = {
     //   addable: false,
@@ -288,73 +248,6 @@ class CompareDocuments extends Component {
     );
   }
 
-  renderDocument() {
-    return this.renderDataForm();
-    // const schemaData = this.state.schema.data;
-    // const isConfirmed = !!this.state.check.data.dynamicPart;
-    // const readOnlyUiSchema = {...schemaData.dataPart.uiSchema};
-    // readOnlyUiSchema['ui:readonly'] = true;
-    // readOnlyUiSchema.operations["ui:options"] = {
-    //   addable: false,
-    //   removable: false,
-    //   orderable: false
-    // };
-
-    // return (
-    //   <Panel bsStyle={isConfirmed ? 'success' : 'warning'}>
-    //     <Panel.Heading>
-    //       <Panel.Title componentClass="h3">
-    //         {this.state.check.data.dynamicPart ?
-    //           this.renderConformationInfoTitleText() :
-    //           this.renderNoConformationTitleText()
-    //         }
-    //       </Panel.Title>
-    //     </Panel.Heading>
-    //     <Panel.Body>
-    //       {isConfirmed && this.renderConfirmationInfo()}
-    //
-    //       {/*<Form*/}
-    //         {/*schema={schemaData.dataPart.jsonSchema}*/}
-    //         {/*uiSchema={readOnlyUiSchema}*/}
-    //         {/*formData={this.state.check.data.dataPart}*/}
-    //       {/*>*/}
-    //         {/*<button type="submit" style={{display: 'none'}} />*/}
-    //       {/*</Form>*/}
-    //     </Panel.Body>
-    //   </Panel>
-    // );
-  }
-
-  /*
-  return (
-    <div>
-      {this.state.check.isLoading && (
-        <ProgressBar active now={100} />
-      )}
-      {this.state.check.isExists !== null && !this.state.check.isExists && (
-        this.renderDocumentDoesNotExist()
-      )}
-      {this.state.check.data !== null && (
-        this.renderDocument()
-      )}
-    </div>
-  );
-  * */
-  renderCheckStatus() {
-    return (
-      <div>
-        {(this.state.report.isLoading || this.state.routingSheet.isLoading) && (
-          <ProgressBar active now={100} />
-        )}
-        {((this.state.report.isExists !== null && !this.state.report.isExists) ||
-          (this.state.routingSheet.isExists !== null && !this.state.routingSheet.isExists)) ?
-          this.renderDocumentDoesNotExist() :
-          this.renderDocument()
-        }
-      </div>
-    );
-  }
-
   render() {
     return (
       <div className="container">
@@ -366,10 +259,19 @@ class CompareDocuments extends Component {
         </PageHeader>
         {this.state.schema.error ?
           this.renderSchemaError() :
-          this.renderDocumentForm()
+          this.renderDocumentIdForm()
         }
         {
-          this.renderCheckStatus()
+          <div>
+            {(this.state.report.isLoading || this.state.routingSheet.isLoading) && (
+              <ProgressBar active now={100} />
+            )}
+            {((this.state.report.isExists !== null && !this.state.report.isExists) ||
+              (this.state.routingSheet.isExists !== null && !this.state.routingSheet.isExists)) ?
+              this.renderDocumentDoesNotExist() :
+              this.renderDocumentForm()
+            }
+          </div>
         }
       </div>
     );
