@@ -154,6 +154,7 @@
       }
     },
     "uiSchema": {
+      "ui:readonly": true,
       "compareJobsList": {
         "items": {
           "classNames": "col-xs-12",
@@ -165,7 +166,9 @@
           "materials": { "classNames": "col-xs-4" }
         },
         "ui:options": {
-          "orderable": false
+          "addable": false,
+          "orderable": false,
+          "removable": false
         }
       }
     }
