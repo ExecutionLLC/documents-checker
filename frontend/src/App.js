@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
 import AddDocument from './AddDocument/AddDocument';
-import CheckDocument from './CheckDocument/CheckDocument';
-import DocumentConfirmation from './DocumentConfirmation/DocumentConfirmation';
 import config from './config';
 import CompareDocuments from "./CompareDocuments/CompareDocuments";
 
@@ -41,7 +39,7 @@ class App extends Component {
                       }
                     />
                     <Route path="/checkdoc" component={CompareDocuments}/>
-                    <Route component={AddDocument}/>
+                    <Route exact path="/" render={() => (<Redirect to="/routing_sheet" />)} />
                 </Switch>
             </Router>
         );
