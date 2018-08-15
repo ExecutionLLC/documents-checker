@@ -39,7 +39,7 @@ class App extends Component {
                       }
                     />
                     <Route path="/checkdoc" component={CompareDocuments}/>
-                    <Route exact path="/" render={() => (<Redirect to="/routing_sheet" />)} />
+                    <Route exact path="/" render={() => (<Redirect to="/checkdoc" />)} />
                 </Switch>
             </Router>
         );
