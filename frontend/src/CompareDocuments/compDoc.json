@@ -1,0 +1,180 @@
+{
+  "idPart": {
+    "jsonSchema": {
+      "type": "object",
+      "required": [
+        "routingSheetNumber",
+        "carNumber",
+        "date"
+      ],
+      "properties": {
+        "routingSheetNumber": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 10,
+          "pattern": "\\d+",
+          "title": "Маршрутный лист №"
+        },
+        "carNumber": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 999,
+          "title": "Номер машины"
+        },
+        "date": {
+          "type": "string",
+          "title": "Дата"
+        }
+      },
+      "title": ""
+    },
+    "uiSchema": {
+      "routingSheetNumber": {
+        "classNames": "col-xs-12"
+      },
+      "carNumber": {
+        "classNames": "col-xs-12"
+      },
+      "date": {
+        "classNames": "col-xs-12",
+        "ui:widget": "alt-date",
+        "ui:options": {
+          "yearsRange": [
+            1980,
+            2030
+          ]
+        }
+      }
+    }
+  },
+  "dataPart": {
+    "jsonSchema": {
+      "definitions": {
+        "time": {
+          "type": "string",
+          "pattern": "^([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$"
+        },
+        "timedelta": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 24,
+          "default": 0
+        },
+        "compareJobsListItem": {
+          "type": "object",
+          "required": [
+            "geozone",
+            "dayOrNight",
+            "hoursByRoutingSheet",
+            "hoursApproved",
+            "approved",
+            "materials"
+          ],
+          "properties": {
+            "geozone": {
+              "type": "string",
+              "title": "Геозона"
+            },
+            "dayOrNight": {
+              "type": "string",
+              "title": "Период суток день/ночь"
+            },
+            "hoursByRoutingSheet": {
+              "$ref": "#/definitions/timedelta",
+              "title": "Трудозатрат по маршрутному листу, часов"
+            },
+            "hoursApproved": {
+              "$ref": "#/definitions/timedelta",
+              "title": "Трудозатрат подтверждено, часов"
+            },
+            "approved": {
+              "type": "string",
+              "title": "Соответствует маршрутному листу"
+            },
+            "materials": {
+              "type": "number",
+              "title": "Вес снега при взвешивании на полигоне"
+            }
+          }
+        }
+      },
+
+      "type": "object",
+      "properties": {
+        "compareDocHeader": {
+          "type": "object",
+          "required": [
+            "jobType",
+            "approvedDayHours",
+            "diffDayHours",
+            "approvedNightHours",
+            "diffNightHours",
+            "materials",
+            "approved"
+          ],
+          "properties": {
+            "jobType": {
+              "type": "string",
+              "title": "Вид работ"
+            },
+            "approvedDayHours": {
+              "$ref": "#/definitions/timedelta",
+              "title": "Подтверждено трудозатрат днем, часов"
+            },
+            "diffDayHours": {
+              "$ref": "#/definitions/timedelta",
+              "title": "Отклонение от плана день, часов"
+            },
+            "approvedNightHours": {
+              "$ref": "#/definitions/timedelta",
+              "title": "Подтверждено трудозатрат ночью, часов"
+            },
+            "diffNightHours": {
+              "$ref": "#/definitions/timedelta",
+              "title": "Отклонение от плана ночь, часов"
+            },
+            "materials": {
+              "type": "number",
+              "title": "Вывезено снега на полигон, тонн"
+            },
+            "approved": {
+              "type": "string",
+              "title": "Соответствует маршрутному листу"
+            }
+          },
+          "title": ""
+        },
+        "compareJobsList": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/compareJobsListItem"
+          },
+          "title": "Позиции"
+        }
+      }
+    },
+    "uiSchema": {
+      "compareJobsList": {
+        "items": {
+          "classNames": "col-xs-12",
+          "geozone": { "classNames": "col-xs-12" },
+          "dayOrNight": { "classNames": "col-xs-12" },
+          "hoursByRoutingSheet": { "classNames": "col-xs-4" },
+          "hoursApproved": { "classNames": "col-xs-4" },
+          "approved": { "classNames": "col-xs-4" },
+          "materials": { "classNames": "col-xs-4" }
+        },
+        "ui:options": {
+          "orderable": false
+        }
+      }
+    }
+  },
+  "dynamicPart": {
+    "jsonSchema": {
+    },
+    "uiSchema": {
+    }
+  }
+}
+

@@ -4,6 +4,7 @@ import AddDocument from './AddDocument/AddDocument';
 import CheckDocument from './CheckDocument/CheckDocument';
 import DocumentConfirmation from './DocumentConfirmation/DocumentConfirmation';
 import config from './config';
+import CompareDocuments from "./CompareDocuments/CompareDocuments";
 
 
 class App extends Component {
@@ -39,7 +40,7 @@ class App extends Component {
                         )
                       }
                     />
-                    <Route path="/confirmation" component={DocumentConfirmation}/>
+                    <Route path="/checkdoc" component={CompareDocuments}/>
                     <Route component={AddDocument}/>
                 </Switch>
             </Router>

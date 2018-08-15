@@ -1,0 +1,52 @@
+{
+  "idPart":{
+    "routingSheetNumber":"1",
+    "carNumber":624,
+    "date":"2018-02-23"
+  },
+  "dataPart":{
+    "compareDocHeader":{
+      "jobType": "Уборка снега",
+      "approvedDayHours": 30,
+      "diffDayHours": 4,
+      "approvedNightHours": 20,
+      "diffNightHours": 1,
+      "materials": 111,
+      "approved": "Да"
+    },
+    "compareJobsList":[
+      {
+        "geozone":"Путепровод №2",
+        "dayOrNight": "День",
+        "hoursByRoutingSheet": 5,
+        "hoursApproved": 5,
+        "approved": "Да",
+        "materials": 9
+      },
+      {
+        "geozone":"Путепровод №2",
+        "dayOrNight": "День",
+        "hoursByRoutingSheet": 2,
+        "hoursApproved": 1.5,
+        "approved": "Да",
+        "materials": 12
+      },
+      {
+        "geozone":"Технопарк",
+        "dayOrNight": "День",
+        "hoursByRoutingSheet": 8,
+        "hoursApproved": 6.5,
+        "approved": "Да",
+        "materials": 24
+      },
+      {
+        "geozone":"ул.Дукенулы, ул.Ш.Айманова от ул.Дукенулы до пр.Богенбая",
+        "dayOrNight": "Ночь",
+        "hoursByRoutingSheet": 9,
+        "hoursApproved": 8.5,
+        "approved": "Да",
+        "materials": 26
+      }
+    ]
+  }
+}
