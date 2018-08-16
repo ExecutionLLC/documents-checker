@@ -10,6 +10,7 @@ import '../css/styles.css';
 import compActSchema from './compAct.json';
 import compActResultSchema from './compActResult.json';
 import CleaningOfStreets from '../validations/cleaningOfStreets';
+import ReportField from '../Components/ReportField';
 
 
 class CompareActs extends Component {
@@ -176,17 +177,14 @@ class CompareActs extends Component {
   renderResultData() {
     const res = this.state.resultData;
 
-
-    const renderField = (propName, className) => {
-      const title = this.state.resultSchema.data.jsonSchema.properties[propName].title;
-      const value = res[propName];
-      return (
-        <div className={`row ${className}`}>
-          <div className="col-md-6">{title}</div>
-          <div className="col-md-6">{value}</div>
-        </div>
-      );
-    };
+    const renderField = (propName, className) => (
+      <ReportField
+        key={propName}
+        title={this.state.resultSchema.data.jsonSchema.properties[propName].title}
+        value={res[propName]}
+        className={className}
+      />
+    );
 
     return (
       <Panel bsStyle={res.approved === "Успешно"? "success" :"danger"}>

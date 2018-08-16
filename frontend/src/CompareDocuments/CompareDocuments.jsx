@@ -10,6 +10,7 @@ import '../css/styles.css';
 import compDocSchema from './compDoc.json';
 import compDocData from './compDocData.json';
 import CleaningOfStreets from '../validations/cleaningOfStreets';
+import ReportField from "../Components/ReportField";
 
 
 class CompareDocuments extends Component {
@@ -246,30 +247,103 @@ class CompareDocuments extends Component {
     );
   }
 
+  renderResultData() {
+    const data = this.state.formsData.dataPart;
+    const schema = this.state.schema.data.dataPart.jsonSchema;
+
+    const headerData = data.compareDocHeader;
+    const jobsData = data.compareJobsList;
+
+    const headerSchema = schema.properties.compareDocHeader.properties;
+    const jobsSchema =  schema.definitions.compareJobsListItem.properties;
+    console.log(headerSchema);
+    console.log(jobsSchema);
+
+
+    const renderField = (propName, className) => (
+      <ReportField
+        key={propName}
+        title={headerSchema[propName].title}
+        value={headerData[propName]}
+        className={className}
+      />
+    );
+
+    const renderSectionField = (propName, value, className) => (
+      <ReportField
+        key={propName}
+        title={jobsSchema[propName].title}
+        value={value}
+        className={className}
+      />
+    );
+
+    const renderSection = (job) => (
+      <Panel
+        key={`${job.geozone}-${job.materials}`}
+        bsStyle={job.approved === "Да" ? "success" : "danger"}
+      >
+        <Panel.Heading>
+          <Panel.Title componentClass="h3">
+            {`Геозона: ${job.geozone}`}
+          </Panel.Title>
+        </Panel.Heading>
+        <Panel.Body>
+          {renderSectionField('dayOrNight', job['dayOrNight'])}
+          {renderSectionField('hoursApproved', job['hoursApproved'])}
+          {renderSectionField('hoursByRoutingSheet', job['hoursByRoutingSheet'])}
+          {renderSectionField('materials', job['materials'])}
+          {renderSectionField('approved', job['approved'], 'field-bold')}
+        </Panel.Body>
+      </Panel>
+    );
+
+    return (
+      <Panel bsStyle={headerData.approved === "Да"? "success" : "danger"}>
+        <Panel.Heading>
+          <Panel.Title componentClass="h3">
+            Отчет о сверке маршрутных листов
+          </Panel.Title>
+        </Panel.Heading>
+        <Panel.Body>
+          <div>
+            {renderField('jobType')}
+            {renderField('materials')}
+            <br />
+            {renderField('approvedDayHours')}
+            {renderField('diffDayHours', 'field-bold')}
+            <br />
+            {renderField('approvedNightHours')}
+            {renderField('diffNightHours', 'field-bold')}
+            <br />
+            {renderField('approved', 'field-bold')}
+            <br />
+            {jobsData.map((job) => renderSection(job))}
+          </div>
+        </Panel.Body>
+      </Panel>
+
+    )
+  }
+
   renderDocumentForm() {
     if (!this.state.formsData.dataPart)
       return null;
-    const readOnlyUiSchema = {...this.state.schema.data.dataPart.uiSchema};
-    const data = this.state.formsData.dataPart; // compDocData.dataPart;
-    console.log('FAKE DATA', compDocData.dataPart);
-    console.log('LIVE DATA', this.state.formsData.dataPart);
-    // readOnlyUiSchema['ui:readonly'] = true;
-    // readOnlyUiSchema.operations["ui:options"] = {
-    //   addable: false,
-    //   removable: false,
-    //   orderable: false
-    // };
     return (
-      <Form
-        schema={this.state.schema.data.dataPart.jsonSchema}
-        uiSchema={readOnlyUiSchema}
-        formData={data}
-      >
-        <div>
-          <button type="submit" hidden>Submit</button>
-        </div>
-      </Form>
+      <div>
+        {this.renderResultData()}
+        <Form
+          schema={this.state.schema.data.dataPart.jsonSchema}
+          uiSchema={this.state.schema.data.dataPart.uiSchema}
+          formData={this.state.formsData.dataPart}
+        >
+          <div>
+            <button type="submit" hidden>Submit</button>
+          </div>
+        </Form>
+      </div>
     );
+
   }
 
   render() {
