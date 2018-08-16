@@ -2,6 +2,11 @@ import moment from 'moment';
 import config from '../config';
 
 class CleaningOfStreets {
+
+  static round(value) {
+    return +value.toFixed(2);
+  }
+
   static durationHoursMoment(momentBeg, momentEnd) {
     const diff = moment.duration(momentEnd.diff(momentBeg));
     return diff.hours() + (diff.minutes() / 60);
@@ -51,9 +56,6 @@ class CleaningOfStreets {
 
       const beg2 = moment(`2018-01-02 00:00`);
       const end2 = moment(`2018-01-02 ${hhmm2}`);
-
-      // console.log(`[${beg1.toString()}, ${end1.toString()}] and [${beg2.toString()}, ${end2.toString()}]`);
-      // console.log(calcIn24Hours(beg1, end1), calcIn24Hours(beg2, end2));
 
       return calcIn24Hours(beg1, end1) +
         calcIn24Hours(beg2, end2);
@@ -129,9 +131,9 @@ class CleaningOfStreets {
       compareDocHeader: {
         jobType: routingSheet.jobsListHeader.jobType,
         approvedDayHours: stats.approvedDayHours,
-        diffDayHours: stats.diffDayHours,
+        diffDayHours: CleaningOfStreets.round(stats.diffDayHours),
         approvedNightHours: stats.approvedNightHours,
-        diffNightHours: stats.diffNightHours,
+        diffNightHours: CleaningOfStreets.round(stats.diffNightHours),
         materials: stats.materials,
         approved: stats.approved ? "Да" : "Нет",
       },
@@ -168,9 +170,9 @@ class CleaningOfStreets {
 
     return {
       approvedDayHours: stats.approvedDayHours,
-      diffDayHours: diffDayHours,
+      diffDayHours: CleaningOfStreets.round(diffDayHours),
       approvedNightHours: stats.approvedNightHours,
-      diffNightHours: diffNightHours,
+      diffNightHours: CleaningOfStreets.round(diffNightHours),
       approved,
     };
   }
