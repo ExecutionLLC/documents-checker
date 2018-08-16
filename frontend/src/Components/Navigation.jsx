@@ -1,24 +1,25 @@
 import React from 'react';
 import { Nav, Navbar, NavItem } from 'react-bootstrap';
+import config from '../config';
 
 
 function Navigation(props) {
 
     const tabs = [
         {
-            url: '/routing_sheet',
+            url: `${config.BASE_PATH}/routing_sheet`,
             title: 'Маршрутный лист'
         },
         {
-            url: '/report',
+            url: `${config.BASE_PATH}/report`,
             title: 'Отчет'
         },
         {
-            url: '/checkdoc',
+            url: `${config.BASE_PATH}/checkdoc`,
             title: 'Сверка маршрутных листов'
         },
         {
-            url: '/checkact',
+            url: `${config.BASE_PATH}/checkact`,
             title: 'Сверка акта'
         },
     ];

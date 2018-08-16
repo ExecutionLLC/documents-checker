@@ -13,7 +13,7 @@ class App extends Component {
 
     render() {
         return (
-            <Router>
+            <Router basename={config.BASE_PATH}>
                 <Switch>
                     <Route
                       path="/routing_sheet"
