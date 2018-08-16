@@ -174,6 +174,15 @@ class CompareActs extends Component {
     );
   }
 
+  renderConformationInfoTitleText() {
+    if (!this.state.report.data)
+      return null;
+    const reportId = this.state.report.data.dataPartTxId;
+    return (
+      <p>Отчет: транзакция = {reportId} <Glyphicon glyph="ok" /></p>
+    );
+  }
+
   renderResultData() {
     const res = this.state.resultData;
 
@@ -190,9 +199,10 @@ class CompareActs extends Component {
       <Panel bsStyle={res.approved === "Успешно"? "success" :"danger"}>
         <Panel.Heading>
           <Panel.Title componentClass="h3">
-            Отчет о сверке актов
+            <p>Отчет о сверке актов</p>
+            <br />
+            {this.renderConformationInfoTitleText()}
           </Panel.Title>
-
         </Panel.Heading>
         <Panel.Body>
           <div>

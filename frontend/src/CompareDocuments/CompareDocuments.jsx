@@ -247,6 +247,17 @@ class CompareDocuments extends Component {
     );
   }
 
+  renderConformationInfoTitleText() {
+    const reportId = this.state.report.data.dataPartTxId;
+    const routingSheetId = this.state.routingSheet.data.dataPartTxId;
+    return (
+      <div>
+        <p>Маршрутный лист: транзакция = {routingSheetId} <Glyphicon glyph="ok" /></p>
+        <p>Отчет: транзакция = {reportId} <Glyphicon glyph="ok" /></p>
+      </div>
+    );
+  }
+
   renderResultData() {
     const data = this.state.formsData.dataPart;
     const schema = this.state.schema.data.dataPart.jsonSchema;
@@ -303,6 +314,9 @@ class CompareDocuments extends Component {
         <Panel.Heading>
           <Panel.Title componentClass="h3">
             Отчет о сверке маршрутных листов
+            <br/>
+            <br/>
+            {this.renderConformationInfoTitleText()}
           </Panel.Title>
         </Panel.Heading>
         <Panel.Body>
@@ -322,7 +336,6 @@ class CompareDocuments extends Component {
           </div>
         </Panel.Body>
       </Panel>
-
     )
   }
 
@@ -343,7 +356,6 @@ class CompareDocuments extends Component {
         </Form>
       </div>
     );
-
   }
 
   render() {
