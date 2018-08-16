@@ -51,7 +51,8 @@ class CompareActs extends Component {
           ...this.state.resultData,
           ...CleaningOfStreets.verifyActs(
             this.state.routingSheet.data.dataPart,
-            this.state.report.data.dataPart),
+            this.state.report.data.dataPart,
+            this.state.queryData),
         },
       });
     }
@@ -82,6 +83,9 @@ class CompareActs extends Component {
         data: null,
         isLoading: true,
         error: null,
+      },
+      queryData: {
+        ...queryFormData,
       },
       resultData: {
         // fill up most of the properties, excluding calculated ones and approve status
@@ -232,22 +236,114 @@ class CompareActs extends Component {
     );
   }
 
+  renderResultData() {
+    const res = this.state.resultData;
+    return (
+      <Panel bsStyle={res.approved === "Успешно"? "success" :"danger"}>
+        <Panel.Heading>
+          <Panel.Title componentClass="h3">
+            Отчет о сверке актов
+          </Panel.Title>
+
+        </Panel.Heading>
+        <Panel.Body>
+          <div>
+
+            <div className="row">
+              <div className="col-md-6">Акт №</div>
+              <div className="col-md-6">{res.actNumber}</div>
+            </div>
+            <div className="row">
+              <div className="col-md-6">Дата</div>
+              <div className="col-md-6">{res.date}</div>
+            </div>
+            <div className="row">
+              <div className="col-md-6">Подрядчик</div>
+              <div className="col-md-6">{res.contractor}</div>
+            </div>
+            <div className="row">
+              <div className="col-md-6">Срок оказания услуг</div>
+              <div className="col-md-6">{res.period}</div>
+            </div>
+
+            <div className="row">
+              <div className="col-md-6">Вид работ</div>
+              <div className="col-md-6">{res.jobType}</div>
+            </div>
+            <div className="row">
+              <div className="col-md-6">Район</div>
+              <div className="col-md-6">{res.location}</div>
+            </div>
+            <div className="row">
+              <div className="col-md-6">Маршрутный лист №</div>
+              <div className="col-md-6">{res.routingSheetNumber}</div>
+            </div>
+            <div className="row">
+              <div className="col-md-6">Номер машины</div>
+              <div className="col-md-6">{res.carNumber}</div>
+            </div>
+
+
+            <div className="row">
+              <div className="col-md-6">Подтвержденные трудозатраты днем, часов</div>
+              <div className="col-md-6">{res.approvedDayHours}</div>
+            </div>
+            <div className="row">
+              <div className="col-md-6">Трудозатраты по акту днем, часов</div>
+              <div className="col-md-6">{res.actDayHours}</div>
+            </div>
+            <div className="row"><b>
+              <div className="col-md-6">Расхождение день, часов</div>
+              <div className="col-md-6">{res.diffDayHours}</div>
+            </b></div>
+
+            <div className="row">
+              <div className="col-md-6">Подтвержденные трудозатраты ночью, часов</div>
+              <div className="col-md-6">{res.approvedNightHours}</div>
+            </div>
+            <div className="row">
+              <div className="col-md-6">Трудозатраты по акту ночью, часов</div>
+              <div className="col-md-6">{res.actNightHours}</div>
+            </div>
+            <div className="row"><b>
+              <div className="col-md-6">Расхождение ночь, часов</div>
+              <div className="col-md-6">{res.diffNightHours}</div>
+            </b></div>
+
+            <br />
+            <div className="row">
+              <b>
+                <div className="col-md-6">СТАТУС СВЕРКИ</div>
+                <div className="col-md-6">{res.approved}</div>
+              </b>
+            </div>
+
+          </div>
+        </Panel.Body>
+      </Panel>
+
+    )
+  }
+
   renderDocumentForm() {
     if (!this.state.resultData)
       return null;
 
     console.log('RESULT DATA', this.state.resultData);
     return (
-      <Form
-        schema={this.state.resultSchema.data.jsonSchema}
-        uiSchema={this.state.resultSchema.data.uiSchema}
-        formData={this.state.resultData}
-        onSubmit={() => this.onNewQuery()}
-      >
-        <div>
-          <button type="submit" hidden>Новая сверка</button>
-        </div>
-      </Form>
+      <div>
+        {this.renderResultData()}
+        <Form
+          schema={this.state.resultSchema.data.jsonSchema}
+          uiSchema={this.state.resultSchema.data.uiSchema}
+          formData={this.state.resultData}
+          onSubmit={() => this.onNewQuery()}
+        >
+          <div>
+            <button type="submit" hidden>Новая сверка</button>
+          </div>
+        </Form>
+      </div>
     );
   }
 

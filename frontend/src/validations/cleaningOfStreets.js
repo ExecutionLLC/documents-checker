@@ -139,13 +139,39 @@ class CleaningOfStreets {
     };
   }
 
-  static verifyActs(routingSheet, report) {
+  static verifyActs(routingSheet, report, act) {
+
+    // статистика по отчету
+    const stats = report.jobsList.reduce((acc, job) => {
+      return {
+        ...acc,
+        approvedDayHours: acc.approvedDayHours + CleaningOfStreets.dayDurationHours(job.startTime, job.endTime),
+        approvedNightHours: acc.approvedNightHours + CleaningOfStreets.nightDurationHours(job.startTime, job.endTime),
+      };
+      },
+      {
+        approvedDayHours: 0,
+        approvedNightHours: 0,
+      },
+    );
+
+    const diffDayHours = stats.approvedDayHours - act.actDayHours;
+    const diffDayHoursRatio = Math.abs(diffDayHours/act.actDayHours);
+
+    const diffNightHours = stats.approvedNightHours - act.actNightHours;
+    const diffNightHoursRatio = Math.abs(diffNightHours/act.actNightHours);
+
+    const approved =
+      (diffDayHoursRatio > config.ALLOWED_TIME_DELTA || diffNightHoursRatio > config.ALLOWED_TIME_DELTA)
+        ? "Не успешно"
+        : "Успешно";
+
     return {
-      approvedDayHours: 111,
-      diffDayHours: 222,
-      approvedNightHours: 333,
-      diffNightHours: 444,
-      approved: "Успешно",
+      approvedDayHours: stats.approvedDayHours,
+      diffDayHours: diffDayHours,
+      approvedNightHours: stats.approvedNightHours,
+      diffNightHours: diffNightHours,
+      approved,
     };
   }
 }
