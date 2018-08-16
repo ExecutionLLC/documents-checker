@@ -164,7 +164,7 @@
           "dayOrNight": { "classNames": "col-xs-12 hidden" },
           "hoursByRoutingSheet": { "classNames": "col-xs-4" },
           "hoursApproved": { "classNames": "col-xs-4" },
-          "approved": { "classNames": "col-xs-4" },
+          "approved": { "classNames": "col-xs-4 success" },
           "materials": { "classNames": "col-xs-4" }
         },
         "ui:options": {
