@@ -138,6 +138,16 @@ class CleaningOfStreets {
       compareJobsList,
     };
   }
+
+  static verifyActs(routingSheet, report) {
+    return {
+      approvedDayHours: 111,
+      diffDayHours: 222,
+      approvedNightHours: 333,
+      diffNightHours: 444,
+      approved: "Успешно",
+    };
+  }
 }
 
 export default CleaningOfStreets;

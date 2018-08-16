@@ -1,0 +1,95 @@
+{
+  "jsonSchema": {
+    "type": "object",
+    "required": [
+      "actNumber",
+      "date",
+      "contractor",
+      "period",
+      "jobType",
+      "location",
+      "routingSheetNumber",
+      "carNumber",
+      "actDayHours",
+      "actNightHours"
+    ],
+    "properties": {
+      "actNumber": {
+        "type": "integer",
+        "title": "Акт №"
+      },
+      "date": {
+        "type": "string",
+        "title": "Дата"
+      },
+      "contractor": {
+        "type": "string",
+        "title": "Подрядчик"
+      },
+      "period": {
+        "type": "string",
+        "title": "Срок оказания услуг"
+      },
+      "jobType": {
+        "type": "string",
+        "title": "Вид работ"
+      },
+      "location": {
+        "type": "string",
+        "title": "Район"
+      },
+      "routingSheetNumber": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 10,
+        "pattern": "\\d+",
+        "title": "Маршрутный лист №"
+      },
+      "carNumber": {
+        "type": "number",
+        "minimum": 0,
+        "maximum": 999,
+        "title": "Номер машины"
+      },
+      "actDayHours": {
+        "$ref": "#/definitions/timedelta",
+        "title": "Общие трудозатраты днем, часов"
+      },
+      "actNightHours": {
+        "$ref": "#/definitions/timedelta",
+        "title": "Общие трудозатраты ночью, часов"
+      }
+    },
+    "definitions": {
+      "timedelta": {
+        "type": "number"
+      },
+      "approved": {
+        "type": "string",
+        "pattern": "Успешно"
+      }
+    },
+    "title": ""
+  },
+  "uiSchema": {
+    "actNumber": {
+      "classNames": "col-xs-12"
+    },
+    "routingSheetNumber": {
+      "classNames": "col-xs-12"
+    },
+    "date": {
+      "classNames": "col-xs-12",
+      "ui:widget": "alt-date",
+      "ui:options": {
+        "yearsRange": [
+          1980,
+          2030
+        ]
+      }
+    },
+    "contractor": {
+      "classNames": "col-xs-12"
+    }
+  }
+}

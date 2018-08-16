@@ -1,0 +1,12 @@
+{
+  "actNumber": 1,
+  "date": "2018-02-23",
+  "contractor": "ПТО ТОО \"Астана Тазалык\"",
+  "period": "01.02.2018-28.02.2018",
+  "jobType": "Уборка снега",
+  "location": "Сарыарка",
+  "routingSheetNumber": "1",
+  "carNumber": 624,
+  "actDayHours": 3,
+  "actNightHours": 3
+}

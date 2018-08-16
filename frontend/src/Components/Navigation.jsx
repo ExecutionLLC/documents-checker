@@ -17,6 +17,10 @@ function Navigation(props) {
             url: '/checkdoc',
             title: 'Сверка маршрутных листов'
         },
+        {
+            url: '/checkact',
+            title: 'Сверка акта'
+        },
     ];
 
     return (

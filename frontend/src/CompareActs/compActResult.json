@@ -1,0 +1,121 @@
+{
+  "jsonSchema": {
+    "type": "object",
+    "required": [
+      "actNumber",
+      "date",
+      "contractor",
+      "period",
+      "jobType",
+      "location",
+      "routingSheetNumber",
+      "carNumber",
+      "approvedDayHours",
+      "actDayHours",
+      "diffDayHours",
+      "approvedNightHours",
+      "actNightHours",
+      "diffNightHours",
+      "approved"
+    ],
+    "properties": {
+      "actNumber": {
+        "type": "integer",
+        "title": "Акт №"
+      },
+      "date": {
+        "type": "string",
+        "title": "Дата"
+      },
+      "contractor": {
+        "type": "string",
+        "title": "Подрядчик"
+      },
+      "period": {
+        "type": "string",
+        "title": "Срок оказания услуг"
+      },
+      "jobType": {
+        "type": "string",
+        "title": "Вид работ"
+      },
+      "location": {
+        "type": "string",
+        "title": "Район"
+      },
+      "routingSheetNumber": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 10,
+        "pattern": "\\d+",
+        "title": "Маршрутный лист №"
+      },
+      "carNumber": {
+        "type": "number",
+        "minimum": 0,
+        "maximum": 999,
+        "title": "Номер машины"
+      },
+      "approvedDayHours": {
+        "$ref": "#/definitions/timedelta",
+        "title": "Подтверждено трудозатрат днем, часов"
+      },
+      "actDayHours": {
+        "$ref": "#/definitions/timedelta",
+        "title": "Трудозатраты по акту днем, часов"
+      },
+      "diffDayHours": {
+        "$ref": "#/definitions/timedelta",
+        "title": "Расхождение день, часов"
+      },
+      "approvedNightHours": {
+        "$ref": "#/definitions/timedelta",
+        "title": "Подтверждено трудозатрат ночью, часов"
+      },
+      "actNightHours": {
+        "$ref": "#/definitions/timedelta",
+        "title": "Трудозатраты по акту ночью, часов"
+      },
+      "diffNightHours": {
+        "$ref": "#/definitions/timedelta",
+        "title": "Отклонение от плана ночь, часов"
+      },
+      "approved": {
+        "$ref": "#/definitions/approved",
+        "title": "Соответствует маршрутному листу"
+      }
+    },
+    "definitions": {
+      "timedelta": {
+        "type": "number"
+      },
+      "approved": {
+        "type": "string",
+        "pattern": "Успешно"
+      }
+    },
+    "title": ""
+  },
+  "uiSchema": {
+    "ui:readonly": true,
+    "actNumber": {
+      "classNames": "col-xs-12"
+    },
+    "routingSheetNumber": {
+      "classNames": "col-xs-12"
+    },
+    "date": {
+      "classNames": "col-xs-12",
+      "ui:widget": "alt-date",
+      "ui:options": {
+        "yearsRange": [
+          1980,
+          2030
+        ]
+      }
+    },
+    "contractor": {
+      "classNames": "col-xs-12"
+    }
+  }
+}

@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-d
 import AddDocument from './AddDocument/AddDocument';
 import config from './config';
 import CompareDocuments from "./CompareDocuments/CompareDocuments";
+import CompareActs from './CompareActs/CompareActs';
 
 
 class App extends Component {
@@ -39,6 +40,7 @@ class App extends Component {
                       }
                     />
                     <Route path="/checkdoc" component={CompareDocuments}/>
+                    <Route path="/checkact" component={CompareActs}/>
                     <Route exact path="/" render={() => (<Redirect to="/checkdoc" />)} />
                 </Switch>
             </Router>
