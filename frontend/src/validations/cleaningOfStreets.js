@@ -141,9 +141,9 @@ class CleaningOfStreets {
     };
   }
 
-  static verifyActs(routingSheet, report, act) {
+  static verifyActs(report, act) {
 
-    // статистика по отчету
+    // подсчитать потраченные отдельно днем и ночью часы по отчету
     const stats = report.jobsList.reduce((acc, job) => {
       return {
         ...acc,
@@ -157,12 +157,15 @@ class CleaningOfStreets {
       },
     );
 
+    // определить разницу с часами по акту
     const diffDayHours = stats.approvedDayHours - act.actDayHours;
     const diffDayHoursRatio = Math.abs(diffDayHours/act.actDayHours);
 
     const diffNightHours = stats.approvedNightHours - act.actNightHours;
     const diffNightHoursRatio = Math.abs(diffNightHours/act.actNightHours);
 
+    // успешно если разница между данными в отчете и акте не более ALLOWED_TIME_DELTA (сравниваются
+    // дневные и ночные часы отдельно)
     const approved =
       (diffDayHoursRatio > config.ALLOWED_TIME_DELTA || diffNightHoursRatio > config.ALLOWED_TIME_DELTA)
         ? "Не успешно"

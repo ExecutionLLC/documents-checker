@@ -27,12 +27,6 @@ class CompareActs extends Component {
         isLoading: false,
         error: null,
       },
-      routingSheet: {
-        isExists: null,
-        data: null,
-        isLoading: false,
-        error: null,
-      },
       resultSchema: {
         data: compActResultSchema,
         error: null,
@@ -42,21 +36,17 @@ class CompareActs extends Component {
   }
 
   compareActs() {
-    console.log('compareActs - begin...');
-    if (this.state.report.data && this.state.routingSheet.data &&
-      !this.state.report.error && !this.state.routingSheet.error) {
+    if (this.state.report.data && !this.state.report.error) {
 
       this.setState({
         resultData: {
           ...this.state.resultData,
           ...CleaningOfStreets.verifyActs(
-            this.state.routingSheet.data.dataPart,
             this.state.report.data.dataPart,
             this.state.queryData),
         },
       });
     }
-    console.log('compareActs - end...');
   }
 
   onQuerySubmit(queryFormData) {
@@ -72,13 +62,6 @@ class CompareActs extends Component {
     this.setState({
       report: {
         ...this.state.report,
-        isExists: null,
-        data: null,
-        isLoading: true,
-        error: null,
-      },
-      routingSheet: {
-        ...this.state.routingSheet,
         isExists: null,
         data: null,
         isLoading: true,
@@ -120,7 +103,6 @@ class CompareActs extends Component {
             error: null,
           }
         });
-        console.log('REPORT: ', this.state.report.data);
         this.compareActs();
       })
       .catch((error) => {
@@ -132,51 +114,6 @@ class CompareActs extends Component {
           }
         });
       });
-
-    API.isDocumentExists(config.SCHEMA_ID_ROUTING_SHEET, documentIdPart)
-      .then(isExists => {
-        this.setState({
-          routingSheet: {
-            ...this.state.routingSheet,
-            isExists,
-            data: null,
-            isLoading: !isExists,
-            error: null,
-          }
-        });
-        return isExists;
-      })
-      .then((isExist) => {
-        if (!isExist) {
-          return null;
-        }
-        return API.getDocument(config.SCHEMA_ID_ROUTING_SHEET, documentIdPart);
-      })
-      .then((data) => {
-        this.setState({
-          routingSheet: {
-            ...this.state.routingSheet,
-            data,
-            isLoading: false,
-            error: null,
-          }
-        });
-        console.log('ROUTING SHEET: ', this.state.routingSheet.data);
-        this.compareActs();
-      })
-      .catch((error) => {
-        this.setState({
-          routingSheet: {
-            ...this.state.routingSheet,
-            isLoading: false,
-            error,
-          }
-        });
-      });
-  }
-
-  onNewQuery() {
-    console.warn('Not implemented');
   }
 
   renderSchemaError() {
@@ -328,21 +265,18 @@ class CompareActs extends Component {
   renderDocumentForm() {
     if (!this.state.resultData)
       return null;
-
-    console.log('RESULT DATA', this.state.resultData);
     return (
       <div>
         {this.renderResultData()}
-        <Form
-          schema={this.state.resultSchema.data.jsonSchema}
-          uiSchema={this.state.resultSchema.data.uiSchema}
-          formData={this.state.resultData}
-          onSubmit={() => this.onNewQuery()}
-        >
-          <div>
-            <button type="submit" hidden>Новая сверка</button>
-          </div>
-        </Form>
+        {/*<Form*/}
+          {/*schema={this.state.resultSchema.data.jsonSchema}*/}
+          {/*uiSchema={this.state.resultSchema.data.uiSchema}*/}
+          {/*formData={this.state.resultData}*/}
+        {/*>*/}
+          {/*<div>*/}
+            {/*<button type="submit" hidden>Новая сверка</button>*/}
+          {/*</div>*/}
+        {/*</Form>*/}
       </div>
     );
   }
@@ -362,11 +296,10 @@ class CompareActs extends Component {
         }
         {
           <div>
-            {(this.state.report.isLoading || this.state.routingSheet.isLoading) && (
+            {(this.state.report.isLoading) && (
               <ProgressBar active now={100} />
             )}
-            {((this.state.report.isExists !== null && !this.state.report.isExists) ||
-              (this.state.routingSheet.isExists !== null && !this.state.routingSheet.isExists)) ?
+            {(this.state.report.isExists !== null && !this.state.report.isExists) ?
               this.renderDocumentDoesNotExist() :
               this.renderDocumentForm()
             }
