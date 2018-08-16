@@ -175,6 +175,19 @@ class CompareActs extends Component {
 
   renderResultData() {
     const res = this.state.resultData;
+
+
+    const renderField = (propName, className) => {
+      const title = this.state.resultSchema.data.jsonSchema.properties[propName].title;
+      const value = res[propName];
+      return (
+        <div className={`row ${className}`}>
+          <div className="col-md-6">{title}</div>
+          <div className="col-md-6">{value}</div>
+        </div>
+      );
+    };
+
     return (
       <Panel bsStyle={res.approved === "Успешно"? "success" :"danger"}>
         <Panel.Heading>
@@ -185,74 +198,27 @@ class CompareActs extends Component {
         </Panel.Heading>
         <Panel.Body>
           <div>
-
-            <div className="row">
-              <div className="col-md-6">Акт №</div>
-              <div className="col-md-6">{res.actNumber}</div>
-            </div>
-            <div className="row">
-              <div className="col-md-6">Дата</div>
-              <div className="col-md-6">{res.date}</div>
-            </div>
-            <div className="row">
-              <div className="col-md-6">Подрядчик</div>
-              <div className="col-md-6">{res.contractor}</div>
-            </div>
-            <div className="row">
-              <div className="col-md-6">Срок оказания услуг</div>
-              <div className="col-md-6">{res.period}</div>
-            </div>
-
-            <div className="row">
-              <div className="col-md-6">Вид работ</div>
-              <div className="col-md-6">{res.jobType}</div>
-            </div>
-            <div className="row">
-              <div className="col-md-6">Район</div>
-              <div className="col-md-6">{res.location}</div>
-            </div>
-            <div className="row">
-              <div className="col-md-6">Маршрутный лист №</div>
-              <div className="col-md-6">{res.routingSheetNumber}</div>
-            </div>
-            <div className="row">
-              <div className="col-md-6">Номер машины</div>
-              <div className="col-md-6">{res.carNumber}</div>
-            </div>
-
-
-            <div className="row">
-              <div className="col-md-6">Подтвержденные трудозатраты днем, часов</div>
-              <div className="col-md-6">{res.approvedDayHours}</div>
-            </div>
-            <div className="row">
-              <div className="col-md-6">Трудозатраты по акту днем, часов</div>
-              <div className="col-md-6">{res.actDayHours}</div>
-            </div>
-            <div className="row"><b>
-              <div className="col-md-6">Расхождение день, часов</div>
-              <div className="col-md-6">{res.diffDayHours}</div>
-            </b></div>
-
-            <div className="row">
-              <div className="col-md-6">Подтвержденные трудозатраты ночью, часов</div>
-              <div className="col-md-6">{res.approvedNightHours}</div>
-            </div>
-            <div className="row">
-              <div className="col-md-6">Трудозатраты по акту ночью, часов</div>
-              <div className="col-md-6">{res.actNightHours}</div>
-            </div>
-            <div className="row"><b>
-              <div className="col-md-6">Расхождение ночь, часов</div>
-              <div className="col-md-6">{res.diffNightHours}</div>
-            </b></div>
-
+            {renderField('actNumber')}
+            {renderField('date')}
+            {renderField('contractor')}
+            {renderField('period')}
             <br />
-            <div className="row">
-              <b>
-                <div className="col-md-6">СТАТУС СВЕРКИ</div>
-                <div className="col-md-6">{res.approved}</div>
-              </b>
+            {renderField('jobType')}
+            {renderField('location')}
+            {renderField('routingSheetNumber')}
+            {renderField('carNumber')}
+            <br />
+            {renderField('approvedDayHours')}
+            {renderField('actDayHours')}
+            {renderField('diffDayHours', 'field-bold')}
+            <br />
+            {renderField('approvedNightHours')}
+            {renderField('actNightHours')}
+            {renderField('diffNightHours', 'field-bold')}
+            <br />
+            <div className="row field-bold">
+              <div className="col-md-6">СТАТУС СВЕРКИ</div>
+              <div className="col-md-6">{res.approved}</div>
             </div>
 
           </div>
