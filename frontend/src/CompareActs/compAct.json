@@ -72,14 +72,7 @@
     "title": ""
   },
   "uiSchema": {
-    "actNumber": {
-      "classNames": "col-xs-12"
-    },
-    "routingSheetNumber": {
-      "classNames": "col-xs-12"
-    },
     "date": {
-      "classNames": "col-xs-12",
       "ui:widget": "alt-date",
       "ui:options": {
         "yearsRange": [
@@ -87,9 +80,6 @@
           2030
         ]
       }
-    },
-    "contractor": {
-      "classNames": "col-xs-12"
     }
   }
 }
