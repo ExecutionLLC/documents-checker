@@ -8,7 +8,6 @@ import API from '../API';
 import config from '../config';
 import '../css/styles.css';
 import compDocSchema from './compDoc.json';
-import compDocData from './compDocData.json';
 import CleaningOfStreets from '../validations/cleaningOfStreets';
 import ReportField from "../Components/ReportField";
 
@@ -37,31 +36,9 @@ class CompareDocuments extends Component {
         idPart: null,
       }
     };
-
-    // console.log(`23:30, 03:00 :`, CleaningOfStreets.durationHours('23:30', '03:00'));
-    // console.log(`23:30, 23:31 :`, CleaningOfStreets.durationHours('23:30', '23:31'));
-    // console.log(`00:00, 00:00 :`, CleaningOfStreets.durationHours('00:00', '00:00'));
-    //
-    //
-    // console.log(' ----------- dayDurationHours ----------- ');
-    // console.log(`23:30, 08:30 :`, CleaningOfStreets.dayDurationHours('23:30', '08:30'));
-    // console.log(`23:30, 03:00 :`, CleaningOfStreets.dayDurationHours('23:30', '03:00'));
-    // console.log(`07:00, 23:00 :`, CleaningOfStreets.dayDurationHours('07:00', '23:00'));
-    // console.log(`00:00, 00:00 :`, CleaningOfStreets.dayDurationHours('00:00', '00:00'));
-    // console.log(`10:00, 11:30 :`, CleaningOfStreets.dayDurationHours('10:00', '11:30'));
-    //
-    //
-    // console.log(' ----------- nightDurationHours ----------- ');
-    // console.log(`23:30, 08:30 :`, CleaningOfStreets.nightDurationHours('23:30', '08:30'));
-    // console.log(`23:30, 03:00 :`, CleaningOfStreets.nightDurationHours('23:30', '03:00'));
-    // console.log(`07:00, 23:00 :`, CleaningOfStreets.nightDurationHours('07:00', '23:00'));
-    // console.log(`00:00, 00:00 :`, CleaningOfStreets.nightDurationHours('00:00', '00:00'));
-    // console.log(`23:00, 07:00 :`, CleaningOfStreets.nightDurationHours('23:00', '07:00'));
-    // console.log(`10:00, 11:30 :`, CleaningOfStreets.nightDurationHours('10:00', '11:30'));
   }
 
   compareDocuments() {
-    console.log('compareDocuments - begin...');
     if (this.state.report.data && this.state.routingSheet.data &&
       !this.state.report.error && !this.state.routingSheet.error) {
 
@@ -74,7 +51,6 @@ class CompareDocuments extends Component {
         },
       });
     }
-    console.log('compareDocuments - end...');
   }
 
   onDocumentIdSubmit(documentIdPart) {
@@ -128,7 +104,6 @@ class CompareDocuments extends Component {
             error: null,
           }
         });
-        console.log('REPORT: ', this.state.report.data);
         this.compareDocuments();
       })
       .catch((error) => {
@@ -169,7 +144,6 @@ class CompareDocuments extends Component {
             error: null,
           }
         });
-        console.log('ROUTING SHEET: ', this.state.routingSheet.data);
         this.compareDocuments();
       })
       .catch((error) => {
@@ -181,8 +155,6 @@ class CompareDocuments extends Component {
           }
         });
       });
-
-
   }
 
   renderSchemaError() {
@@ -267,9 +239,6 @@ class CompareDocuments extends Component {
 
     const headerSchema = schema.properties.compareDocHeader.properties;
     const jobsSchema =  schema.definitions.compareJobsListItem.properties;
-    console.log(headerSchema);
-    console.log(jobsSchema);
-
 
     const renderField = (propName, className) => (
       <ReportField
@@ -342,20 +311,7 @@ class CompareDocuments extends Component {
   renderDocumentForm() {
     if (!this.state.formsData.dataPart)
       return null;
-    return (
-      <div>
-        {this.renderResultData()}
-        {/*<Form*/}
-          {/*schema={this.state.schema.data.dataPart.jsonSchema}*/}
-          {/*uiSchema={this.state.schema.data.dataPart.uiSchema}*/}
-          {/*formData={this.state.formsData.dataPart}*/}
-        {/*>*/}
-          {/*<div>*/}
-            {/*<button type="submit" hidden>Submit</button>*/}
-          {/*</div>*/}
-        {/*</Form>*/}
-      </div>
-    );
+    return this.renderResultData();
   }
 
   render() {
