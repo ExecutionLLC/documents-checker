@@ -7,22 +7,25 @@ class CleaningOfStreets {
     return +value.toFixed(2);
   }
 
+  static mDate(YYYYMMDD, hhmm) {
+    let [ hh, mm ] = hhmm.split(':');
+    if (hh.length === 1) hh = `0${hh}`;
+    return moment(`${YYYYMMDD} ${hh}:${mm}`);
+  }
+
   static durationHoursMoment(momentBeg, momentEnd) {
     const diff = moment.duration(momentEnd.diff(momentBeg));
     return diff.hours() + (diff.minutes() / 60);
   }
 
   static durationHours(hhmm1, hhmm2) {
-    const beg = moment(`2018-01-01 ${hhmm1}`);
-    let end = moment(`2018-01-01 ${hhmm2}`);
+    const beg = CleaningOfStreets.mDate('2018-01-01', hhmm1);
+    let end = CleaningOfStreets.mDate('2018-01-01', hhmm2);
     if (beg > end) {
       return this.durationHours(hhmm1, '24:00')
         + this.durationHours('00:00', hhmm2);
-      // end = moment(`2018-01-02 ${hhmm2}`);
     }
     return this.durationHoursMoment(beg, end);
-    // const diff = moment.duration(end.diff(beg));
-    // return diff.hours() + (diff.minutes() / 60);
   }
 
   static nightDurationHours(hhmm1, hhmm2) {
@@ -48,14 +51,14 @@ class CleaningOfStreets {
       }
     };
 
-    const beg = moment(`2018-01-01 ${hhmm1}`);
-    const end = moment(`2018-01-01 ${hhmm2}`);
+    const beg = CleaningOfStreets.mDate('2018-01-01', hhmm1);
+    const end = CleaningOfStreets.mDate('2018-01-01', hhmm2);
     if (beg > end) {
-      const beg1 = moment(`2018-01-01 ${hhmm1}`);
-      const end1 = moment(`2018-01-01 24:00`);
+      const beg1 = CleaningOfStreets.mDate('2018-01-01', hhmm1);
+      const end1 = CleaningOfStreets.mDate('2018-01-01', '24:00');
 
-      const beg2 = moment(`2018-01-02 00:00`);
-      const end2 = moment(`2018-01-02 ${hhmm2}`);
+      const beg2 = CleaningOfStreets.mDate('2018-01-02', '00:00');
+      const end2 = CleaningOfStreets.mDate('2018-01-02', hhmm2);
 
       return calcIn24Hours(beg1, end1) +
         calcIn24Hours(beg2, end2);
