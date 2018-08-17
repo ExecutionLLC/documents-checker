@@ -71,9 +71,7 @@ class CleaningOfStreets {
 
     let approved = true;
 
-
     if (routingSheetJob.geozone !== reportJob.geozone) {
-      console.log(routingSheetJob.geozone, reportJob.geozone);
       approved = false;
     }
 
@@ -82,7 +80,6 @@ class CleaningOfStreets {
 
     const hourDiffRatio = Math.abs((reportJob.totalTime - routingSheetJobTotalTime) / routingSheetJobTotalTime);
     if (hourDiffRatio > config.ALLOWED_TIME_DELTA) {
-      console.log('hourDiffRatio: ', hourDiffRatio);
       approved = false;
     }
 
@@ -91,7 +88,6 @@ class CleaningOfStreets {
     stats.approved = stats.approved && approved;
 
     const reportDayHours = CleaningOfStreets.dayDurationHours(reportJob.startTime, reportJob.endTime);
-    console.log(reportDayHours, reportJob.startTime, reportJob.endTime);
     const routingSheetDayHours = CleaningOfStreets.dayDurationHours(routingSheetJob.startTime, routingSheetJob.endTime);
     stats.approvedDayHours += reportDayHours;
     stats.diffDayHours += reportDayHours - routingSheetDayHours;
@@ -120,14 +116,12 @@ class CleaningOfStreets {
       materials: 0, // вывезено снега на полигон
       approved: true,
     };
-    console.log('verifying...');
     // compare job list
     const compareJobsList = [];
     for (let i = 0; i < routingSheet.jobsList.length; i++) {
       const routingSheetJob = routingSheet.jobsList[i];
       const reportJob = report.jobsList[i];
       compareJobsList.push(CleaningOfStreets.processJobItem(routingSheetJob, reportJob, stats));
-      console.log(stats);
     }
 
     return {

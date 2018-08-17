@@ -228,31 +228,16 @@ class CompareActs extends Component {
               <div className="col-md-6">СТАТУС СВЕРКИ</div>
               <div className="col-md-6">{res.approved}</div>
             </div>
-
           </div>
         </Panel.Body>
       </Panel>
-
     )
   }
 
   renderDocumentForm() {
     if (!this.state.resultData)
       return null;
-    return (
-      <div>
-        {this.renderResultData()}
-        {/*<Form*/}
-          {/*schema={this.state.resultSchema.data.jsonSchema}*/}
-          {/*uiSchema={this.state.resultSchema.data.uiSchema}*/}
-          {/*formData={this.state.resultData}*/}
-        {/*>*/}
-          {/*<div>*/}
-            {/*<button type="submit" hidden>Новая сверка</button>*/}
-          {/*</div>*/}
-        {/*</Form>*/}
-      </div>
-    );
+    return this.renderResultData();
   }
 
   render() {

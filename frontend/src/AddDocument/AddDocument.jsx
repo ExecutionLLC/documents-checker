@@ -5,10 +5,8 @@ import ErrorPanel from '../Components/ErrorPanel';
 import Navigation from '../Components/Navigation';
 import Form from '../Components/FormStateSafe';
 import FileJSON from '../Components/FileJSON';
-import { InstructionsAddDocument } from "../Components/Instructions";
 import API from '../API';
 import validator from '../validations';
-import config from '../config';
 import '../css/styles.css';
 
 
