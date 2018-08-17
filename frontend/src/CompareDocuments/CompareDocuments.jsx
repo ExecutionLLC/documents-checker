@@ -345,15 +345,15 @@ class CompareDocuments extends Component {
     return (
       <div>
         {this.renderResultData()}
-        <Form
-          schema={this.state.schema.data.dataPart.jsonSchema}
-          uiSchema={this.state.schema.data.dataPart.uiSchema}
-          formData={this.state.formsData.dataPart}
-        >
-          <div>
-            <button type="submit" hidden>Submit</button>
-          </div>
-        </Form>
+        {/*<Form*/}
+          {/*schema={this.state.schema.data.dataPart.jsonSchema}*/}
+          {/*uiSchema={this.state.schema.data.dataPart.uiSchema}*/}
+          {/*formData={this.state.formsData.dataPart}*/}
+        {/*>*/}
+          {/*<div>*/}
+            {/*<button type="submit" hidden>Submit</button>*/}
+          {/*</div>*/}
+        {/*</Form>*/}
       </div>
     );
   }
