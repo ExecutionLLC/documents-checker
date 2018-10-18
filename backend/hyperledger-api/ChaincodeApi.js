@@ -9,10 +9,6 @@ const TransactionTimeoutError = require('../utils/errors/TransactionTimeoutError
 
 const DEFAULT_TRANSACTION_TIMEOUT_MS = 30*1000;
 
-const ENDORSER_TRANSACTION_CODE = 3;
-const METADATA_VALIDATION_CODES_INDEX = 2;
-const TX_STATUS_VALID = 'VALID';
-const TX_STATUS_VALID_CODE = 0;
 
 class ChaincodeApi extends EventEmitter {
     constructor() {
@@ -28,7 +24,7 @@ class ChaincodeApi extends EventEmitter {
         this._channel.addOrderer(orderer);
         this._chaincodeId = config.get('chaincodeId');
 
-        this._eventHub = null;
+        this._eventHub = this._channel.newChannelEventHub(peer);
 
         this._storePath = config.get('storePath');
         this._userName = config.get('userName');
@@ -55,8 +51,6 @@ class ChaincodeApi extends EventEmitter {
                 throw new Error('Failed to get user');
             }
 
-            this._eventHub = this._fabricClient.newEventHub();
-            this._eventHub.setPeerAddr(config.get('eventhub'));
             this._eventHub.registerBlockEvent(
                 (block) => this._onBlockEvent(block),
                 (error) => this._onEventHubError(error)
@@ -65,50 +59,13 @@ class ChaincodeApi extends EventEmitter {
         });
     }
 
-    _parseAndEmitChaincodeEvents(block) {
-        const envelopeDataArray = block.data.data;
-        const validationCodeArray = block.metadata.metadata[METADATA_VALIDATION_CODES_INDEX];
-
-        envelopeDataArray.forEach((envelope, index) => {
-            if (validationCodeArray[index] !== TX_STATUS_VALID_CODE) {
-                // we handle only valid transactions
-                return;
-            }
-
-            const envelopePayload = envelope.payload;
-            const channelHeader = envelopePayload.header.channel_header;
-
-            if (channelHeader.type === ENDORSER_TRANSACTION_CODE) {
-                const transaction = envelopePayload.data;
-                const chaincodeActionPayload = transaction.actions[0].payload;
-                const proposalResponsePayload = chaincodeActionPayload.action.proposal_response_payload;
-                const transactionEvent = proposalResponsePayload.extension.events;
-
-                if (transactionEvent && transactionEvent.chaincode_id) {
-                    this._onChaincodeEvent(transactionEvent);
-                }
-            }
-        }, this);
-    }
-
     _onBlockEvent(block) {
-        this._logger.debug('got new block event: %o', block.header);
-        const {number: blockNumber, data_hash: blockHash, previous_hash: prevBlockHash} = block.header;
-        this.emit('BLOCK_EVENT', blockNumber, blockHash, prevBlockHash);
-
-        this._parseAndEmitChaincodeEvents(block);
+        this._logger.debug('got new block event: %d', block.number);
     }
 
     _onTransactionEvent(transactionId, transactionStatus) {
         this._logger.info('got new transaction event: %s %s', transactionId, transactionStatus);
         this.emit('TRANSACTION_EVENT', transactionId, transactionStatus);
-    }
-
-    _onChaincodeEvent(chaincodeEventObj) {
-        const {event_name: chaincodeEventName, payload} = chaincodeEventObj;
-        const chaincodeEventData = JSON.parse(payload.toString());
-        this._logger.info('got new chaincode event (%s): %o', chaincodeEventName, chaincodeEventData);
-        this.emit('CHAINCODE_EVENT', chaincodeEventName, chaincodeEventData);
     }
 
     _onEventHubError(error) {

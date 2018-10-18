@@ -19,7 +19,7 @@ services:
       - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
       - FABRIC_CA_SERVER_CA_NAME=ca.private.net
       - FABRIC_CA_SERVER_CA_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.org0.private.net-cert.pem
-      - FABRIC_CA_SERVER_CA_KEYFILE=/etc/hyperledger/fabric-ca-server-config/fabb91dfcb1c9858c7c9366d973d27144793c19af41b9f2dec655f10c16fe08f_sk
+      - FABRIC_CA_SERVER_CA_KEYFILE=/etc/hyperledger/fabric-ca-server-config/6904109f70ac67185315e6e997de628ec9297203d3fcb143c352401a50eb8a57_sk
     command: sh -c 'fabric-ca-server start -b admin:adminpw -d'
     volumes:
       - ./crypto-config/peerOrganizations/org0.private.net/ca/:/etc/hyperledger/fabric-ca-server-config
