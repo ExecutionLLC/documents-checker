@@ -1,5 +1,5 @@
 {
-  "API_BASE_URL": "http://agt.alapy.com:30000/",
+  "API_BASE_URL": "http://factoring.execution.su:3000/",
   "SCHEMA_ID": "sc_report",
   "SCHEMA_ID_ROUTING_SHEET": "sc_routing_sheet",
   "SCHEMA_PRIVATE_KEY": "5gS/gVxbfwx/i3sKNdv0HEoELdCXj1Sw1ADcOEuLqwY=",
@@ -7,5 +7,5 @@
   "ALLOWED_TIME_DELTA": 0.15,
   "DAY_TIME_BEG": 7,
   "DAY_TIME_END": 23,
-  "BASE_PATH": ""
+  "BASE_PATH": "/streets_cleaning"
 }
