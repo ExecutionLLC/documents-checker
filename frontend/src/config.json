@@ -7,5 +7,5 @@
   "ALLOWED_TIME_DELTA": 0.15,
   "DAY_TIME_BEG": 7,
   "DAY_TIME_END": 23,
-  "BASE_PATH": "/streets_cleaning"
+  "BASE_PATH": ""
 }
