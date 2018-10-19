@@ -8,12 +8,7 @@ CRYPTO_CONFIG_DIR="./crypto-config"
 STORAGE_DIR="./storage-volumes"
 
 PUBLIC_CHANNEL_NAME="public"
-PRIVATE_CHANNEL_0_NAME="private0"
-PRIVATE_CHANNEL_1_NAME="private1"
-
 PUBLIC_CHANNEL_PROFILE="PublicChannel"
-PRIVATE_CHANNEL_0_PROFILE="PrivateChannel0"
-PRIVATE_CHANNEL_1_PROFILE="PrivateChannel1"
 
 # remove previous crypto material and config transactions
 rm -rf $CONFIG_DIR
@@ -22,6 +17,9 @@ rm -rf $STORAGE_DIR
 
 mkdir $CONFIG_DIR
 mkdir $CRYPTO_CONFIG_DIR
+mkdir -p $STORAGE_DIR/orderer
+mkdir -p $STORAGE_DIR/org0/peer0
+mkdir -p $STORAGE_DIR/org1/peer0
 
 function generateChannel() {
     channelProfile="${1}"
@@ -62,21 +60,9 @@ fi
 
 # generate channels configuration transaction
 generateChannel "$PUBLIC_CHANNEL_PROFILE" "$PUBLIC_CHANNEL_NAME"
-generateChannel "$PRIVATE_CHANNEL_0_PROFILE" "$PRIVATE_CHANNEL_0_NAME"
-generateChannel "$PRIVATE_CHANNEL_1_PROFILE" "$PRIVATE_CHANNEL_1_NAME"
-
-for i in `seq 0 5`
-do
-    generateAnchorPeer "$PUBLIC_CHANNEL_PROFILE" "$PUBLIC_CHANNEL_NAME" "Org${i}"
-done
 
 for i in `seq 0 1`
 do
-    generateAnchorPeer "$PRIVATE_CHANNEL_0_PROFILE" "$PRIVATE_CHANNEL_0_NAME" "Org${i}"
-done
-
-for i in `seq 2 4`
-do
-    generateAnchorPeer "$PRIVATE_CHANNEL_1_PROFILE" "$PRIVATE_CHANNEL_1_NAME" "Org${i}"
+    generateAnchorPeer "$PUBLIC_CHANNEL_PROFILE" "$PUBLIC_CHANNEL_NAME" "Org${i}"
 done
 
