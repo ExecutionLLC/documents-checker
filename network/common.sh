@@ -6,8 +6,6 @@ CLI_CORE_PEER_MSPCONFIGPATH="/opt/gopath/src/github.com/hyperledger/fabric/peer/
 
 # channels
 PUBLIC_CHANNEL_NAME="public"
-PRIVATE_0_CHANNEL_NAME="private0"
-PRIVATE_1_CHANNEL_NAME="private1"
 
 ORDERER_URL="orderer.private.net:7050"
 CLI_CONTAINER="cli.private.net"

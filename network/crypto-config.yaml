@@ -23,39 +23,3 @@ PeerOrgs:
 
     Users:
       Count: 1
-      
-  - Name: Org2
-    Domain: org2.private.net
-
-    Template:
-      Count: 1
-
-    Users:
-      Count: 1
-      
-  - Name: Org3
-    Domain: org3.private.net
-
-    Template:
-      Count: 1
-
-    Users:
-      Count: 1
-
-  - Name: Org4
-    Domain: org4.private.net
-
-    Template:
-      Count: 1
-
-    Users:
-      Count: 1
-
-  - Name: Org5
-    Domain: org5.private.net
-
-    Template:
-      Count: 1
-
-    Users:
-      Count: 1

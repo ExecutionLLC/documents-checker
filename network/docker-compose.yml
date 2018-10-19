@@ -2,6 +2,10 @@ version: '2'
 
 networks:
   privatenet:
+    ipam:
+      config:
+      - subnet: 172.16.238.0/24
+
 
 x-common:
   orderer-loglevel: &orderer-loglevel
@@ -44,6 +48,7 @@ services:
         - ./config/:/etc/hyperledger/configtx
         - ./crypto-config/ordererOrganizations/private.net/orderers/orderer.private.net/:/etc/hyperledger/msp/orderer
         - ./crypto-config/peerOrganizations/org0.private.net/peers/peer0.org0.private.net/:/etc/hyperledger/msp/peerOrg1
+        - ./storage-volumes/orderer:/var/hyperledger/production
     networks:
       - privatenet
     ports:
@@ -61,6 +66,7 @@ services:
     volumes:
         - ./crypto-config/peerOrganizations/org0.private.net/peers/peer0.org0.private.net/msp:/etc/hyperledger/msp/peer
         - ./crypto-config/peerOrganizations/org0.private.net/users:/etc/hyperledger/msp/users
+        - ./storage-volumes/org0/peer0:/var/hyperledger/production
     ports:
       - 7051:7051
       - 7053:7053
@@ -77,36 +83,7 @@ services:
     volumes:
         - ./crypto-config/peerOrganizations/org1.private.net/peers/peer0.org1.private.net/msp:/etc/hyperledger/msp/peer
         - ./crypto-config/peerOrganizations/org1.private.net/users:/etc/hyperledger/msp/users
-    depends_on:
-      - orderer.private.net
-
-  peer0.org2.private.net:
-    extends:
-      file: docker-compose-base.yml
-      service: base-peer
-    container_name: peer0.org2.private.net
-    environment:
-      - CORE_PEER_ID=peer0.org2
-      - CORE_PEER_LOCALMSPID=Org2MSP
-      - CORE_PEER_ADDRESS=peer0.org2.private.net:7051
-    volumes:
-        - ./crypto-config/peerOrganizations/org2.private.net/peers/peer0.org2.private.net/msp:/etc/hyperledger/msp/peer
-        - ./crypto-config/peerOrganizations/org2.private.net/users:/etc/hyperledger/msp/users
-    depends_on:
-      - orderer.private.net
-
-  peer0.org3.private.net:
-    extends:
-      file: docker-compose-base.yml
-      service: base-peer
-    container_name: peer0.org3.private.net
-    environment:
-      - CORE_PEER_ID=peer0.org3
-      - CORE_PEER_LOCALMSPID=Org3MSP
-      - CORE_PEER_ADDRESS=peer0.org3.private.net:7051
-    volumes:
-        - ./crypto-config/peerOrganizations/org3.private.net/peers/peer0.org3.private.net/msp:/etc/hyperledger/msp/peer
-        - ./crypto-config/peerOrganizations/org3.private.net/users:/etc/hyperledger/msp/users
+        - ./storage-volumes/org1/peer0:/var/hyperledger/production
     depends_on:
       - orderer.private.net
 
